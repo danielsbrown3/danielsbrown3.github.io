@@ -56,6 +56,27 @@
   <ol>Nuerology is the basis for all endeavors in his career it informs his 
     <li>Computing</li>
     <li>Research</li>
+
+    My first machine learning code 8/5/2023:
+    I created my first code! With a step by step tutorial of course, so hopefully I can adapt it to be my own soon. However, to make sure my dendrites create an 
+    accurate model of what I learned, I'm going to try and teach it to myself here. 
+    First lets describe what a machine learning model really is:
+    <li>1. Recieves data as input</li>
+    <li>2. Manipulates the inputs in a hidden layer by applying weights and bias</li>
+    <li>3. Spits out an output as a result.</li>
+    <li>4. Assesses the error of the output compared with the initial data.</li>
+    <li>5. Uses an algorithms to reduce the error and iterate.</li>
+    Now that we know an overview, lets discuss how to accomplish it. First, we want to push the data through our layers and get an output using Forward Propagation.
+    y = w *(dot product) x + b. Where y is the output, x is the input, w are the randomly generated weights, and b is the bias. y,x, and w are arrays and b is a scalar.
+    Once we have our output y from applying our weights and bias, we want to compute the error, dE/dy. The error can be computed using the Mean Squared Error equation: 
+    dE/dy = 2 / (total number of outputs) * [correct output[i] - predicted output[i]]. Where i corresponds to which element you are computing the error of. One you have DE/dy
+    you can begin Back Propagation. Where you start from the output and work your way backwards computing error such that you can accomplish gradient descent and change 
+    the weights and biases to reduce error. To accomplish back propagation, need to also computer dE/dx (change in error with respect to x), dE/dB(change in error with 
+    respect to bias), and dE/dw(change in error with respect to weights. The derviation of each of these values involves the chain rule, dE/dx = dE/dy * dy/dx. 
+    dE/dB = dE/dy * dy/dB. dE/dw = dE/dy * dy/dw. Where the dy/d(insert) derivation is found from the equation y = w * x + b. The neural network also needs an activation
+    layer which basically a nonlinear componenet to make the model more accurate. The nonlinear activation layer I used was tanh(x), for this layer you do element wise 
+    multiplication. (I am a little unsure about this part as I'm not sure if this activation layer is a completely different model or apart of the current linear model)
+    ->Research activation layer and nonlinear models<-
     
   </ol>
   </p>
