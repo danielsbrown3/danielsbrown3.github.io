@@ -19,5 +19,25 @@ header{
   align-items: center;
   justify-content: space-between;
   padding: 33px;
+  background: transparent;
 
+}
+body{
+  background: burlywood;
+}
+.logo{
+  font-size: 30px;
+  font-weight: 700;
+  color: white;
+}
+.navlist{
+  display: flex;
+}
+.navlist{
+  color: white;
+  margin-left: 60px;
+  font-size: 15px;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  transition: all .55s each;
 }
