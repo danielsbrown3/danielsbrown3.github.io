@@ -6,5 +6,18 @@
   font-family: 'Noto Serif', serif;
   font-family: 'Pacifico', cursive;
   list-style: none;
+  text-decoration: none;
+
+}
+header{
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 33px;
 
 }
