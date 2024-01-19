@@ -6,7 +6,7 @@
 }
 
 body {
-  background: burlywood;
+  background: rgb(217, 218, 217);
   font-family: 'Pacifico', cursive;
 }
 
@@ -35,7 +35,7 @@ header {
 }
 
 .navlist li a {
-  color: white;
+  color: black;
   margin-left: 60px;
   font-size: 15px;
   font-weight: 600;
