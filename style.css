@@ -6,7 +6,7 @@
 }
 
 body {
-  background: rgb(217, 218, 217);
+  background: white;
   font-family: 'Pacifico', cursive;
 }
 
@@ -26,7 +26,7 @@ header {
 .logo {
   font-size: 30px;
   font-weight: 700;
-  color: white;
+  color: black;
 }
 
 .navlist {
@@ -40,5 +40,43 @@ header {
   font-size: 15px;
   font-weight: 600;
   border-bottom: 2px solid transparent;
-  transition: all 0.5s ease;
+  transition: all 0.55s ease;
+}
+.navlist a:hover{
+  border-bottom: 2px solid white;
+}
+#menu-icon{
+  color: white;
+  font-size: 35px;
+  z-index: 10001;
+  cursor: pointer;
+  display: none;
+}
+
+.Thoughts{
+  height: 100%;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(245.59deg, #000000 0%, #787878 28.53%, #FFFFFF 75.52%);
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  align-items: center;
+  gap: 2rem;
+}
+section{
+  padding: 0 19%;
+}
+.Thought-text h5{
+  font-size: 14px;
+  font-weight: 400;
+  color: white;
+  margin-bottom: 40px;
+}
+.Thought-text h1{
+  font-family: 'Noto Serif';
+  font-size: 90px;
+  line-height: 1;
+  color: white;
+  margin: 0 0 45px;
 }
