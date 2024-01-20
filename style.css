@@ -69,8 +69,8 @@ h2 {
   }
 }
 #dpic img {
-  width: 240px;
-  height: 240px;
+  width: 100%;
+  height: auto;
   border-radius: 120px;
 }
 .iico {
