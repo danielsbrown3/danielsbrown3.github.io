@@ -1,56 +1,33 @@
-<!DOCTYPE html>
-<html>
+ <html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Daniel Brown</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
 
-<head>
-  <meta charset="utf-8">
-  <meta name = "viewport" content="width=device-width, initial-scale=1">
-  <title>Daniel Brown</title>
-
-  <!---css link--->
-  <link rel="stylesheet" type="text/css" href="style.css">
-
-  <!---boxicon link--->
-  <link rel="stylesheet"
-  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-
-  <!---remixicon link-->
-  <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
-    rel="stylesheet">
-
-  <!---Google Fonts link-->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100;0,700;1,100&family=Pacifico&display=swap" rel="stylesheet">
-
-
-</head>
-<body>
-  <header>
-    <a href="#" class="logo">Daniel Brown</a>
-
-    <ul class="navlist">
-      <li><a href="#">projects</a></li>
-      <li><a href="#">tales</a></li>
-      <li><a href="#">food</a></li>
-      <li><a href="#">talk</a></li>
-    </ul>
-    <div class="bx bx-menu" id="menu-icon"></div>
-  </header>
-  <section  class="Thoughts">
-    <div class="Thought-text">
-      <h5>Yuh</h5>
-      <h4>Yeh Yeh</h4>
-      <h1>Smeh</h1>
-      <p>
-        Hello traveler, my name is Daniel.
-      </p>
-      <a href
+    <!-- idea: have a javascript animated loss function converging in the header? :p -->
+    <div id="dhead" class="container">
+      <div class="row">
+        <div id="dpic">
+          <img src="assets/me_new.jpg" class="ppic">
+        </div>
+        <div id="ddesc">
+          <h1>Daniel Brown</h1>
+          <h2>I like to train deep neural nets on large datasets 🧠🤖💥</h2>
+          <div id="dico">
+            <a href="https://twitter.com/karpathy"><img src="assets/ctwitter.svg" class="iico"></a>
+            <a href="https://github.com/karpathy"><img src="assets/cgithub.svg" class="iico"></a>
+            <a href="https://karpathy.github.io"><img src="assets/crss.svg" class="iico"></a>
+            <a href="https://medium.com/@karpathy"><img src="assets/crss.svg" class="iico"></a>
+            <img src="assets/cemail.svg" style="cursor: pointer;" class="iico" id="iemail" title="click to reveal">
+          </div>
+          <div id="demail"></div> <!-- will reveal email -->
+        </div>
+      </div>
     </div>
-  </section>
 
-  <!--Javascript Link-->
-  <script scr="js/script.js"></script>
+    <hr>
 
 </body>
 
