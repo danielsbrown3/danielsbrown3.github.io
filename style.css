@@ -69,10 +69,13 @@ h2 {
   }
 }
 #dpic img {
-  width: 100%;
-  height: 200px;
-  border-radius: 120px;
+  width: auto; /* or '100%' if it's in a flex container and you want it to be responsive */
+  height: 200px; /* fixed height */
+  border-radius: 50%; /* makes the image round */
+  object-fit: cover; /* this will cover the area without stretching the image */
+  object-position: center; /* centers the image in the frame */
 }
+
 .iico {
   width: 40px;
   height: 40px;
