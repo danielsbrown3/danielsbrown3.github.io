@@ -1,5 +1,6 @@
 *body {
-  font-family: Arial, sans-serif; /* Choose a font that suits your style */
+  font-family: sans-serif; /* Choose a font that suits your style */
+  line-height: 1.4;
   margin: 0;
   padding: 0;
   background-color: #f4f4f4; /* Background color of the page */
@@ -26,12 +27,15 @@
   grid-column: span 6;
   text-align: right;
 }
+#dpic{
+  grid-column: span 6;
+  text-align: right;
+}
 
 #ddesc {
   padding-top: 40px;
   padding-left: 20px;
   grid-column: span 6;
-  text-align: left;
 }
 
 h1, h2 {
@@ -39,11 +43,19 @@ h1, h2 {
 }
 
 h1 {
-  font-size: 2em; /* Larger text for main heading */
+  font-size: 34px;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
 }
 
 h2 {
-  font-size: 1.2em; /* Smaller text for subheading */
+  font-weight: normal;
+  font-style: italic;
+  color: #999;
+  font-size: 18px;
+  padding: 0;
+  margin: 5px 0 10px 0;
 }
 
 .iico {
