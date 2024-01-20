@@ -23,10 +23,14 @@
   border-radius: 50%; /* Makes the image round */
   width: 150px; /* Adjust size as needed */
   height: auto;
+  grid-column: span 6;
+  text-align: right;
 }
 
 #ddesc {
-  text-align: center; /* Or 'center' depending on your preference */
+  padding-top: 40px;
+  padding-left: 20px;
+  grid-column: span 6;
 }
 
 h1, h2 {
