@@ -69,7 +69,7 @@ h2 {
   }
 }
 #dpic img {
-  width: auto; /* or '100%' if it's in a flex container and you want it to be responsive */
+  width: 200px; /* or '100%' if it's in a flex container and you want it to be responsive */
   height: 200px; /* fixed height */
   border-radius: 50%; /* makes the image round */
   object-fit: cover; /* this will cover the area without stretching the image */
