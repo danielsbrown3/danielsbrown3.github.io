@@ -1,82 +1,71 @@
-* {
-  padding: 0;
+*body {
+  font-family: Arial, sans-serif; /* Choose a font that suits your style */
   margin: 0;
-  box-sizing: border-box;
-  font-family: 'Noto Serif', serif;
+  padding: 0;
+  background-color: #f4f4f4; /* Background color of the page */
 }
 
-body {
-  background: white;
-  font-family: 'Pacifico', cursive;
+.container {
+  width: 80%;
+  margin: auto; /* Center the container */
+  overflow: hidden; /* Clear floats */
 }
 
-header {
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 1000;
-  width: 100%;
+.row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 33px 9%;
-  background: transparent;
-}
-
-.logo {
-  font-size: 30px;
-  font-weight: 700;
-  color: black;
-}
-
-.navlist {
-  display: flex;
-  list-style: none;
-}
-
-.navlist li a {
-  color: black;
-  margin-left: 60px;
-  font-size: 15px;
-  font-weight: 600;
-  border-bottom: 2px solid transparent;
-  transition: all 0.55s ease;
-}
-.navlist a:hover{
-  border-bottom: 2px solid white;
-}
-#menu-icon{
-  color: white;
-  font-size: 35px;
-  z-index: 10001;
-  cursor: pointer;
-  display: none;
-}
-
-.Thoughts{
-  height: 100%;
-  width: 100%;
-  min-height: 100vh;
-  background: linear-gradient(245.59deg, #000000 0%, #787878 28.53%, #FFFFFF 75.52%);
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
   align-items: center;
-  gap: 2rem;
+  margin-bottom: 20px;
 }
-section{
-  padding: 0 19%;
+
+.ppic {
+  border-radius: 50%; /* Makes the image round */
+  width: 150px; /* Adjust size as needed */
+  height: auto;
 }
-.Thought-text h5{
-  font-size: 14px;
-  font-weight: 400;
-  color: white;
-  margin-bottom: 40px;
+
+#ddesc {
+  text-align: left; /* Or 'center' depending on your preference */
 }
-.Thought-text h1{
-  font-family: 'Noto Serif';
-  font-size: 90px;
-  line-height: 1;
-  color: white;
-  margin: 0 0 45px;
+
+h1, h2 {
+  color: #333; /* Text color */
 }
+
+h1 {
+  font-size: 2em; /* Larger text for main heading */
+}
+
+h2 {
+  font-size: 1.2em; /* Smaller text for subheading */
+}
+
+.iico {
+  width: 30px; /* Size of icons */
+  height: auto;
+  margin: 0 10px;
+}
+
+.iico:hover {
+  opacity: 0.8; /* Slight fade effect on hover */
+}
+
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #333; /* Color of the horizontal line */
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .row {
+      flex-direction: column; /* Stack elements vertically on smaller screens */
+      align-items: center;
+  }
+
+  .container {
+      width: 95%;
+  }
+}
+
