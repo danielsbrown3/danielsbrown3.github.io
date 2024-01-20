@@ -6,6 +6,7 @@
 }
 
 .container {
+  text-align: center;
   width: 80%;
   margin: auto; /* Center the container */
   overflow: hidden; /* Clear floats */
@@ -25,7 +26,7 @@
 }
 
 #ddesc {
-  text-align: left; /* Or 'center' depending on your preference */
+  text-align: center; /* Or 'center' depending on your preference */
 }
 
 h1, h2 {
