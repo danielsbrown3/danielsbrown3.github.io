@@ -7,17 +7,15 @@
 }
 
 .container {
-  text-align: center;
-  width: 80%;
-  margin: auto; /* Center the container */
-  overflow: hidden; /* Clear floats */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
 }
 
 .ppic {
@@ -30,6 +28,16 @@
 #dpic{
   grid-column: span 6;
   text-align: right;
+}
+
+#dpic img {
+  width: 240px;
+  height: 240px;
+  border-radius: 120px;
+}
+
+#dhead {
+  margin-top: 20px;
 }
 
 #ddesc {
@@ -87,3 +95,8 @@ hr {
   }
 }
 
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
