@@ -8,7 +8,19 @@ body {
 header {
     background: #f8f8f8;
     padding: 20px;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    text-align: left;
+    font-weight: 600;
+    font-size: 1.5em;
+}
+
+nav .links {
+    text-align: right;
 }
 
 nav a {
@@ -24,8 +36,10 @@ nav a {
 }
 
 .intro img {
-    max-width: 100%;
+    max-width: 200px; /* Set a smaller max-width for the image */
     height: auto;
+    display: block;
+    margin: 0 auto 20px; /* Center the image and add space below */
 }
 
 .intro h1 {
