@@ -25,7 +25,6 @@ nav .logo {
 
 nav .links {
     margin-left: 20%; /* Ensures the links move to the right */
-    display: flex;
     gap: 15px; /* Adds space between the links */
 }
 
