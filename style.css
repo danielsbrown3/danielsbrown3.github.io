@@ -1,46 +1,72 @@
 body {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.6;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
     margin: 0;
     padding: 0;
-    color: #1A202C; /* Chakra UI's default text color */
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
-    line-height: 1.2;
-    margin-top: 0;
-    margin-bottom: 0.5em;
+header {
+    background: #f8f8f8;
+    padding: 20px;
+    text-align: center;
 }
 
-h1 {
-    font-size: 2.5rem;
-}
-
-h2 {
-    font-size: 2rem;
-}
-
-h3 {
-    font-size: 1.5rem;
-}
-
-/* ... rest of your existing styles ... */
-nav {
-    display: flex;
-    justify-content: flex-end;
-}
 nav a {
-    margin-left: 1rem;
-    text-decoration: none;
     color: #333;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: 600;
 }
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 1rem;
+
+.intro {
+    text-align: center;
+    margin: 50px 0;
 }
-img {
+
+.intro img {
     max-width: 100%;
     height: auto;
+}
+
+.intro h1 {
+    font-size: 2.5em;
+    margin: 20px 0;
+}
+
+.projects {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.project-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 20px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.project-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.project-card p {
+    margin-bottom: 15px;
+}
+
+footer {
+    background: #f8f8f8;
+    padding: 20px;
+    text-align: center;
+}
+
+.social-links a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
 }
