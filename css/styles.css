@@ -17,12 +17,18 @@ header .logo {
     text-align: left;
     font-weight: 600;
     font-size: 1.5em;
-    align-items: left;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 nav .links {
-    text-align: right;
-    align-items: right;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
 }
 
 nav a {
