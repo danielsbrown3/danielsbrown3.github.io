@@ -8,87 +8,27 @@ body {
 header {
     background: #f8f8f8;
     padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-header .logo {
-    text-align: left;
-    font-weight: 600;
-    font-size: 1.5em;
 }
 
 nav {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    align-items: center;
+}
+
+nav .logo {
+    font-weight: 600;
+    font-size: 1.5em;
 }
 
 nav .links {
-    margin-left: auto;
+    margin-left: auto; /* Ensures the links move to the right */
     display: flex;
-    align-items: center;
+    gap: 15px; /* Adds space between the links */
 }
 
 nav a {
     color: #333;
-    margin: 0 15px;
     text-decoration: none;
-    font-weight: 600;
-}
-
-.intro {
-    text-align: center;
-    margin: 50px 0;
-}
-
-.intro img {
-    max-width: 200px; /* Set a smaller max-width for the image */
-    height: auto;
-    display: block;
-    margin: 0 auto 20px; /* Center the image and add space below */
-}
-
-.intro h1 {
-    font-size: 2.5em;
-    margin: 20px 0;
-}
-
-.projects {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.project-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin: 20px;
-    padding: 20px;
-    width: 300px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.project-card h3 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.project-card p {
-    margin-bottom: 15px;
-}
-
-footer {
-    background: #f8f8f8;
-    padding: 20px;
-    text-align: center;
-}
-
-.social-links a {
-    margin: 0 10px;
-    text-decoration: none;
-    color: #333;
     font-weight: 600;
 }
