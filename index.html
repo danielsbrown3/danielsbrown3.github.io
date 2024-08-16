@@ -3,93 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Daniel Brown </title></title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #f4f4f4;
-            padding: 1rem;
-        }
-        nav {
-            display: flex;
-            justify-content: flex-end;
-        }
-        nav a {
-            margin-left: 1rem;
-            text-decoration: none;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 1rem;
-        }
-        .profile {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        .profile img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin-right: 2rem;
-        }
-        .social-links a {
-            margin-right: 1rem;
-        }
-        .journey {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-    </style>
+    <title>Daniel Brown - Data Scientist</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <nav>
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="blog.html">Blog</a>
-            <a href="work.html">Work</a>
+            <a href="index.html" aria-label="Home">Daniel Brown</a>
+            <div class="links">
+                <a href="resume.pdf" aria-label="Resume" target="_blank">Resume</a>
+                <a href="blog.html" aria-label="Blog">Blog</a>
+                <a href="about.html" aria-label="About">About</a>
+            </div>
         </nav>
     </header>
 
-    <div class="container">
-        <section class="profile">
-            <img src="assets/me.jpg" alt="Daniel">
-            <div>
-                <h1>Hello, my name is Daniel.</h1>
-                <p>I love learning new things.</p>
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/daniel-s-brown/">LinkedIn</a>
-                    <a href="#">Email</a>
-                    <a href="https://github.com/danielsbrown3">GitHub</a>
+    <main>
+        <div class="intro">
+            <img src="images/intro.svg" alt="Intro Image">
+            <h1>Hi, I'm Daniel Brown</h1>
+            <p>A Data Scientist passionate about machine learning, network science, and computational social science.</p>
+        </div>
+
+        <section id="work">
+            <h2>Check out my work 👨‍🔧</h2>
+            <div class="projects">
+                <div class="project-card">
+                    <h3>Project Title</h3>
+                    <p>Description of the project. Explain what it does and your role in it.</p>
+                    <a href="project-link" target="_blank">View Project</a>
                 </div>
+                <!-- Add more project cards as needed -->
             </div>
         </section>
 
-        <h2>My Journey</h2>
-        <section class="journey">
-           
-                <h3>Academic Decathlon, Robotics, Rocket Club</h3>
-                <p>I love learning how the world works around me. </p>
-          
-          
-                <h3>San Diego Super Computer Center</h3>
-                <p>Inspired me to dive into the world of Data Science.</p>
-           
-           
-                <h3>System Engineer</h3>
-                <p>Expierenced managing a full cycle project, working with stakeholders, leading teams of electrical and mechanical engineer towards a common goal.</p>
-           
+        <section id="about">
+            <h2>About Me 👨‍💻</h2>
+            <p>Here’s a bit about who I am, my background, and what I’m passionate about.</p>
+            <a href="about.html">Learn more</a>
         </section>
-    </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Daniel Brown | Last updated July 20, '24</p>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/danielbrown/" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/danielbrown" target="_blank">Twitter</a>
+            <a href="https://github.com/danielbrown" target="_blank">GitHub</a>
+        </div>
+    </footer>
+
+    <script src="js/scripts.js"></script>
 </body>
 </html>
