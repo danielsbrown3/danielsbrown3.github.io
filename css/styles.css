@@ -87,6 +87,13 @@ nav a:hover {
     margin-bottom: 15px;
 }
 
+.project-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 15px; /* Add space between the text and the image */
+}
+
 footer {
     background: #f8f8f8;
     padding: 20px;
@@ -190,6 +197,8 @@ footer {
     border-radius: 50%;
     z-index: 1;
 }
+
+
 
 @media (max-width: 768px) {
     .timeline-content {
