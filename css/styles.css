@@ -30,10 +30,15 @@ nav.links {
 }
 
 nava {
-    color: #333;
+    color: #333; /* Change to your desired color */text-decoration: none; /* Removes the underline */font-weight: 600;
     text-decoration: none;
     font-weight: 600;
     padding: 10px; /* Add padding around links */box-sizing: border-box; /* Ensures padding doesn't affect the layout */
+
+}
+
+nava:hover {
+    color: #555; /* Optional: Change color on hover */text-decoration: underline; /* Optional: Add underline on hover if desired */
 }
 
 .intro {
