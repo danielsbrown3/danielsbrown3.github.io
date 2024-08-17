@@ -20,43 +20,46 @@ nav {
     flex-wrap: wrap; /* Allows wrapping of items if necessary */
 }
 
-nav.logo {
+nav .logo {
     font-weight: 600;
     font-size: 1.5em;
 }
 
-nav.links {
-    margin-left: auto; /* Ensures the links move to the right */gap: 15px; /* Adds space between the links */display: flex; /* Make sure links are displayed in a row */flex-wrap: wrap; /* Allows wrapping of items if necessary */
+nav .links {
+    margin-left: auto; /* Ensures the links move to the right */
+    gap: 15px; /* Adds space between the links */
+    display: flex; /* Make sure links are displayed in a row */
+    flex-wrap: wrap; /* Allows wrapping of items if necessary */
 }
 
 nav a {
-    color: #333!important; /* Change to your desired color */
-    text-decoration: none!important;
-    font-weight: 600!important;
+    color: #333 !important; /* Change to your desired color */
+    text-decoration: none !important;
+    font-weight: 600 !important;
     padding: 10px; /* Add padding around links */
     box-sizing: border-box; /* Ensures padding doesn't affect the layout */
-
 }
 
-nava:hover {
+nav a:hover {
     color: #555; /* Optional: Change color on hover */
-    text-decoration: none; /* Optional: Add underline on hover if desired */
+    text-decoration: none; /* Ensures no underline on hover */
 }
 
 .intro {
     text-align: center;
-    margin: 50px0;
+    margin: 50px 0;
 }
 
-.introimg {
-    max-width: 200px; /* Set a smaller max-width for the image */height: auto;
+.intro img {
+    max-width: 200px; /* Set a smaller max-width for the image */
+    height: auto;
     display: block;
     margin: 0 auto 20px; /* Center the image and add space below */
 }
 
-.introh1 {
+.intro h1 {
     font-size: 2.5em;
-    margin: 20px0;
+    margin: 20px 0;
 }
 
 .projects {
@@ -72,15 +75,15 @@ nava:hover {
     margin: 20px;
     padding: 20px;
     width: 300px;
-    box-shadow: 04px6pxrgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.project-cardh3 {
+.project-card h3 {
     font-size: 1.5em;
     margin-bottom: 10px;
 }
 
-.project-cardp {
+.project-card p {
     margin-bottom: 15px;
 }
 
@@ -90,13 +93,14 @@ footer {
     text-align: center;
 }
 
-.social-linksa {
-    margin: 010px;
+.social-links a {
+    margin: 0 10px;
     text-decoration: none;
     color: #333;
     font-weight: 600;
 }
 
+/* Timeline Section */
 #timeline {
     background: #f8f8f8;
     padding: 50px 0;
@@ -147,10 +151,12 @@ footer {
 
 .timeline-item:nth-child(odd) .timeline-content {
     left: 0;
+    text-align: left;
 }
 
 .timeline-item:nth-child(even) .timeline-content {
     left: 55%;
+    text-align: left;
 }
 
 .timeline-content h3 {
@@ -179,16 +185,15 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .timeline-item {
-        margin-left: 20px;
-    }
     .timeline-content {
         width: calc(100% - 40px);
         left: 20px !important;
     }
+
     .timeline-item::before {
         left: 20px;
     }
+
     .timeline-item::after {
         left: 20px;
     }
