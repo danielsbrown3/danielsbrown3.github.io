@@ -50,6 +50,11 @@ nav a:hover {
     margin: 50px 0;
 }
 
+.about {
+    text-align: center;
+    margin: 50px 0;
+}
+
 .intro img {
     max-width: 200px; /* Set a smaller max-width for the image */
     height: auto;
