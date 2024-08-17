@@ -29,7 +29,7 @@ nav.links {
     margin-left: auto; /* Ensures the links move to the right */gap: 15px; /* Adds space between the links */display: flex; /* Make sure links are displayed in a row */flex-wrap: wrap; /* Allows wrapping of items if necessary */
 }
 
-nava {
+nav a {
     color: #333!important; /* Change to your desired color */
     text-decoration: none!important;
     font-weight: 600!important;
