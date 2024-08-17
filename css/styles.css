@@ -171,6 +171,13 @@ footer {
     color: #666;
 }
 
+.timeline-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 15px; /* Add space between the text and the image */
+}
+
 .timeline-item::after {
     content: '';
     position: absolute;
