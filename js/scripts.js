@@ -3,5 +3,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
  document.querySelector('.down-arrow').addEventListener('click', function() {
-      document.getElementById('target-section').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
     });
