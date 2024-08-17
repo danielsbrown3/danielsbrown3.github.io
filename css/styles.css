@@ -3,52 +3,53 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 header {
     background: #f8f8f8;
     padding: 20px;
     width: 100%; 
+    box-sizing: border-box; /* Ensures padding doesn't affect the width */
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+    flex-wrap: wrap; /* Allows wrapping of items if necessary */
 }
 
-nav .logo {
+nav.logo {
     font-weight: 600;
     font-size: 1.5em;
 }
 
-nav .links {
-    margin-left: auto; /* Ensures the links move to the right */
-    gap: 15px; /* Adds space between the links */
+nav.links {
+    margin-left: auto; /* Ensures the links move to the right */gap: 15px; /* Adds space between the links */display: flex; /* Make sure links are displayed in a row */flex-wrap: wrap; /* Allows wrapping of items if necessary */
 }
 
-nav a {
+nava {
     color: #333;
     text-decoration: none;
     font-weight: 600;
+    padding: 10px; /* Add padding around links */box-sizing: border-box; /* Ensures padding doesn't affect the layout */
 }
 
 .intro {
     text-align: center;
-    margin: 50px 0;
+    margin: 50px0;
 }
 
-.intro img {
-    max-width: 200px; /* Set a smaller max-width for the image */
-    height: auto;
+.introimg {
+    max-width: 200px; /* Set a smaller max-width for the image */height: auto;
     display: block;
     margin: 0 auto 20px; /* Center the image and add space below */
 }
 
-.intro h1 {
+.introh1 {
     font-size: 2.5em;
-    margin: 20px 0;
+    margin: 20px0;
 }
 
 .projects {
@@ -64,15 +65,15 @@ nav a {
     margin: 20px;
     padding: 20px;
     width: 300px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 04px6pxrgba(0, 0, 0, 0.1);
 }
 
-.project-card h3 {
+.project-cardh3 {
     font-size: 1.5em;
     margin-bottom: 10px;
 }
 
-.project-card p {
+.project-cardp {
     margin-bottom: 15px;
 }
 
@@ -82,8 +83,8 @@ footer {
     text-align: center;
 }
 
-.social-links a {
-    margin: 0 10px;
+.social-linksa {
+    margin: 010px;
     text-decoration: none;
     color: #333;
     font-weight: 600;
