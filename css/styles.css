@@ -30,9 +30,9 @@ nav.links {
 }
 
 nava {
-    color: #333; /* Change to your desired color */
-    text-decoration: none;
-    font-weight: 600;
+    color: #333!important; /* Change to your desired color */
+    text-decoration: none!important;
+    font-weight: 600!important;
     padding: 10px; /* Add padding around links */
     box-sizing: border-box; /* Ensures padding doesn't affect the layout */
 
