@@ -1,0 +1,92 @@
+/* Dark mode styles */
+.dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.dark-mode .project-card {
+    background-color: #2d2d2d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode nav {
+    background-color: #2d2d2d;
+}
+
+/* Dark mode toggle button */
+#darkModeToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 50%;
+    border: none;
+    background: #f0f0f0;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+#darkModeToggle:hover {
+    transform: scale(1.1);
+}
+
+/* Back to top button */
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 12px 15px;
+    border-radius: 50%;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(100px);
+}
+
+#backToTop.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Project card animations */
+.project-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.project-card.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Filter buttons */
+.filter-btn {
+    padding: 8px 16px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 20px;
+    background: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+/* Loading animation for images */
+.project-card img {
+    transition: opacity 0.3s ease;
+}
+
+.project-card img[loading] {
+    opacity: 0;
+} 
