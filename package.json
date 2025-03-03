@@ -1,0 +1,18 @@
+{
+  "name": "danielsbrown3.github.io",
+  "version": "1.0.0",
+  "description": "Personal website with Notion blog integration",
+  "main": "src/sync.js",
+  "scripts": {
+    "sync": "node src/sync.js"
+  },
+  "dependencies": {
+    "@notionhq/client": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielsbrown3/danielsbrown3.github.io.git"
+  },
+  "author": "Daniel Brown",
+  "license": "MIT"
+} 
