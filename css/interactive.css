@@ -13,6 +13,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+.dark-mode header {
+    background-color: #2d2d2d;
+    color: #ffffff;
+}
+
 .dark-mode footer {
     background-color: #2d2d2d;
     color: #ffffff;
