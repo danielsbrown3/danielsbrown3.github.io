@@ -4,8 +4,16 @@
     color: #ffffff;
 }
 
-.dark-mode nav {
+.dark-mode nav, 
+.dark-mode header > div {
     background-color: #2d2d2d;
+    color: #ffffff;
+}
+
+.dark-mode .nav-container,
+.dark-mode .header-container {
+    background-color: #2d2d2d;
+    color: #ffffff;
 }
 
 .dark-mode .project-card {
