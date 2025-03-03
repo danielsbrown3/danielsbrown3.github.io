@@ -1,10 +1,8 @@
 // Dark mode toggle
 function initDarkMode() {
-    const darkModeToggle = document.createElement('button');
-    darkModeToggle.id = 'darkModeToggle';
-    darkModeToggle.innerHTML = '🌙';
-    darkModeToggle.setAttribute('aria-label', 'Toggle dark mode');
-    document.body.appendChild(darkModeToggle);
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    
+    if (!darkModeToggle) return;
 
     darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');

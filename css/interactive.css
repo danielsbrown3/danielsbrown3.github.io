@@ -4,32 +4,51 @@
     color: #ffffff;
 }
 
+.dark-mode nav {
+    background-color: #2d2d2d;
+}
+
 .dark-mode .project-card {
     background-color: #2d2d2d;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.dark-mode nav {
+.dark-mode footer {
     background-color: #2d2d2d;
+    color: #ffffff;
+}
+
+.dark-mode .social-links a {
+    color: #ffffff;
+}
+
+.dark-mode .links a {
+    color: #ffffff;
 }
 
 /* Dark mode toggle button */
 #darkModeToggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    padding: 10px;
+    padding: 8px;
     border-radius: 50%;
     border: none;
-    background: #f0f0f0;
+    background: transparent;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     transition: transform 0.3s ease;
+    font-size: 1.2rem;
+    margin-left: 15px;
 }
 
 #darkModeToggle:hover {
     transform: scale(1.1);
+}
+
+/* Remove the fixed positioning styles since button is now in header */
+#darkModeToggle {
+    position: static;
+    top: auto;
+    right: auto;
+    z-index: auto;
+    box-shadow: none;
 }
 
 /* Back to top button */
