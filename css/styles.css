@@ -125,6 +125,19 @@ footer {
     color: #333;
 }
 
+/* Timeline Section - Updated */
+#timeline {
+    background: #f8f8f8;
+    padding: 50px 0;
+    text-align: center;
+}
+
+#timeline h2 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    color: #333;
+}
+
 .timeline-container {
     display: flex;
     flex-direction: column;
@@ -134,21 +147,22 @@ footer {
     margin: 0 auto;
 }
 
-.timeline-item {
-    position: relative;
-    width: 100%;
-    margin-bottom: 30px;
-}
-
-.timeline-item::before {
+/* This creates ONE continuous line */
+.timeline-container::before {
     content: '';
     position: absolute;
     left: 50%;
     top: 0;
-    transform: translateX(-50%);
-    height: 100%;
+    bottom: 0;
     width: 4px;
     background-color: #333;
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    width: 100%;
+    margin-bottom: 60px; /* Increased margin for better spacing */
 }
 
 .timeline-content {
@@ -159,6 +173,21 @@ footer {
     position: relative;
     width: 45%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Create dots at junction points */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 20px; /* Position at the approximate top of the content box */
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background-color: #333;
+    border-radius: 50%;
+    z-index: 1;
+    border: 4px solid #f8f8f8; /* Creates a border around the dot */
 }
 
 .timeline-item:nth-child(odd) .timeline-content {
@@ -187,20 +216,23 @@ footer {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    margin-top: 15px; /* Add space between the text and the image */
+    margin-top: 15px;
 }
 
-.timeline-item::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 10px;
-    background-color: #333;
-    border-radius: 50%;
-    z-index: 1;
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .timeline-container::before {
+        left: 20px; /* Move the line to the left */
+    }
+    
+    .timeline-content {
+        width: calc(100% - 60px);
+        left: 40px !important; /* Move all content boxes to the right */
+    }
+
+    .timeline-item::after {
+        left: 20px; /* Move the dots to match the line */
+    }
 }
 
 .down-arrow {
