@@ -16,6 +16,20 @@
     color: #ffffff;
 }
 
+.dark-mode header nav .logo a {
+    color: #ffffff !important;
+}
+
+.dark-mode header nav .links a {
+    color: #ffffff !important;
+}
+
+/* For completeness, target any other text in the header */
+.dark-mode header nav .logo,
+.dark-mode header nav .links {
+    color: #ffffff !important;
+}
+
 .dark-mode .project-card {
     background-color: #2d2d2d;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
