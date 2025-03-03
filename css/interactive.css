@@ -121,4 +121,28 @@
 
 .project-card img[loading] {
     opacity: 0;
+}
+
+/* Center intro text */
+.intro-text {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Center about section */
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.about-content h2 {
+    margin-bottom: 20px;
+}
+
+.about-content p {
+    margin-bottom: 25px;
 } 
