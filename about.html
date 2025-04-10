@@ -3,106 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Brown - Data Scientist</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Mukta&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>About - Daniel Brown</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<header>
-    <nav>
-        <div class="logo">
-            <a href="index.html" aria-label="Home">Daniel Brown</b>
-        </div>
-        <div class="links">
-            <a href="assets/resume.pdf" aria-label="Resume" target="_blank">Resume</a>
-            
-            <a href="about.html" aria-label="About">About</a>
-        </div>
-    </nav>
-</header>
-
-<section id="timeline">
-    <h2>My Journey</h2>
-    <div class="timeline-container">
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="timeline-header">
-                    <h3>Apr 2024</h3>
-                    <span class="timeline-tag">Systems Engineering</span>
+    <div class="container">
+        <header>
+            <nav>
+                <div class="nav-brand">
+                    <a href="/">Daniel Brown</a>
                 </div>
-                <p>Led a seven-figure Phased Array Antenna project for the US Navy, combining MATLAB modeling with systems engineering expertise.</p>
-                <img src="assets/phased array.gif" alt="Phased Array Antenna visualization">
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h3>Jan 2024</h3>
-                <p>Started my Master's in Data Science at UC Berkeley, focusing on advanced statistical modeling and machine learning.</p>
-                <img src="assets/berkeley.png" alt="Intro Image">
-            </div>
-        </div>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/writing">Writing</a>
+                    <a href="/projects">Projects</a>
+                    <a href="/about" class="active">About</a>
+                </div>
+                <button id="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+        </header>
 
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h3>Jun 2023</h3>
-                <p>Joined L3 Harris and contributed to a multi-network telecommunications project, enhancing my skills in systems engineering.</p>
-                <img src="assets/L3Harris.jpg" alt="Intro Image">
+        <main class="about-content">
+            <section class="about-hero">
+                <div class="about-intro">
+                    <h1>About Me</h1>
+                    <p class="subtitle">Data Scientist</p>
+                    <div class="about-actions">
+                        <a href="/resume.pdf" class="resume-link" download>
+                            <i class="fas fa-download"></i> Download Resume
+                        </a>
+                        <a href="mailto:danielbrown@berkeley.edu" class="contact-link">
+                            <i class="fas fa-envelope"></i> Contact Me
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-sections">
+                <article class="about-section">
+                    <h2>Introduction</h2>
+                    <p>Hello! I'm Daniel Brown, nice to meet you! </p>
+                    <p>My goal is to better understand the world and the people around me.</p>
+                    <p>I'm interested in novel ideas, the ethics of Big Data, and great stories.</p>
+                </article>
+
+                <article class="about-section">
+                    <h2>Professional Background</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h3>Data Science Intern</h3>
+                            <p class="timeline-meta">Company Name • 2025 - Present</p>
+                            <p>Development of LLM testing for engineering documentation.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Associate System Engineer</h3>
+                            <p class="timeline-meta">L3 Harris • 2023 - 2025</p>
+                            <p>Worked on development and maintainence of long range radar systems.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="about-section">
+                    <h2>Skills & Technologies</h2>
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <h3>Languages</h3>
+                            <div class="skills-list">
+                                <span class="skill-tag">MATLAB</span>
+                                <span class="skill-tag">Python</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h3>Subjects</h3>
+                            <div class="skills-list">
+                                <span class="skill-tag">Statistics</span>
+                                <span class="skill-tag">Linear Algebra</span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="about-section">
+                    <h2>Interests</h2>
+                    <div class="interests-grid">
+                        <div class="interest-item">
+                            <i class="fas fa-book"></i>
+                            <h3>Reading</h3>
+                            <p>
+                               Brief History of Equality - Thomas Piketty<br>
+                               How the World Really Works - Vaclav Smil<br>
+                               The Hobbit - J.R.R. Tolkien
+                            </p>
+                        </div>
+                        <div class="interest-item">
+                            <i class="fas fa-music"></i>
+                            <h3>Music</h3>
+                            <p>
+                               Tailwhip - Men I Trust<br>
+                               Archie, Marry Me - Alvvays<br>
+                               Found Me - Men I Trust
+                            </p>
+                        </div>
+                        <div class="interest-item">
+                            <i class="fas fa-hiking"></i>
+                            <h3>Outdoors</h3>
+                            <p>
+                                Rock Climbing <br>
+                                Running <br>
+                                Walks</p>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="contact-section">
+                <h2>Get in Touch</h2>
+                <div class="contact-methods">
+                    <a href="https://github.com/username" class="contact-method">
+                        <i class="fab fa-github"></i>
+                        <span>github.com/username</span>
+                    </a>
+                    <a href="https://linkedin.com/in/username" class="contact-method">
+                        <i class="fab fa-linkedin"></i>
+                        <span>linkedin.com/in/username</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="social-links">
+                <a href="https://github.com/danielsbrown3?tab=repositories" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/daniel-s-brown/" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
             </div>
-        </div>
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h3>Jun 2023</h3>
-                <p>Graduated with a Bachelor's in Mechanical Engineering from UC San Diego, where I developed a love for computational tools.</p>
-                <img src="assets/ucsd.png" alt="Intro Image">
-            </div>
-        </div>
-         <div class="timeline-item">
-            <div class="timeline-content">
-                <h3>Mar 2023</h3>
-                <p>Coauthored a paper with with Dr. Jacqueline Greene from the UCSD Medical Center on a 3D printed device to assist her surgical patients play instruments, post surgery.</p>
-                <img src="assets/biomedical.jpg" alt="Intro Image">
-            </div>
-        </div>
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h3>Aug 2022</h3>
-                <p>Started an internship at San Diego Super Computer Center, working on wildfire modeling and dynamic data-driven simulations. 
-                    The first time I was able to witness the power of machine learning at scale.</p>
-                <img src="assets/firemap-ui-small.png" alt="Intro Image">
-            </div>
-        </div>
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h3>Jan 2022</h3>
-                <p>Changed teams within SEDS to join Colossus as a structural engineer supported the liquid rocket engine test stand. I worked on mounting electronics
-                    and pneumatics, as well as the blast shield. Cold flowed with nitrogen and liquid oxygen for proof of concept prior to liquid combustion test.
-                </p>
-                <img src="assets/Colossus.jpg" alt="Intro Image">
-            </div>
-        </div>
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h3>Sep 2021</h3>
-                <p>Structures lead for Pythia CubeSat satellite. Pythia is a 3U CubeSat designed for continuous collection, processing, and transmission of 
-                    radio spectrum data captured from the surface of the Earth. Did not recieve funding for launch. 
-                </p>
-                <img src="assets/cubeSat.png" alt="Intro Image">
-            </div>
-        </div>
+            <p>&copy; 2025 Daniel Brown. All rights reserved.</p>
+        </footer>
     </div>
-</section>
-
-       
-
-    <footer>
-        <p>&copy; 2024 Daniel Brown | Last updated August 16, '24</p>
-        <div class="social-links">
-            <a href="https://www.linkedin.com/in/danielsbrown3/" target="_blank">LinkedIn</a>
-            <a href="https://github.com/danielsbrown3" target="_blank">GitHub</a>
-        </div>
-    </footer>
-
-    <script src="js/scripts.js"></script>
+    <script src="assets/js/theme.js"></script>
 </body>
-</html>
+</html> 

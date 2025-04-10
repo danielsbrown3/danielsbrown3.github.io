@@ -3,173 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Brown - Data Scientist</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Mukta&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/interactive.css">
+    <title>Daniel Brown</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<header>
-    <nav>
-        <div class="logo">
-            <a href="index.html" aria-label="Home">Daniel Brown</a>
-        </div>
-        <div class="links">
-            <a href="assets/resume.pdf" aria-label="Resume" target="_blank">Resume</a>
-            <a href="https://heady-newsstand-9f2.notion.site/Personal-Blog-1abb6f8f542a80c3a53cf8c8a3005497" aria-label="Blog" target="_blank">Blog</a>
-            <button id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
-        </div>
-    </nav>
-</header>
-
-    <main>
-        <div class="intro">
-            <img src="assets/dan_cartoon-removebg-preview.png" alt="Daniel Brown's portrait">
-            <h1>Hi👋, I'm Daniel Brown</h1>
-            <div class="intro-text">
-                <p>A Data Scientist combining statistical reasoning with computational engineering to solve complex problems. Currently pursuing my Master's in Data Science at UC Berkeley while working as a Systems Engineer at L3Harris.</p>
-            </div>
-            <h2>Check out my work 👨‍🔧</h2>
-        </div>
-        
-        <section id="work">
-            <div class="projects">
-                <div class="project-card">
-                    <h4>🧾Statistics</h4>
-                    <h3>Bivariate Relationship between Household Income and Property Value</h3>
-                    <img src="assets/stats.jpg" alt="Statistics">
-                    <p>Analyzed the relationship between total household income and property value in the U.S. using data from the 2023 Annual Social and Economic Supplement (ASEC). My group and I used linear regression models,
-                        including logarithmic transformations and an indicator for households receiving social security, to explore this relationship and found a statistically significant but modest association.</p>
-                    <a href="assets/203_lab2report_Brown_Scott_Zapata_Team5.pdf" target="_blank">View Project</a>
+    <div class="container">
+        <header>
+            <nav>
+                <div class="nav-brand">
+                    <a href="/">Daniel Brown</a>
                 </div>
-                
-                <div class="project-card">
-                    <h4>🧮Data Science</h4>
-                    <h3>Investigation into Portfolio Diversification using Python</h3>
-                    <img src="assets/Top_Market_Cap_Portfolio.jpg" alt="Top Market Cap">
-                    <p>Analyzed trends in price history, correlation, and volatility to compute the expected return for a high risk individual 
-                        stock portfolio and low risk index portfolio. Data used was stock price over the last 20 years. Used yfinance API to pull stock data, cleaned the dataframe using python, and visualized trends using Matplotlib.</p>
-                    <a href="https://github.com/danielsbrown3/Portfolio-Diversification/tree/main" target="_blank">View Project</a>
+                <div class="nav-links">
+                    <a href="/" class="active">Home</a>
+                    <a href="/writing">Writing</a>
+                    <a href="/projects">Projects</a>
+                    <a href="/about">About</a>
                 </div>
+                <button id="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+        </header>
 
-                <div class="project-card">
-                    <h4>🧮Data Science</h4>
-                    <h3>Exploring the State of World Energy Economics using Python</h3>
-                    <img src="assets/CarbonIntensity.jpg" alt="Top Market Cap">
-                    <p>Explored the relationships between a country's economic strength, reliance on fossil fuels, and adoption of renewable energy, with the aim of understanding global energy production and consumption behaviors. 
-                        The study employs a dataset of global energy consumption and economic indicators, analyzing correlations between GDP, electricity demand, energy efficiency, and the shift from fossil fuels to renewable energy across various countries.</p>
-                    <a href="assets/Project 2 Final Report-2.pdf" target="_blank">View Project</a>
-                </div>
-                
-                 <div class="project-card">
-                     <h4>🔧Mechanical Engineering</h4>
-                    <h3>A 3D printed Embouchure-Assistive Device for Musicians with Facial Palsy </h3>
-                      <img src="assets/biomedical.jpg" alt="Intro Image">
-                    <p>Developed a novel 3D-printed embouchure-assistive device designed for saxophone players with facial palsy, which affects the facial muscles and can hinder their ability to play.
-                        The device was tested and showed significant improvements in note sustain, air pressure within the mouthpiece, and overall comfort and tone quality. 
-                        The design iterations of the prototype are also included as a potential template for broader applications in musicians with facial palsy.</p>
-                    <a href="https://ojs.gs-publishing.uk/index.php/BMEH/article/view/79/34" target="_blank">View Project</a>
-                </div>
+        <main>
+            <section class="hero">
+                <h1>Daniel Brown</h1>
+                <p class="subtitle">Data Scientist</p>
+            </section>
 
-                 <div class="project-card">
-                    <h4>🔧Mechanical Engineering</h4>
-                    <h3>Computational Fluid Dynamics - Determining the Effect of Particle Dispersion of an Infected Individual with COVID-19 in the Classroom Setting</h3>
-                      <img src="assets/CFD.jpg" alt="Intro Image">
-                    <p>Leveraged Computational Fluid Dynamics (CFD) to analyze how COVID-19 transmission is influenced by various factors within mechanically ventilated buildings at UC San Diego. 
-                        Specifically, I investigated how room geometry, temperature, and the location of an infected student affect particle movement and airflow of the virus within Pepper Canyon Hall.</p>
-                    <a href="https://www.linkedin.com/in/daniel-s-brown/overlay/1635529942828/single-media-viewer/?profileId=ACoAAC1Hk-EBBOnaRaQ75hjyJM9EQLjQfunHuEE" target="_blank">View Project</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="about">
-            <div class="about-content">
-                <h2>About Me 👨‍💻</h2>
-                <p>Here's a bit about who I am, my background, and what I'm passionate about.</p>
-            </div>
-            <section id="timeline">
-                <h2>My Journey</h2>
-                <div class="timeline-container">
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3>Apr 2024</h3>
-                                <span class="timeline-tag">Systems Engineering</span>
-                            </div>
-                            <p>Led a seven-figure Phased Array Antenna project for the US Navy, combining MATLAB modeling with systems engineering expertise.</p>
-                            <img src="assets/phased array.gif" alt="Phased Array Antenna visualization">
+            <section class="featured-posts">
+                <h2>Latest Writing</h2>
+                <div class="posts-grid">
+                    <article class="post-card">
+                        <div class="post-meta">
+                            <span class="date">April 10, 2025</span>
+                            <span class="reading-time">5 min read</span>
                         </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Jan 2024</h3>
-                            <p>Started my Master's in Data Science at UC Berkeley, focusing on advanced statistical modeling and machine learning.</p>
-                            <img src="assets/berkeley.png" alt="Intro Image">
+                        <h3><a href="/posts/example-post">Are Personal Websites Useful?</a></h3>
+                        <p>A brief description of the blog post content goes here, giving readers a preview of what they can expect to learn or discover.</p>
+                        <div class="tags">
+                            <span class="tag">Technology</span>
+                            <span class="tag">Programming</span>
                         </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Jun 2023</h3>
-                            <p>Joined L3 Harris and contributed to a multi-network telecommunications project, enhancing my skills in systems engineering.</p>
-                            <img src="assets/L3Harris.jpg" alt="Intro Image">
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Jun 2023</h3>
-                            <p>Graduated with a Bachelor's in Mechanical Engineering from UC San Diego, where I developed a love for computational tools.</p>
-                            <img src="assets/ucsd.png" alt="Intro Image">
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Mar 2023</h3>
-                            <p>Coauthored a paper with with Dr. Jacqueline Greene from the UCSD Medical Center on a 3D printed device to assist her surgical patients play instruments, post surgery.</p>
-                            <img src="assets/biomedical.jpg" alt="Intro Image">
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Aug 2022</h3>
-                            <p>Started an internship at San Diego Super Computer Center, working on wildfire modeling and dynamic data-driven simulations. 
-                                The first time I was able to witness the power of machine learning at scale.</p>
-                            <img src="assets/firemap-ui-small.png" alt="Intro Image">
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Jan 2022</h3>
-                            <p>Changed teams within SEDS to join Colossus as a structural engineer supported the liquid rocket engine test stand. I worked on mounting electronics
-                                and pneumatics, as well as the blast shield. Cold flowed with nitrogen and liquid oxygen for proof of concept prior to liquid combustion test.
-                            </p>
-                            <img src="assets/Colossus.jpg" alt="Intro Image">
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Sep 2021</h3>
-                            <p>Structures lead for Pythia CubeSat satellite. Pythia is a 3U CubeSat designed for continuous collection, processing, and transmission of 
-                                radio spectrum data captured from the surface of the Earth. Did not recieve funding for launch. 
-                            </p>
-                            <img src="assets/cubeSat.png" alt="Intro Image">
-                        </div>
-                    </div>
+                    </article>
+                    <!-- More post cards will go here -->
                 </div>
             </section>
-        </section>
-    </main>
 
-    <footer>
-        <p>&copy; 2024 Daniel Brown | Last updated August 16, '24</p>
-        <div class="social-links">
-            <a href="https://www.linkedin.com/in/daniel-s-brown/" target="_blank">LinkedIn</a>
-            <a href="https://github.com/danielsbrown3" target="_blank">GitHub</a>
-        </div>
-    </footer>
+            <section class="projects">
+                <h2>Featured Projects</h2>
+                <div class="projects-grid">
+                    <article class="project-card">
+                        <h3><a href="https://github.com/username/project">Project Name</a></h3>
+                        <p>Brief description of the project and its purpose.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/username/project" class="github-link">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </article>
+                    <!-- More project cards will go here -->
+                </div>
+            </section>
+        </main>
 
-    <script src="js/scripts.js"></script>
-    <script src="js/interactive.js"></script>
+        <footer>
+            <div class="social-links">
+                <a href="https://github.com/username" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://twitter.com/username" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://linkedin.com/in/username" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+            <p>&copy; 2024 Daniel Brown. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="assets/js/theme.js"></script>
 </body>
 </html>

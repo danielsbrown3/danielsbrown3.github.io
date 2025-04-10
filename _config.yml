@@ -1,0 +1,37 @@
+title: Daniel Brown
+description: Data Scientist interested in novel ideas, the ethics of Big Data, and great stories.
+baseurl: ""
+url: ""
+
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /projects/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Writing
+    url: /writing
+  - title: Projects
+    url: /projects
+  - title: About
+    url: /about
+
+# Theme settings
+theme:
+  accent_color: "#4299e1"
+  dark_mode: true 

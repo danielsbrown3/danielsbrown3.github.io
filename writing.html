@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing - Daniel Brown</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <div class="nav-brand">
+                    <a href="/">Daniel Brown</a>
+                </div>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/writing" class="active">Writing</a>
+                    <a href="/projects">Projects</a>
+                    <a href="/about">About</a>
+                </div>
+                <button id="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+        </header>
+
+        <main class="writing-content">
+            <section class="writing-header">
+                <h1>Writing</h1>
+                <div class="search-filter-container">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Search posts...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="tag-filters">
+                        <button class="tag-filter active" data-tag="all">All</button>
+                        <button class="tag-filter" data-tag="technology">Technology</button>
+                        <button class="tag-filter" data-tag="programming">Programming</button>
+                        <button class="tag-filter" data-tag="design">Design</button>
+                        <button class="tag-filter" data-tag="productivity">Productivity</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="posts-by-year">
+                <h2>2024</h2>
+                <div class="posts-list">
+                    <article class="post-item" data-tags="technology programming">
+                        <div class="post-meta">
+                            <span class="date">April 10, 2024</span>
+                            <span class="reading-time">5 min read</span>
+                        </div>
+                        <h3><a href="/posts/example-post">Example Blog Post Title</a></h3>
+                        <p class="post-description">A brief description of the blog post content goes here, giving readers a preview of what they can expect to learn or discover.</p>
+                        <div class="tags">
+                            <span class="tag">Technology</span>
+                            <span class="tag">Programming</span>
+                        </div>
+                    </article>
+
+                    <article class="post-item" data-tags="design productivity">
+                        <div class="post-meta">
+                            <span class="date">March 15, 2024</span>
+                            <span class="reading-time">8 min read</span>
+                        </div>
+                        <h3><a href="/posts/another-post">Another Interesting Post</a></h3>
+                        <p class="post-description">This is another example post that demonstrates the layout and styling of the writing page.</p>
+                        <div class="tags">
+                            <span class="tag">Design</span>
+                            <span class="tag">Productivity</span>
+                        </div>
+                    </article>
+                </div>
+
+                <h2>2023</h2>
+                <div class="posts-list">
+                    <article class="post-item" data-tags="technology">
+                        <div class="post-meta">
+                            <span class="date">December 5, 2023</span>
+                            <span class="reading-time">6 min read</span>
+                        </div>
+                        <h3><a href="/posts/older-post">An Older Post Example</a></h3>
+                        <p class="post-description">This post demonstrates how older content is displayed and organized on the writing page.</p>
+                        <div class="tags">
+                            <span class="tag">Technology</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="social-links">
+                <a href="https://github.com/username" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://twitter.com/username" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://linkedin.com/in/username" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+            <p>&copy; 2024 Daniel Brown. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/writing.js"></script>
+</body>
+</html> 
