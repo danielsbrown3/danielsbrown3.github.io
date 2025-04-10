@@ -331,34 +331,10 @@ footer {
     padding: 2rem 0;
 }
 
-.writing-header {
-    margin-bottom: 3rem;
-}
-
-.search-filter-container {
-    margin-top: 2rem;
-}
-
-.search-box {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-.search-box input {
-    width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    background-color: var(--card-background);
-    color: var(--text-color);
-}
-
-.search-box i {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--secondary-color);
+.writing-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
 }
 
 .tag-filters {
@@ -380,41 +356,81 @@ footer {
 
 .tag-filter:hover,
 .tag-filter.active {
-    background: var(--accent-color);
+    background: var(--link-color);
     color: white;
-    border-color: var(--accent-color);
-}
-
-.posts-by-year {
-    margin-top: 3rem;
-}
-
-.posts-by-year h2 {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
+    border-color: var(--link-color);
 }
 
 .posts-list {
     display: grid;
     gap: 2rem;
-    margin-bottom: 3rem;
 }
 
-.post-item {
-    padding: 1.5rem;
+.post-card {
     background: var(--card-background);
+    padding: 1.5rem;
     border-radius: 8px;
     transition: transform 0.3s;
 }
 
-.post-item:hover {
+.post-card:hover {
     transform: translateY(-2px);
 }
 
-.post-description {
+.post-meta {
+    display: flex;
+    gap: 1rem;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.post-card h2 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.post-card h2 a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.post-card h2 a:hover {
+    color: var(--link-color);
+}
+
+.post-card p {
     color: var(--secondary-color);
     margin: 1rem 0;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.tag {
+    background: var(--tag-background);
+    color: var(--secondary-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .writing-content {
+        padding: 1rem;
+    }
+
+    .writing-content h1 {
+        font-size: 2rem;
+    }
+
+    .post-card {
+        padding: 1rem;
+    }
 }
 
 /* Projects Page Styles */
