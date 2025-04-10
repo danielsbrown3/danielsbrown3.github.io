@@ -1,7 +1,11 @@
 title: Daniel Brown
-description: Data Scientist interested in novel ideas, the ethics of Big Data, and great stories.
+description: Data Scientist
+url: "https://danielsbrown3.github.io"
 baseurl: ""
-url: ""
+
+# Build settings
+markdown: kramdown
+permalink: pretty
 
 # Collections
 collections:
@@ -15,10 +19,27 @@ defaults:
       path: ""
     values:
       layout: "default"
+  - scope:
+      path: "_posts"
+    values:
+      layout: "post"
+  - scope:
+      path: "_projects"
+    values:
+      layout: "project"
 
-# Build settings
-markdown: kramdown
-permalink: pretty
+# Plugins
+plugins:
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .gitignore
 
 # Navigation
 navigation:

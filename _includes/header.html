@@ -1,14 +1,13 @@
 <header>
     <nav>
         <div class="nav-brand">
-            <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+            <a href="/">Daniel Brown</a>
         </div>
         <div class="nav-links">
-            {% for item in site.navigation %}
-                <a href="{{ item.url | relative_url }}" {% if page.url == item.url %}class="active"{% endif %}>
-                    {{ item.title }}
-                </a>
-            {% endfor %}
+            <a href="/" {% if page.url == "/" %}class="active"{% endif %}>Home</a>
+            <a href="/writing" {% if page.url == "/writing" %}class="active"{% endif %}>Writing</a>
+            <a href="/projects" {% if page.url == "/projects" %}class="active"{% endif %}>Projects</a>
+            <a href="/about" {% if page.url == "/about" %}class="active"{% endif %}>About</a>
         </div>
         <button id="theme-toggle" aria-label="Toggle dark mode">
             <i class="fas fa-moon"></i>
