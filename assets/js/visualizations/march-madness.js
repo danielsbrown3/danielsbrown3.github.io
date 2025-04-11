@@ -27,6 +27,15 @@ let state = {
     isDarkMode: false
 };
 
+// Initialize window.marchMadness if it doesn't exist
+window.marchMadness = window.marchMadness || {
+    state: {
+        data: null,
+        classificationData: null,
+        selectedYear: 2024
+    }
+};
+
 // Get computed styles for theme colors
 function getThemeColors() {
     const computedStyle = getComputedStyle(document.documentElement);
@@ -176,8 +185,11 @@ async function initVisualization() {
         
         console.log("Data loaded:", mainData.length, "main rows,", classificationData.length, "classification rows");
         
+        // Update both local and global state
         state.data = mainData;
         state.classificationData = classificationData;
+        window.marchMadness.state.data = mainData;
+        window.marchMadness.state.classificationData = classificationData;
 
         // Check if dark mode is active
         state.isDarkMode = document.body.classList.contains('dark-theme');
@@ -245,9 +257,12 @@ function setupControls() {
 
     yearSlider.addEventListener("input", (e) => {
         console.log("Year changed:", e.target.value);
-        state.selectedYear = parseInt(e.target.value);
-        yearDisplay.textContent = state.selectedYear;
-        updateVisualization();
+        const newYear = parseInt(e.target.value);
+        // Update both local and global state
+        state.selectedYear = newYear;
+        window.marchMadness.state.selectedYear = newYear;
+        yearDisplay.textContent = newYear;
+        createVegaLiteSpec();
     });
 
     // Metric toggles
@@ -261,7 +276,7 @@ function setupControls() {
             
             // Update visualization
             state.selectedMetric = button.dataset.metric;
-            updateVisualization();
+            createVegaLiteSpec();
         });
     });
 }
