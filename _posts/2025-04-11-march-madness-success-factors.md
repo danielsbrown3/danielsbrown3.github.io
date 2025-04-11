@@ -68,41 +68,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
 To better understand the relationships between different performance metrics and tournament success, let's examine these heatmap visualizations. The intensity of the colors represents the density of teams in each region, with championship teams highlighted in gold.
 
-<div class="visualization-container">
-    <div id="offensive-defensive-heatmap" class="heatmap-container"></div>
-    <p class="viz-description">This heatmap reveals the relationship between offensive and defensive efficiency. Championship teams tend to cluster in regions with both high offensive and defensive efficiency, showing the importance of balance.</p>
+<div class="visualization-container heatmaps-wrapper">
+    <div class="heatmap-section">
+        <div id="offensive-defensive-heatmap" class="heatmap-container" style="width: 100%; height: 300px;"></div>
+        <p class="viz-description">This heatmap reveals the relationship between offensive and defensive efficiency. Championship teams tend to cluster in regions with both high offensive and defensive efficiency, showing the importance of balance.</p>
+    </div>
     
-    <div id="rating-experience-heatmap" class="heatmap-container"></div>
-    <p class="viz-description">The relationship between net rating and team experience shows interesting patterns. While high net ratings correlate with success, experience can sometimes compensate for lower ratings.</p>
+    <div class="heatmap-section">
+        <div id="rating-experience-heatmap" class="heatmap-container" style="width: 100%; height: 300px;"></div>
+        <p class="viz-description">The relationship between net rating and team experience shows interesting patterns. While high net ratings correlate with success, experience can sometimes compensate for lower ratings.</p>
+    </div>
     
-    <div id="seed-performance-heatmap" class="heatmap-container"></div>
-    <p class="viz-description">This visualization shows how seeding relates to tournament performance. While higher seeds generally perform better, there are notable exceptions where lower-seeded teams made deep runs.</p>
+    <div class="heatmap-section">
+        <div id="seed-performance-heatmap" class="heatmap-container" style="width: 100%; height: 300px;"></div>
+        <p class="viz-description">This visualization shows how seeding relates to tournament performance. While higher seeds generally perform better, there are notable exceptions where lower-seeded teams made deep runs.</p>
+    </div>
 </div>
 
 <div id="heatmap-tooltip" class="viz-tooltip"></div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Wait for dependencies to load
-    setTimeout(function() {
-        // Load the heatmap visualization script
-        var script = document.createElement('script');
-        script.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
-        document.body.appendChild(script);
-    }, 1000); // Give time for D3 to load
-});
-</script>
-
 <style>
+.heatmaps-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.heatmap-section {
+    margin-bottom: 3rem;
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .heatmap-container {
-    margin: 2rem 0;
-    min-height: 300px;
+    width: 100%;
+    height: 300px;
+    position: relative;
+    background: var(--background-color);
 }
 
 .viz-description {
     font-size: 0.9rem;
     color: var(--secondary-color);
-    margin: 1rem 0 2rem 0;
+    margin: 1rem 0 0 0;
     text-align: center;
     font-style: italic;
 }
@@ -123,8 +135,32 @@ document.addEventListener('DOMContentLoaded', function() {
 .heatmap-title {
     font-size: 1.1rem;
     font-weight: 500;
+    fill: var(--text-color);
+}
+
+.visualization-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--text-color);
+}
+
+.visualization-error {
+    color: #dc3545;
+    text-align: center;
+    padding: 1rem;
 }
 </style>
 
-## Conclusion
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load D3.js first
+    var d3Script = document.createElement('script');
+    d3Script.src = "https://d3js.org/d3.v7.min.js";
+    d3Script.onload = function() {
+        // After D3 loads, load the heatmap visualization script
+        var script = document.createElement('script');
+        script.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
+        document.body.appendChild(script);
+    };

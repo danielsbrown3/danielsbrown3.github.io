@@ -31,7 +31,13 @@ function getHeatmapThemeColors() {
 // Create heatmap visualization
 function createHeatmap(containerId, data, xMetric, yMetric, title) {
     const container = d3.select(containerId);
-    const width = container.node().getBoundingClientRect().width;
+    if (!container.node()) {
+        console.error(`Container ${containerId} not found`);
+        return;
+    }
+
+    const containerWidth = container.node().getBoundingClientRect().width;
+    const width = Math.min(containerWidth, heatmapConfig.width);
     const height = heatmapConfig.height;
     const margin = heatmapConfig.margin;
     
@@ -50,33 +56,32 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
     // Create scales
     const x = d3.scaleLinear()
         .domain(d3.extent(data, d => d[xMetric]))
-        .range([0, width - margin.left - margin.right]);
+        .range([0, width - margin.left - margin.right])
+        .nice();
         
     const y = d3.scaleLinear()
         .domain(d3.extent(data, d => d[yMetric]))
-        .range([height - margin.top - margin.bottom, 0]);
+        .range([height - margin.top - margin.bottom, 0])
+        .nice();
     
-    // Create bins
-    const bins = d3.bin()
-        .domain(x.domain())
-        .thresholds(20);
-        
     // Calculate density
-    const density = d3.contourDensity()
+    const densityData = d3.contourDensity()
         .x(d => x(d[xMetric]))
         .y(d => y(d[yMetric]))
         .size([width - margin.left - margin.right, height - margin.top - margin.bottom])
         .bandwidth(30)
+        .thresholds(20)
         (data);
     
     // Color scale for density
-    const colorScale = d3.scaleSequential(heatmapConfig.colors.heatmap)
-        .domain([0, d3.max(density, d => d.value)]);
+    const colorScale = d3.scaleSequential()
+        .interpolator(d3.interpolateRdBu)
+        .domain([d3.max(densityData, d => d.value), 0]);
     
     // Draw contours
     g.append("g")
         .selectAll("path")
-        .data(density)
+        .data(densityData)
         .enter().append("path")
         .attr("d", d3.geoPath())
         .attr("fill", d => colorScale(d.value))
@@ -88,32 +93,55 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
         .enter().append("circle")
         .attr("cx", d => x(d[xMetric]))
         .attr("cy", d => y(d[yMetric]))
-        .attr("r", 3)
+        .attr("r", 4)
         .attr("fill", d => d.Classification === "Winner" ? heatmapConfig.colors.champion : "white")
         .attr("stroke", d => d.Classification === "Winner" ? "black" : "none")
         .attr("stroke-width", 1)
-        .attr("opacity", 0.7)
+        .attr("opacity", 0.8)
         .on("mouseover", function(event, d) {
             showTooltip(event, d, xMetric, yMetric);
         })
         .on("mouseout", hideTooltip);
     
-    // Add axes
-    const xAxis = d3.axisBottom(x);
-    const yAxis = d3.axisLeft(y);
+    // Add axes with grid lines
+    const xAxis = d3.axisBottom(x)
+        .ticks(5)
+        .tickSize(-height + margin.top + margin.bottom);
     
+    const yAxis = d3.axisLeft(y)
+        .ticks(5)
+        .tickSize(-width + margin.left + margin.right);
+    
+    // Add grid lines
     g.append("g")
+        .attr("class", "grid")
         .attr("transform", `translate(0,${height - margin.top - margin.bottom})`)
-        .call(xAxis);
+        .call(xAxis)
+        .call(g => g.selectAll(".tick line")
+            .attr("stroke", getHeatmapThemeColors().grid)
+            .attr("stroke-opacity", 0.5));
         
     g.append("g")
-        .call(yAxis);
+        .attr("class", "grid")
+        .call(yAxis)
+        .call(g => g.selectAll(".tick line")
+            .attr("stroke", getHeatmapThemeColors().grid)
+            .attr("stroke-opacity", 0.5));
+    
+    // Style axis lines and text
+    g.selectAll(".grid path")
+        .attr("stroke", "none");
+    
+    g.selectAll(".grid text")
+        .attr("fill", getHeatmapThemeColors().text)
+        .attr("font-size", "10px");
     
     // Add labels
     g.append("text")
         .attr("x", (width - margin.left - margin.right) / 2)
-        .attr("y", height - margin.top)
+        .attr("y", height - margin.top + 40)
         .attr("text-anchor", "middle")
+        .attr("fill", getHeatmapThemeColors().text)
         .text(xMetric);
         
     g.append("text")
@@ -121,6 +149,7 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
         .attr("x", -(height - margin.top - margin.bottom) / 2)
         .attr("y", -margin.left + 20)
         .attr("text-anchor", "middle")
+        .attr("fill", getHeatmapThemeColors().text)
         .text(yMetric);
         
     // Add title
@@ -129,6 +158,7 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
         .attr("y", margin.top / 2)
         .attr("text-anchor", "middle")
         .attr("class", "heatmap-title")
+        .attr("fill", getHeatmapThemeColors().text)
         .text(title);
 }
 
