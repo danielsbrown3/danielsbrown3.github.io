@@ -128,11 +128,15 @@ function createVegaLiteSpec() {
         "Adjusted Tempo": d3.extent(filteredData, d => +d["Adjusted Tempo"]),
         "Experience": d3.extent(filteredData, d => +d["Experience"]),
         "Net Rating": d3.extent(filteredData, d => +d["Net Rating"]),
-        "Seed": [1, 16] // Seeds are always 1-16 for tournament teams
+        "Seed": [1, 16]
     };
 
+    // Get unique conferences for legend
+    const conferences = [...new Set(filteredData.map(d => d["Mapped Conference Name"]))].sort();
+    
     console.log("Filtered data:", filteredData.length, "rows");
     console.log("Metrics ranges:", metrics);
+    console.log("Conferences:", conferences.length, "unique conferences");
 
     const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -146,7 +150,8 @@ function createVegaLiteSpec() {
                 title: getMetricTitle(),
                 scale: {
                     domain: metrics[getMetricField()] || [0, 100],
-                    nice: true
+                    nice: true,
+                    padding: 10
                 }
             },
             y: {
@@ -155,45 +160,51 @@ function createVegaLiteSpec() {
                 title: "Net Rating",
                 scale: {
                     domain: metrics["Net Rating"] || [-30, 30],
-                    nice: true
+                    nice: true,
+                    padding: 10
                 }
             },
             color: {
                 field: "Mapped Conference Name",
                 type: "nominal",
                 scale: {
-                    scheme: state.isDarkMode ? "dark2" : "category10"
+                    scheme: state.isDarkMode ? "tableau20" : "tableau20"
                 },
                 legend: {
                     title: "Conference",
                     orient: "bottom",
-                    columns: 3
+                    columns: Math.min(3, Math.ceil(conferences.length / 4)),
+                    symbolLimit: 50,
+                    labelLimit: 200
                 }
             },
             size: {
                 field: "Seed",
                 type: "quantitative",
                 scale: {
-                    domain: [16, 1], // Reverse domain so higher seeds are smaller
+                    domain: [16, 1],
                     range: [50, 250]
                 },
                 legend: {
                     title: "Tournament Seed",
-                    orient: "right"
+                    orient: "right",
+                    symbolLimit: 16
                 }
             },
             tooltip: [
                 { field: "Full Team Name", type: "nominal", title: "Team" },
                 { field: "Mapped Conference Name", type: "nominal", title: "Conference" },
                 { field: "Seed", type: "quantitative", title: "Seed" },
-                { field: getMetricField(), type: "quantitative", title: getMetricTitle() },
-                { field: "Net Rating", type: "quantitative", title: "Net Rating" },
+                { field: getMetricField(), type: "quantitative", title: getMetricTitle(), format: ".1f" },
+                { field: "Net Rating", type: "quantitative", title: "Net Rating", format: ".1f" },
                 { field: "Current Coach", type: "nominal", title: "Coach" }
             ]
         },
         mark: {
             type: "circle",
-            opacity: 0.7
+            opacity: 0.8,
+            stroke: state.isDarkMode ? "white" : "black",
+            strokeWidth: 1
         },
         config: {
             background: state.isDarkMode ? config.colors.dark.background : config.colors.light.background,
@@ -204,7 +215,12 @@ function createVegaLiteSpec() {
             },
             legend: {
                 labelColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
-                titleColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text
+                titleColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
+                labelLimit: 150,
+                symbolLimit: 50
+            },
+            view: {
+                stroke: null
             }
         }
     };
@@ -212,7 +228,8 @@ function createVegaLiteSpec() {
     console.log("Creating visualization with spec:", spec);
     vegaEmbed("#success-factors-viz", spec, { 
         actions: false,
-        renderer: "svg"
+        renderer: "svg",
+        downloadFileName: "march-madness-visualization"
     }).then(result => {
         console.log("Visualization created successfully");
     }).catch(error => {
@@ -229,10 +246,13 @@ function filterData() {
     }
     
     const filtered = state.data.filter(d => {
+        const validNumber = (val) => !isNaN(val) && val !== null && val !== undefined && val !== "";
         return d.Season === state.selectedYear && 
-               d.Seed != null &&
-               d["Net Rating"] != null &&
-               d[getMetricField()] != null;
+               validNumber(d.Seed) &&
+               validNumber(d["Net Rating"]) &&
+               validNumber(d[getMetricField()]) &&
+               d["Mapped Conference Name"] &&
+               d["Full Team Name"];
     });
     
     console.log(`Filtered data for year ${state.selectedYear}:`, filtered.length, "rows");
