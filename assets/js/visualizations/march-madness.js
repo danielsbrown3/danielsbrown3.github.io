@@ -118,37 +118,68 @@ function setupControls() {
 
 // Create Vega-Lite specification
 function createVegaLiteSpec() {
+    // Filter and process data first
+    const filteredData = filterData();
+    
+    // Calculate domains for scales
+    const metrics = {
+        "Adjusted Offensive Efficiency": d3.extent(filteredData, d => +d["Adjusted Offensive Efficiency"]),
+        "Adjusted Defensive Efficiency": d3.extent(filteredData, d => +d["Adjusted Defensive Efficiency"]),
+        "Adjusted Tempo": d3.extent(filteredData, d => +d["Adjusted Tempo"]),
+        "Experience": d3.extent(filteredData, d => +d["Experience"]),
+        "Net Rating": d3.extent(filteredData, d => +d["Net Rating"]),
+        "Seed": [1, 16] // Seeds are always 1-16 for tournament teams
+    };
+
+    console.log("Filtered data:", filteredData.length, "rows");
+    console.log("Metrics ranges:", metrics);
+
     const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-        data: { values: filterData() },
+        data: { values: filteredData },
         width: "container",
         height: 400,
         encoding: {
             x: {
                 field: getMetricField(),
                 type: "quantitative",
-                title: getMetricTitle()
+                title: getMetricTitle(),
+                scale: {
+                    domain: metrics[getMetricField()] || [0, 100],
+                    nice: true
+                }
             },
             y: {
                 field: "Net Rating",
                 type: "quantitative",
-                title: "Net Rating"
+                title: "Net Rating",
+                scale: {
+                    domain: metrics["Net Rating"] || [-30, 30],
+                    nice: true
+                }
             },
             color: {
                 field: "Mapped Conference Name",
                 type: "nominal",
                 scale: {
                     scheme: state.isDarkMode ? "dark2" : "category10"
+                },
+                legend: {
+                    title: "Conference",
+                    orient: "bottom",
+                    columns: 3
                 }
             },
             size: {
                 field: "Seed",
                 type: "quantitative",
                 scale: {
+                    domain: [16, 1], // Reverse domain so higher seeds are smaller
                     range: [50, 250]
                 },
                 legend: {
-                    title: "Seed"
+                    title: "Tournament Seed",
+                    orient: "right"
                 }
             },
             tooltip: [
@@ -168,7 +199,8 @@ function createVegaLiteSpec() {
             background: state.isDarkMode ? config.colors.dark.background : config.colors.light.background,
             axis: {
                 labelColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
-                titleColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text
+                titleColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
+                gridColor: state.isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"
             },
             legend: {
                 labelColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
@@ -177,12 +209,34 @@ function createVegaLiteSpec() {
         }
     };
 
-    vegaEmbed("#success-factors-viz", spec, { actions: false });
+    console.log("Creating visualization with spec:", spec);
+    vegaEmbed("#success-factors-viz", spec, { 
+        actions: false,
+        renderer: "svg"
+    }).then(result => {
+        console.log("Visualization created successfully");
+    }).catch(error => {
+        console.error("Error creating visualization:", error);
+        showError("Failed to create visualization. Please try again later.");
+    });
 }
 
 // Helper functions
 function filterData() {
-    return state.data.filter(d => d.Season === state.selectedYear && d.Seed != null);
+    if (!state.data) {
+        console.error("No data loaded");
+        return [];
+    }
+    
+    const filtered = state.data.filter(d => {
+        return d.Season === state.selectedYear && 
+               d.Seed != null &&
+               d["Net Rating"] != null &&
+               d[getMetricField()] != null;
+    });
+    
+    console.log(`Filtered data for year ${state.selectedYear}:`, filtered.length, "rows");
+    return filtered;
 }
 
 function getMetricField() {
