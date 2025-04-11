@@ -2,10 +2,10 @@
 const heatmapConfig = {
     width: 800,
     height: 300,
-    margin: { top: 40, right: 80, bottom: 60, left: 80 },
+    margin: { top: 40, right: 100, bottom: 60, left: 80 },
     transitionDuration: 750,
     colors: {
-        heatmap: d3.interpolateRdBu,
+        heatmap: d3.interpolateRdPu,  // Changed to Red-Purple scale
         champion: "#FFD700"  // Gold for champions
     }
 };
@@ -79,110 +79,143 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
     const svg = container.append("svg")
         .attr("width", width)
         .attr("height", height)
-        .attr("aria-label", `Heatmap of ${title}`);
+        .attr("aria-label", `Correlation heatmap of ${title}`);
         
     const g = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    // Calculate correlation matrix
+    const metrics = [xMetric, yMetric];
+    const correlationMatrix = [];
     
+    metrics.forEach((metric1, i) => {
+        correlationMatrix[i] = [];
+        metrics.forEach((metric2, j) => {
+            if (i === j) {
+                correlationMatrix[i][j] = 1;
+            } else {
+                const correlation = calculateCorrelation(data, metric1, metric2);
+                correlationMatrix[i][j] = correlation;
+            }
+        });
+    });
+
     // Create scales
-    const x = d3.scaleLinear()
-        .domain(d3.extent(data, d => d[xMetric]))
-        .range([0, width - margin.left - margin.right])
-        .nice();
-        
-    const y = d3.scaleLinear()
-        .domain(d3.extent(data, d => d[yMetric]))
-        .range([height - margin.top - margin.bottom, 0])
-        .nice();
-    
-    // Calculate density
-    const densityData = d3.contourDensity()
-        .x(d => x(d[xMetric]))
-        .y(d => y(d[yMetric]))
-        .size([width - margin.left - margin.right, height - margin.top - margin.bottom])
-        .bandwidth(30)
-        .thresholds(20)
-        (data);
-    
-    // Color scale for density
+    const cellSize = Math.min(
+        (width - margin.left - margin.right) / metrics.length,
+        (height - margin.top - margin.bottom) / metrics.length
+    );
+
+    // Color scale for correlation values
     const colorScale = d3.scaleSequential()
-        .interpolator(d3.interpolateRdBu)
-        .domain([d3.max(densityData, d => d.value), 0]);
-    
-    // Draw contours
+        .interpolator(d3.interpolateRdPu)
+        .domain([-1, 1]);
+
+    // Create grid cells
+    const cells = g.selectAll("g")
+        .data(correlationMatrix)
+        .enter()
+        .append("g")
+        .attr("transform", (d, i) => `translate(0,${i * cellSize})`)
+        .selectAll("rect")
+        .data(d => d)
+        .enter()
+        .append("rect")
+        .attr("x", (d, i) => i * cellSize)
+        .attr("width", cellSize)
+        .attr("height", cellSize)
+        .attr("fill", d => colorScale(d))
+        .attr("stroke", "white")
+        .attr("stroke-width", 1);
+
+    // Add correlation values
+    g.selectAll(".correlation-text")
+        .data(correlationMatrix.flat())
+        .enter()
+        .append("text")
+        .attr("class", "correlation-text")
+        .attr("x", (d, i) => (i % metrics.length) * cellSize + cellSize / 2)
+        .attr("y", (d, i) => Math.floor(i / metrics.length) * cellSize + cellSize / 2)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("fill", d => Math.abs(d) > 0.5 ? "white" : "black")
+        .attr("font-size", "12px")
+        .text(d => d.toFixed(2));
+
+    // Add axis labels
+    // X axis
     g.append("g")
-        .selectAll("path")
-        .data(densityData)
-        .enter().append("path")
-        .attr("d", d3.geoPath())
-        .attr("fill", d => colorScale(d.value))
-        .attr("opacity", 0.7);
-    
-    // Add points for teams
-    g.selectAll("circle")
-        .data(data)
-        .enter().append("circle")
-        .attr("cx", d => x(d[xMetric]))
-        .attr("cy", d => y(d[yMetric]))
-        .attr("r", 4)
-        .attr("fill", d => d.Classification === "Winner" ? heatmapConfig.colors.champion : "white")
-        .attr("stroke", d => d.Classification === "Winner" ? "black" : "none")
-        .attr("stroke-width", 1)
-        .attr("opacity", 0.8)
-        .on("mouseover", function(event, d) {
-            showTooltip(event, d, xMetric, yMetric);
-        })
-        .on("mouseout", hideTooltip);
-    
-    // Add axes with grid lines
-    const xAxis = d3.axisBottom(x)
-        .ticks(5)
-        .tickSize(-height + margin.top + margin.bottom);
-    
-    const yAxis = d3.axisLeft(y)
-        .ticks(5)
-        .tickSize(-width + margin.left + margin.right);
-    
-    // Add grid lines
-    g.append("g")
-        .attr("class", "grid")
-        .attr("transform", `translate(0,${height - margin.top - margin.bottom})`)
-        .call(xAxis)
-        .call(g => g.selectAll(".tick line")
-            .attr("stroke", getHeatmapThemeColors().grid)
-            .attr("stroke-opacity", 0.5));
-        
-    g.append("g")
-        .attr("class", "grid")
-        .call(yAxis)
-        .call(g => g.selectAll(".tick line")
-            .attr("stroke", getHeatmapThemeColors().grid)
-            .attr("stroke-opacity", 0.5));
-    
-    // Style axis lines and text
-    g.selectAll(".grid path")
-        .attr("stroke", "none");
-    
-    g.selectAll(".grid text")
-        .attr("fill", getHeatmapThemeColors().text)
-        .attr("font-size", "10px");
-    
-    // Add labels
-    g.append("text")
-        .attr("x", (width - margin.left - margin.right) / 2)
-        .attr("y", height - margin.top + 40)
+        .attr("class", "axis")
+        .attr("transform", `translate(0,${metrics.length * cellSize})`)
+        .selectAll("text")
+        .data(metrics)
+        .enter()
+        .append("text")
+        .attr("x", (d, i) => i * cellSize + cellSize / 2)
+        .attr("y", 30)
         .attr("text-anchor", "middle")
         .attr("fill", getHeatmapThemeColors().text)
-        .text(xMetric);
-        
-    g.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("x", -(height - margin.top - margin.bottom) / 2)
-        .attr("y", -margin.left + 20)
-        .attr("text-anchor", "middle")
+        .text(d => d);
+
+    // Y axis
+    g.append("g")
+        .attr("class", "axis")
+        .selectAll("text")
+        .data(metrics)
+        .enter()
+        .append("text")
+        .attr("x", -10)
+        .attr("y", (d, i) => i * cellSize + cellSize / 2)
+        .attr("text-anchor", "end")
+        .attr("dominant-baseline", "middle")
         .attr("fill", getHeatmapThemeColors().text)
-        .text(yMetric);
-        
+        .text(d => d);
+
+    // Add color legend
+    const legendWidth = 20;
+    const legendHeight = height - margin.top - margin.bottom;
+    
+    // Create gradient
+    const defs = svg.append("defs");
+    const gradient = defs.append("linearGradient")
+        .attr("id", `correlation-gradient-${containerId.replace("#", "")}`)
+        .attr("x1", "0%")
+        .attr("y1", "100%")
+        .attr("x2", "0%")
+        .attr("y2", "0%");
+
+    gradient.selectAll("stop")
+        .data(d3.range(0, 1.1, 0.1))
+        .enter()
+        .append("stop")
+        .attr("offset", d => `${d * 100}%`)
+        .attr("stop-color", d => colorScale(d * 2 - 1));
+
+    // Add legend rectangle
+    const legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${width - margin.right + 20},${margin.top})`);
+
+    legend.append("rect")
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .style("fill", `url(#correlation-gradient-${containerId.replace("#", "")})`);
+
+    // Add legend axis
+    const legendScale = d3.scaleLinear()
+        .domain([-1, 1])
+        .range([legendHeight, 0]);
+
+    const legendAxis = d3.axisRight(legendScale)
+        .ticks(5)
+        .tickFormat(d3.format(".1f"));
+
+    legend.append("g")
+        .attr("transform", `translate(${legendWidth},0)`)
+        .call(legendAxis)
+        .selectAll("text")
+        .attr("fill", getHeatmapThemeColors().text);
+
     // Add title
     svg.append("text")
         .attr("x", width / 2)
@@ -191,6 +224,25 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
         .attr("class", "heatmap-title")
         .attr("fill", getHeatmapThemeColors().text)
         .text(title);
+}
+
+// Calculate correlation between two metrics
+function calculateCorrelation(data, metric1, metric2) {
+    const values1 = data.map(d => +d[metric1]);
+    const values2 = data.map(d => +d[metric2]);
+    
+    const mean1 = d3.mean(values1);
+    const mean2 = d3.mean(values2);
+    
+    const deviation1 = values1.map(v => v - mean1);
+    const deviation2 = values2.map(v => v - mean2);
+    
+    const sum_deviation = deviation1.reduce((acc, v, i) => acc + v * deviation2[i], 0);
+    
+    const squared_deviation1 = deviation1.reduce((acc, v) => acc + v * v, 0);
+    const squared_deviation2 = deviation2.reduce((acc, v) => acc + v * v, 0);
+    
+    return sum_deviation / Math.sqrt(squared_deviation1 * squared_deviation2);
 }
 
 // Tooltip functions
