@@ -14,6 +14,16 @@ const config = {
             Final_Four: "#4169E1",  // Royal Blue
             Sweet_Sixteen: "#2E8B57", // Sea Green
             Other: "#808080"        // Gray
+        },
+        light: {
+            background: "#ffffff",
+            text: "#2d3748",
+            grid: "rgba(0,0,0,0.1)"
+        },
+        dark: {
+            background: "#1a202c",
+            text: "#e2e8f0",
+            grid: "rgba(255,255,255,0.1)"
         }
     }
 };
@@ -44,17 +54,17 @@ async function initVisualization() {
                 "Net Rating": +d["Net Rating"],
                 "Adjusted Offensive Efficiency": +d["Adjusted Offensive Efficiency"],
                 "Adjusted Defensive Efficiency": +d["Adjusted Defensive Efficiency"],
-                "Adjusted Tempo": +d["Adjusted Tempo"],
+                "Adjusted Tempo": +d["Adjusted Temo"],
                 Experience: +d.Experience,
-                Seed: d.Seed === "Not In a Post-Season Tournament" ? null : +d.Seed
+                Seed: d.Seed === "Not In a Post-Season Tournament" ? null : +d.Seed,
+                TeamName: d["Full Team Name"]
             })),
-            d3.csv("/assets/data/classification.csv", d => ({
-                ...d,
-                Year: +d.Year
-            }))
+            d3.csv("/assets/data/classification.csv")
         ]);
         
         console.log("Data loaded:", mainData.length, "main rows,", classificationData.length, "classification rows");
+        console.log("Sample main data:", mainData[0]);
+        console.log("Sample classification data:", classificationData[0]);
         
         state.data = mainData;
         state.classificationData = classificationData;
@@ -143,6 +153,8 @@ function createVegaLiteSpec() {
     console.log("Filtered data:", filteredData.length, "rows");
     console.log("Metrics ranges:", metrics);
 
+    const themeColors = state.isDarkMode ? config.colors.dark : config.colors.light;
+
     const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v5.json",
         data: { values: filteredData },
@@ -200,19 +212,19 @@ function createVegaLiteSpec() {
             type: "circle",
             size: 100,
             opacity: 0.8,
-            stroke: state.isDarkMode ? "white" : "black",
+            stroke: themeColors.text,
             strokeWidth: 1
         },
         config: {
-            background: state.isDarkMode ? config.colors.dark.background : config.colors.light.background,
+            background: themeColors.background,
             axis: {
-                labelColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
-                titleColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
-                gridColor: state.isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"
+                labelColor: themeColors.text,
+                titleColor: themeColors.text,
+                gridColor: themeColors.grid
             },
             legend: {
-                labelColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
-                titleColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text
+                labelColor: themeColors.text,
+                titleColor: themeColors.text
             },
             view: {
                 stroke: null
@@ -245,15 +257,15 @@ function filterData() {
         return d.Season === state.selectedYear && 
                validNumber(d["Net Rating"]) &&
                validNumber(d[getMetricField()]) &&
-               d["Full Team Name"];
+               d.TeamName;
     });
 
     // Get classification data for the selected year
-    const yearClassification = state.classificationData.filter(d => d.Year === state.selectedYear);
+    const yearClassification = state.classificationData.filter(d => +d.Year === state.selectedYear);
     
     // Join the datasets
     const joinedData = yearData.map(team => {
-        const classification = yearClassification.find(c => c.Team === team["Full Team Name"]);
+        const classification = yearClassification.find(c => c.Team === team.TeamName);
         return {
             ...team,
             Classification: classification ? classification.Classification : "Other"
@@ -261,6 +273,7 @@ function filterData() {
     });
 
     console.log(`Filtered data for year ${state.selectedYear}:`, joinedData.length, "rows");
+    console.log("Sample joined data:", joinedData[0]);
     return joinedData;
 }
 
@@ -268,7 +281,7 @@ function getMetricField() {
     const metricMap = {
         offensive: "Adjusted Offensive Efficiency",
         defensive: "Adjusted Defensive Efficiency",
-        tempo: "Adjusted Tempo",
+        tempo: "Adjusted Temo",
         experience: "Experience"
     };
     return metricMap[state.selectedMetric];
