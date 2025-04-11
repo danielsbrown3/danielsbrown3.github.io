@@ -40,16 +40,21 @@ Below is an interactive visualization that allows you to explore relationships b
 document.addEventListener('DOMContentLoaded', function() {
     // Wait for dependencies to load
     setTimeout(function() {
-        // Load the visualization script
-        var script = document.createElement('script');
-        script.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
-        script.onload = function() {
-            // Initialize the visualization after script loads
+        // Load the visualization scripts
+        var mainScript = document.createElement('script');
+        mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
+        mainScript.onload = function() {
+            // Initialize the scatter plot visualization
             if (typeof initVisualization === 'function') {
                 initVisualization();
             }
+            
+            // After main visualization is loaded, load the heatmap script
+            var heatmapScript = document.createElement('script');
+            heatmapScript.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
+            document.body.appendChild(heatmapScript);
         };
-        document.body.appendChild(script);
+        document.body.appendChild(mainScript);
     }, 1000); // Give time for D3 and Vega to load
 });
 </script>
@@ -152,15 +157,3 @@ To better understand the relationships between different performance metrics and
     padding: 1rem;
 }
 </style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Load D3.js first
-    var d3Script = document.createElement('script');
-    d3Script.src = "https://d3js.org/d3.v7.min.js";
-    d3Script.onload = function() {
-        // After D3 loads, load the heatmap visualization script
-        var script = document.createElement('script');
-        script.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
-        document.body.appendChild(script);
-    };

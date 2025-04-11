@@ -12,8 +12,6 @@ const heatmapConfig = {
 
 // State management for heatmaps
 let heatmapState = {
-    data: null,
-    classificationData: null,
     selectedYear: 2024,
     isDarkMode: false
 };
@@ -30,6 +28,8 @@ function getHeatmapThemeColors() {
 
 // Create heatmap visualization
 function createHeatmap(containerId, data, xMetric, yMetric, title) {
+    console.log("Creating heatmap:", containerId, "with", data.length, "data points");
+    
     const container = d3.select(containerId);
     if (!container.node()) {
         console.error(`Container ${containerId} not found`);
@@ -181,30 +181,16 @@ function hideTooltip() {
     d3.select("#heatmap-tooltip").style("display", "none");
 }
 
-// Initialize heatmap visualizations
-async function initHeatmaps() {
+// Initialize heatmap visualizations using existing data
+function initHeatmaps() {
     try {
+        console.log("Initializing heatmaps...");
         // Show loading state
         d3.selectAll(".heatmap-container").html('<div class="visualization-loading">Loading heatmaps...</div>');
         
-        // Load data if not already loaded
-        if (!heatmapState.data) {
-            [heatmapState.data, heatmapState.classificationData] = await Promise.all([
-                d3.csv("/assets/data/march_madness.csv", d => ({
-                    ...d,
-                    Season: +d.Season,
-                    "Net Rating": +d["Net Rating"],
-                    "Adjusted Offensive Efficiency": +d["Adjusted Offensive Efficiency"],
-                    "Adjusted Defensive Efficiency": +d["Adjusted Defensive Efficiency"],
-                    Experience: +d.Experience,
-                    Seed: d.Seed === "Not In a Post-Season Tournament" ? null : +d.Seed
-                })),
-                d3.csv("/assets/data/classification.csv")
-            ]);
-        }
-        
-        // Filter and process data
-        const yearData = filterHeatmapData();
+        // Use the data from the main visualization
+        const yearData = filterData();
+        console.log("Filtered data for heatmaps:", yearData.length, "rows");
         
         // Create heatmaps
         createHeatmap("#offensive-defensive-heatmap", yearData,
@@ -219,37 +205,10 @@ async function initHeatmaps() {
             "Seed", "Classification",
             "Seed vs Tournament Performance");
             
-        // Remove loading state
-        d3.selectAll(".visualization-loading").remove();
-        
     } catch (error) {
         console.error("Error initializing heatmaps:", error);
         showHeatmapError("Failed to load heatmaps. Please try again later.");
     }
-}
-
-// Filter data for heatmaps
-function filterHeatmapData() {
-    if (!heatmapState.data || !heatmapState.classificationData) {
-        return [];
-    }
-    
-    const yearData = heatmapState.data.filter(d => {
-        const validNumber = (val) => !isNaN(val) && val !== null && val !== undefined && val !== "";
-        return d.Season === heatmapState.selectedYear &&
-               validNumber(d.Seed) &&
-               validNumber(d["Net Rating"]) &&
-               validNumber(d["Adjusted Offensive Efficiency"]) &&
-               validNumber(d["Adjusted Defensive Efficiency"]) &&
-               validNumber(d.Experience);
-    });
-    
-    const yearClassification = heatmapState.classificationData.filter(d => +d.Year === heatmapState.selectedYear);
-    
-    return yearData.map(team => ({
-        ...team,
-        Classification: yearClassification.find(c => c.Team === team["Full Team Name"])?.Classification || "Other"
-    }));
 }
 
 // Show error message
@@ -259,12 +218,6 @@ function showHeatmapError(message) {
             <p>${message}</p>
         </div>
     `);
-}
-
-// Update heatmaps when year changes
-function updateHeatmaps(year) {
-    heatmapState.selectedYear = year;
-    initHeatmaps();
 }
 
 // Initialize on page load
@@ -279,7 +232,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const yearSlider = document.getElementById("year-slider");
     if (yearSlider) {
         yearSlider.addEventListener("input", (e) => {
-            updateHeatmaps(parseInt(e.target.value));
+            heatmapState.selectedYear = parseInt(e.target.value);
+            initHeatmaps();
         });
     }
     
