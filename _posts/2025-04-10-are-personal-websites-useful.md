@@ -7,7 +7,7 @@ description: "Exploring the societal cost and benefits of a personal website and
 reading_time: 5
 ---
 
-![My Art]({{ site.baseurl }}assets/MyArt_Computer.png "My Art"){: width="400" height="300"}
+![My Art]({{ site.baseurl }}/assets/MyArt_Computer.png "My Art"){: width="400" height="300"}
 
 With the introduction of the internet, art has changed from being something communicated face to face by humans to now face to screen. Youtube, Instagram, Internet Webpages, and now Large Language Models are the primary methods to which humans interact with humans or computers. 
 
