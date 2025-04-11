@@ -279,6 +279,7 @@ function filterData() {
         return d.Season === state.selectedYear && 
                validNumber(d["Net Rating"]) &&
                validNumber(d[getMetricField()]) &&
+               validNumber(d.Seed) &&
                d.TeamName;
     });
 
