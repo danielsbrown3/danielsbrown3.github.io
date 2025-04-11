@@ -44,7 +44,7 @@ My website produces much less per user visit.
 
 Estimating that 10 people view my site a month (being generous lol), my site uses enough energy every year to pop 8 million bubbles or boil 1 cup of tea a year.
 
-![Bubbles]({{ site.baseurl }}/assets/bubbles.jpg "Bubbles"){: width="400" height="300"}
+![Bubbles]({{ site.baseurl }}/assets/bubbles.png "Bubbles"){: width="400" height="300"}
 
 So if thats the cost, whats the benefit?
 
