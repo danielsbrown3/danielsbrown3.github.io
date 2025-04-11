@@ -37,25 +37,48 @@ Below is an interactive visualization that allows you to explore relationships b
 </div>
 
 <script>
+// Create a global namespace for shared data and functions
+window.marchMadness = {
+    state: {
+        data: null,
+        classificationData: null,
+        selectedYear: 2024
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Wait for dependencies to load
-    setTimeout(function() {
-        // Load the visualization scripts
-        var mainScript = document.createElement('script');
-        mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
-        mainScript.onload = function() {
-            // Initialize the scatter plot visualization
+    // Load D3.js first
+    var d3Script = document.createElement('script');
+    d3Script.src = "https://d3js.org/d3.v7.min.js";
+    
+    d3Script.onload = function() {
+        // After D3 loads, load both visualization scripts
+        Promise.all([
+            new Promise((resolve, reject) => {
+                var mainScript = document.createElement('script');
+                mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
+                mainScript.onload = resolve;
+                mainScript.onerror = reject;
+                document.body.appendChild(mainScript);
+            }),
+            new Promise((resolve, reject) => {
+                var heatmapScript = document.createElement('script');
+                heatmapScript.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
+                heatmapScript.onload = resolve;
+                heatmapScript.onerror = reject;
+                document.body.appendChild(heatmapScript);
+            })
+        ]).then(() => {
+            // Initialize visualizations after both scripts are loaded
             if (typeof initVisualization === 'function') {
                 initVisualization();
             }
-            
-            // After main visualization is loaded, load the heatmap script
-            var heatmapScript = document.createElement('script');
-            heatmapScript.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
-            document.body.appendChild(heatmapScript);
-        };
-        document.body.appendChild(mainScript);
-    }, 1000); // Give time for D3 and Vega to load
+        }).catch(error => {
+            console.error('Error loading visualization scripts:', error);
+        });
+    };
+    
+    document.body.appendChild(d3Script);
 });
 </script>
 
