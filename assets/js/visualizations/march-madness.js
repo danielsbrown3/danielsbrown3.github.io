@@ -14,16 +14,6 @@ const config = {
             Final_Four: "#4169E1",  // Royal Blue
             Sweet_Sixteen: "#2E8B57", // Sea Green
             Other: "#808080"        // Gray
-        },
-        light: {
-            background: "#ffffff",
-            text: "#2d3748",
-            grid: "rgba(0,0,0,0.1)"
-        },
-        dark: {
-            background: "#1a202c",
-            text: "#e2e8f0",
-            grid: "rgba(255,255,255,0.1)"
         }
     }
 };
@@ -34,109 +24,19 @@ let state = {
     classificationData: null,
     selectedYear: 2024,
     selectedMetric: "offensive",
-    isDarkMode: document.body.classList.contains('dark-theme')
+    isDarkMode: false
 };
 
-// Initialize visualization
-async function initVisualization() {
-    try {
-        // Show loading state
-        const container = d3.select("#success-factors-viz");
-        container.html('<div class="visualization-loading">Loading visualization...</div>');
-
-        console.log("Loading data...");
-        
-        // Load both datasets in parallel
-        const [mainData, classificationData] = await Promise.all([
-            d3.csv("/assets/data/march_madness.csv", d => ({
-                ...d,
-                Season: +d.Season,
-                "Net Rating": +d["Net Rating"],
-                "Adjusted Offensive Efficiency": +d["Adjusted Offensive Efficiency"],
-                "Adjusted Defensive Efficiency": +d["Adjusted Defensive Efficiency"],
-                "Adjusted Tempo": +d["Adjusted Temo"],
-                Experience: +d.Experience,
-                Seed: d.Seed === "Not In a Post-Season Tournament" ? null : +d.Seed,
-                TeamName: d["Full Team Name"]
-            })),
-            d3.csv("/assets/data/classification.csv")
-        ]);
-        
-        console.log("Data loaded:", mainData.length, "main rows,", classificationData.length, "classification rows");
-        console.log("Sample main data:", mainData[0]);
-        console.log("Sample classification data:", classificationData[0]);
-        
-        state.data = mainData;
-        state.classificationData = classificationData;
-
-        // Initialize components
-        setupControls();
-        createVegaLiteSpec();
-        
-        // Remove loading state
-        container.select(".visualization-loading").remove();
-    } catch (error) {
-        console.error("Error initializing visualization:", error);
-        showError("Failed to load visualization. Please try again later.");
-    }
+// Get computed styles for theme colors
+function getThemeColors() {
+    const computedStyle = getComputedStyle(document.documentElement);
+    return {
+        background: computedStyle.getPropertyValue('--background-color').trim(),
+        text: computedStyle.getPropertyValue('--text-color').trim(),
+        grid: state.isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"
+    };
 }
 
-// Setup control event listeners
-function setupControls() {
-    console.log("Setting up controls...");
-    // Year slider
-    const yearSlider = document.getElementById("year-slider");
-    const yearDisplay = document.getElementById("year-display");
-    
-    if (!yearSlider || !yearDisplay) {
-        console.error("Could not find year slider or display elements");
-        return;
-    }
-
-    // Update slider range
-    yearSlider.min = config.yearRange.min;
-    yearSlider.max = config.yearRange.max;
-    yearSlider.value = state.selectedYear;
-    yearDisplay.textContent = state.selectedYear;
-
-    yearSlider.addEventListener("input", (e) => {
-        console.log("Year changed:", e.target.value);
-        state.selectedYear = parseInt(e.target.value);
-        yearDisplay.textContent = state.selectedYear;
-        updateVisualization();
-    });
-
-    // Metric toggles
-    const metricButtons = document.querySelectorAll(".metric-toggles .viz-button");
-    metricButtons.forEach(button => {
-        button.addEventListener("click", (e) => {
-            console.log("Metric changed:", button.dataset.metric);
-            // Update active state
-            metricButtons.forEach(b => b.classList.remove("active"));
-            button.classList.add("active");
-            
-            // Update visualization
-            state.selectedMetric = button.dataset.metric;
-            updateVisualization();
-        });
-    });
-
-    // Theme change listener
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.attributeName === "class") {
-                state.isDarkMode = document.body.classList.contains('dark-theme');
-                updateVisualization();
-            }
-        });
-    });
-
-    observer.observe(document.body, {
-        attributes: true
-    });
-}
-
-// Create Vega-Lite specification
 function createVegaLiteSpec() {
     // Filter and process data first
     const filteredData = filterData();
@@ -145,7 +45,7 @@ function createVegaLiteSpec() {
     const metrics = {
         "Adjusted Offensive Efficiency": d3.extent(filteredData, d => +d["Adjusted Offensive Efficiency"]),
         "Adjusted Defensive Efficiency": d3.extent(filteredData, d => +d["Adjusted Defensive Efficiency"]),
-        "Adjusted Tempo": d3.extent(filteredData, d => +d["Adjusted Tempo"]),
+        "Adjusted Tempo": d3.extent(filteredData, d => +d["Adjusted Temo"]),
         "Experience": d3.extent(filteredData, d => +d["Experience"]),
         "Net Rating": d3.extent(filteredData, d => +d["Net Rating"])
     };
@@ -153,7 +53,7 @@ function createVegaLiteSpec() {
     console.log("Filtered data:", filteredData.length, "rows");
     console.log("Metrics ranges:", metrics);
 
-    const themeColors = state.isDarkMode ? config.colors.dark : config.colors.light;
+    const themeColors = getThemeColors();
 
     const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -241,6 +141,128 @@ function createVegaLiteSpec() {
     }).catch(error => {
         console.error("Error creating visualization:", error);
         showError("Failed to create visualization. Please try again later.");
+    });
+}
+
+// Initialize visualization
+async function initVisualization() {
+    try {
+        // Ensure required libraries are loaded
+        if (!window.d3 || !window.vegaEmbed) {
+            throw new Error("Required libraries not loaded");
+        }
+
+        // Show loading state
+        const container = d3.select("#success-factors-viz");
+        container.html('<div class="visualization-loading">Loading visualization...</div>');
+
+        console.log("Loading data...");
+        
+        // Load both datasets in parallel
+        const [mainData, classificationData] = await Promise.all([
+            d3.csv("/assets/data/march_madness.csv", d => ({
+                ...d,
+                Season: +d.Season,
+                "Net Rating": +d["Net Rating"],
+                "Adjusted Offensive Efficiency": +d["Adjusted Offensive Efficiency"],
+                "Adjusted Defensive Efficiency": +d["Adjusted Defensive Efficiency"],
+                "Adjusted Tempo": +d["Adjusted Temo"],
+                Experience: +d.Experience,
+                Seed: d.Seed === "Not In a Post-Season Tournament" ? null : +d.Seed,
+                TeamName: d["Full Team Name"]
+            })),
+            d3.csv("/assets/data/classification.csv")
+        ]);
+        
+        console.log("Data loaded:", mainData.length, "main rows,", classificationData.length, "classification rows");
+        
+        state.data = mainData;
+        state.classificationData = classificationData;
+
+        // Check if dark mode is active
+        state.isDarkMode = document.body.classList.contains('dark-theme');
+
+        // Initialize components
+        setupControls();
+        createVegaLiteSpec();
+        
+        // Remove loading state
+        container.select(".visualization-loading").remove();
+
+        // Listen for theme changes
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === "class") {
+                    state.isDarkMode = document.body.classList.contains('dark-theme');
+                    createVegaLiteSpec();
+                }
+            });
+        });
+
+        observer.observe(document.body, {
+            attributes: true
+        });
+
+    } catch (error) {
+        console.error("Error initializing visualization:", error);
+        showError("Failed to load visualization. Please try again later.");
+    }
+}
+
+// Wait for both DOM and required libraries
+function checkAndInitialize() {
+    if (document.readyState === "complete" && window.d3 && window.vegaEmbed) {
+        initVisualization();
+    } else {
+        setTimeout(checkAndInitialize, 100);
+    }
+}
+
+// Start checking when document is ready
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", checkAndInitialize);
+} else {
+    checkAndInitialize();
+}
+
+// Setup control event listeners
+function setupControls() {
+    console.log("Setting up controls...");
+    // Year slider
+    const yearSlider = document.getElementById("year-slider");
+    const yearDisplay = document.getElementById("year-display");
+    
+    if (!yearSlider || !yearDisplay) {
+        console.error("Could not find year slider or display elements");
+        return;
+    }
+
+    // Update slider range
+    yearSlider.min = config.yearRange.min;
+    yearSlider.max = config.yearRange.max;
+    yearSlider.value = state.selectedYear;
+    yearDisplay.textContent = state.selectedYear;
+
+    yearSlider.addEventListener("input", (e) => {
+        console.log("Year changed:", e.target.value);
+        state.selectedYear = parseInt(e.target.value);
+        yearDisplay.textContent = state.selectedYear;
+        updateVisualization();
+    });
+
+    // Metric toggles
+    const metricButtons = document.querySelectorAll(".metric-toggles .viz-button");
+    metricButtons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            console.log("Metric changed:", button.dataset.metric);
+            // Update active state
+            metricButtons.forEach(b => b.classList.remove("active"));
+            button.classList.add("active");
+            
+            // Update visualization
+            state.selectedMetric = button.dataset.metric;
+            updateVisualization();
+        });
     });
 }
 
