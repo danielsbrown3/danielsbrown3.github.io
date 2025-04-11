@@ -3,7 +3,7 @@ layout: post
 title: "Are Personal Websites Useful?"
 date: 2025-04-10
 tags: [technology, communcation]
-description: "Exploring the societal cost and benefits of a personal webiste and digital communication."
+description: "Exploring the societal cost and benefits of a personal website and digital communication."
 reading_time: 5
 ---
 
@@ -44,7 +44,7 @@ My website produces much less per user visit.
 
 Estimating that 10 people view my site a month (being generous lol), my site uses enough energy every year to pop 8 million bubbles or boil 1 cup of tea a year.
 
-![Bubbles]({{ site.baseurl }}/assets/bubbles.jpg "Bubbles")
+![Bubbles]({{ site.baseurl }}/assets/bubbles.jpg "Bubbles"){: width="400" height="300"}
 
 So if thats the cost, whats the benefit?
 
@@ -73,6 +73,5 @@ Now that we discussed the pros and cons of communicating ideas through the inter
 4. Hopefully help others
     * This site will most likely be riddled with mistakes and terrible errors (I'm sure I've already butchered most of the grammar on this page), but if people can see my errors and not reproduce them, that is a big plus. 
 
-> "Your personal website is your digital home on the internet."
 
 The key is connecting.
