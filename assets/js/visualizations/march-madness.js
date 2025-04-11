@@ -127,20 +127,20 @@ function createVegaLiteSpec() {
         "Adjusted Defensive Efficiency": d3.extent(filteredData, d => +d["Adjusted Defensive Efficiency"]),
         "Adjusted Tempo": d3.extent(filteredData, d => +d["Adjusted Tempo"]),
         "Experience": d3.extent(filteredData, d => +d["Experience"]),
-        "Net Rating": d3.extent(filteredData, d => +d["Net Rating"]),
-        "Seed": [1, 16]
+        "Net Rating": d3.extent(filteredData, d => +d["Net Rating"])
     };
 
-    // Get unique conferences for legend
-    const conferences = [...new Set(filteredData.map(d => d["Mapped Conference Name"]))].sort();
-    
     console.log("Filtered data:", filteredData.length, "rows");
     console.log("Metrics ranges:", metrics);
-    console.log("Conferences:", conferences.length, "unique conferences");
 
     const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-        data: { values: filteredData },
+        data: { 
+            values: filteredData.map(d => ({
+                ...d,
+                TournamentPerformance: getTournamentPerformance(d)
+            }))
+        },
         width: "container",
         height: 400,
         encoding: {
@@ -165,35 +165,20 @@ function createVegaLiteSpec() {
                 }
             },
             color: {
-                field: "Mapped Conference Name",
+                field: "TournamentPerformance",
                 type: "nominal",
                 scale: {
-                    scheme: state.isDarkMode ? "tableau20" : "tableau20"
+                    domain: ["Champion", "Final Four", "Sweet Sixteen", "Other Tournament Team"],
+                    range: ["#FFD700", "#FF6B6B", "#4ECDC4", "#95A5A6"]
                 },
                 legend: {
-                    title: "Conference",
-                    orient: "bottom",
-                    columns: Math.min(3, Math.ceil(conferences.length / 4)),
-                    symbolLimit: 50,
-                    labelLimit: 200
-                }
-            },
-            size: {
-                field: "Seed",
-                type: "quantitative",
-                scale: {
-                    domain: [16, 1],
-                    range: [50, 250]
-                },
-                legend: {
-                    title: "Tournament Seed",
-                    orient: "right",
-                    symbolLimit: 16
+                    title: "Tournament Performance",
+                    orient: "bottom"
                 }
             },
             tooltip: [
                 { field: "Full Team Name", type: "nominal", title: "Team" },
-                { field: "Mapped Conference Name", type: "nominal", title: "Conference" },
+                { field: "TournamentPerformance", type: "nominal", title: "Tournament Result" },
                 { field: "Seed", type: "quantitative", title: "Seed" },
                 { field: getMetricField(), type: "quantitative", title: getMetricTitle(), format: ".1f" },
                 { field: "Net Rating", type: "quantitative", title: "Net Rating", format: ".1f" },
@@ -202,6 +187,7 @@ function createVegaLiteSpec() {
         },
         mark: {
             type: "circle",
+            size: 100,
             opacity: 0.8,
             stroke: state.isDarkMode ? "white" : "black",
             strokeWidth: 1
@@ -216,8 +202,7 @@ function createVegaLiteSpec() {
             legend: {
                 labelColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
                 titleColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
-                labelLimit: 150,
-                symbolLimit: 50
+                labelLimit: 150
             },
             view: {
                 stroke: null
@@ -291,6 +276,20 @@ function showError(message) {
 // Update visualization when state changes
 function updateVisualization() {
     createVegaLiteSpec();
+}
+
+// Helper function to determine tournament performance
+function getTournamentPerformance(team) {
+    const tournament = team["Post-Season Tournament"];
+    const sortingIndex = parseInt(team["Post-Season Tournament Sorting Index"]);
+    
+    if (tournament === "NCAA Tournament") {
+        if (sortingIndex === 1) return "Champion";
+        if (sortingIndex <= 4) return "Final Four";
+        if (sortingIndex <= 16) return "Sweet Sixteen";
+        return "Other Tournament Team";
+    }
+    return "Other Tournament Team";
 }
 
 // Initialize on page load
