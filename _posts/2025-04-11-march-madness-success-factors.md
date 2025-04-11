@@ -44,7 +44,14 @@ Below is an interactive visualization that allows you to explore relationships b
     <div class="viz-legend"></div>
 </div>
 
-<script src="{{ '/assets/js/visualizations/march-madness.js' | relative_url }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load the visualization script after the page is ready
+    var script = document.createElement('script');
+    script.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
+    document.body.appendChild(script);
+});
+</script>
 
 ## Key Findings
 
