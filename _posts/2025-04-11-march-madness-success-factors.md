@@ -30,8 +30,10 @@ Below is an interactive visualization that allows you to explore relationships b
     <div class="visualization-controls">
         <div class="viz-slider">
             <label for="year-slider">Select Year Range</label>
-            <input type="range" id="year-slider" min="2002" max="2024" value="2024">
-            <span id="year-display">2024</span>
+            <div class="slider-container">
+                <input type="range" id="year-slider" min="2002" max="2024" value="2024">
+                <span id="year-display">2024</span>
+            </div>
         </div>
         <div class="metric-toggles">
             <button class="viz-button active" data-metric="offensive">Offense</button>
@@ -46,10 +48,19 @@ Below is an interactive visualization that allows you to explore relationships b
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Load the visualization script after the page is ready
-    var script = document.createElement('script');
-    script.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
-    document.body.appendChild(script);
+    // Wait for dependencies to load
+    setTimeout(function() {
+        // Load the visualization script
+        var script = document.createElement('script');
+        script.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
+        script.onload = function() {
+            // Initialize the visualization after script loads
+            if (typeof initVisualization === 'function') {
+                initVisualization();
+            }
+        };
+        document.body.appendChild(script);
+    }, 1000); // Give time for D3 and Vega to load
 });
 </script>
 

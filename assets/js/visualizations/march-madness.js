@@ -35,8 +35,9 @@ async function initVisualization() {
     try {
         // Show loading state
         const container = d3.select("#success-factors-viz");
-        container.html('<div class="visualization-loading">Loading...</div>');
+        container.html('<div class="visualization-loading">Loading visualization...</div>');
 
+        console.log("Loading data...");
         // Load data
         const data = await d3.csv("/assets/data/march_madness.csv", d => {
             return {
@@ -51,6 +52,7 @@ async function initVisualization() {
             };
         });
         
+        console.log("Data loaded:", data.length, "rows");
         state.data = data;
 
         // Initialize components
@@ -67,11 +69,18 @@ async function initVisualization() {
 
 // Setup control event listeners
 function setupControls() {
+    console.log("Setting up controls...");
     // Year slider
     const yearSlider = document.getElementById("year-slider");
     const yearDisplay = document.getElementById("year-display");
     
+    if (!yearSlider || !yearDisplay) {
+        console.error("Could not find year slider or display elements");
+        return;
+    }
+
     yearSlider.addEventListener("input", (e) => {
+        console.log("Year changed:", e.target.value);
         state.selectedYear = parseInt(e.target.value);
         yearDisplay.textContent = state.selectedYear;
         updateVisualization();
@@ -81,6 +90,7 @@ function setupControls() {
     const metricButtons = document.querySelectorAll(".metric-toggles .viz-button");
     metricButtons.forEach(button => {
         button.addEventListener("click", (e) => {
+            console.log("Metric changed:", button.dataset.metric);
             // Update active state
             metricButtons.forEach(b => b.classList.remove("active"));
             button.classList.add("active");

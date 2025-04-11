@@ -3,10 +3,11 @@
     width: 100%;
     max-width: 1200px;
     margin: 2rem auto;
-    padding: 1rem;
+    padding: 2rem;
     background: var(--nav-bg);
     border: 1px solid var(--nav-border);
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Loading State */
@@ -14,12 +15,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 300px;
+    min-height: 400px;
     color: var(--text-color);
-}
-
-.visualization-loading::after {
-    content: "Loading...";
     font-size: 1.2rem;
 }
 
@@ -36,47 +33,151 @@
 /* Controls */
 .visualization-controls {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    padding: 1rem;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
     background: var(--toggle-bg);
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
-/* Buttons and Inputs */
+/* Slider Container */
+.viz-slider {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.viz-slider label {
+    display: block;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.slider-container input[type="range"] {
+    flex: 1;
+    height: 8px;
+    -webkit-appearance: none;
+    background: var(--link-color);
+    border-radius: 4px;
+    outline: none;
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--link-color);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb:hover {
+    background: var(--link-hover);
+}
+
+#year-display {
+    min-width: 4rem;
+    padding: 0.5rem;
+    background: var(--nav-bg);
+    border: 1px solid var(--nav-border);
+    border-radius: 4px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+/* Metric Toggles */
+.metric-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
 .viz-button {
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
     background: var(--link-color);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    font-weight: 500;
+    min-width: 120px;
 }
 
 .viz-button:hover {
     background: var(--link-hover);
+    transform: translateY(-1px);
 }
 
 .viz-button.active {
     background: var(--active-link);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Sliders */
-.viz-slider {
-    width: 100%;
-    max-width: 300px;
+/* Visualization Area */
+#success-factors-viz {
+    min-height: 400px;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.viz-slider label {
-    display: block;
-    margin-bottom: 0.5rem;
+/* Legend */
+.viz-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--nav-bg);
+    border-radius: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .visualization-container {
+        padding: 1rem;
+    }
+    
+    .visualization-controls {
+        padding: 1rem;
+    }
+    
+    .metric-toggles {
+        flex-direction: column;
+    }
+    
+    .viz-button {
+        width: 100%;
+    }
+}
+
+/* Dark Mode Adjustments */
+.dark-theme .visualization-container {
+    background: var(--nav-bg);
+    border-color: var(--nav-border);
+}
+
+.dark-theme .slider-container input[type="range"] {
+    background: var(--link-color);
+}
+
+.dark-theme #year-display {
+    background: var(--nav-bg);
+    border-color: var(--nav-border);
     color: var(--text-color);
-}
-
-.viz-slider input[type="range"] {
-    width: 100%;
 }
 
 /* Tooltips */
@@ -113,14 +214,6 @@
     fill: var(--text-color);
 }
 
-/* Legend */
-.viz-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
 .legend-item {
     display: flex;
     align-items: center;
@@ -132,15 +225,4 @@
     width: 12px;
     height: 12px;
     border-radius: 2px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .visualization-controls {
-        flex-direction: column;
-    }
-    
-    .viz-slider {
-        max-width: 100%;
-    }
 } 
