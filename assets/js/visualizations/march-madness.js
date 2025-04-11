@@ -4,20 +4,16 @@ const config = {
     height: 500,
     margin: { top: 40, right: 80, bottom: 60, left: 80 },
     transitionDuration: 750,
+    yearRange: {
+        min: 2008,
+        max: 2024
+    },
     colors: {
-        light: {
-            primary: "#4299e1",
-            secondary: "#48bb78",
-            highlight: "#ed64a6",
-            background: "#ffffff",
-            text: "#2d3748"
-        },
-        dark: {
-            primary: "#90cdf4",
-            secondary: "#9ae6b4",
-            highlight: "#f687b3",
-            background: "#1a202c",
-            text: "#e2e8f0"
+        tournament: {
+            Winner: "#FFD700",      // Gold
+            Final_Four: "#4169E1",  // Royal Blue
+            Sweet_Sixteen: "#2E8B57", // Sea Green
+            Other: "#808080"        // Gray
         }
     }
 };
@@ -25,6 +21,7 @@ const config = {
 // State management
 let state = {
     data: null,
+    classificationData: null,
     selectedYear: 2024,
     selectedMetric: "offensive",
     isDarkMode: document.body.classList.contains('dark-theme')
@@ -38,9 +35,10 @@ async function initVisualization() {
         container.html('<div class="visualization-loading">Loading visualization...</div>');
 
         console.log("Loading data...");
-        // Load data
-        const data = await d3.csv("/assets/data/march_madness.csv", d => {
-            return {
+        
+        // Load both datasets in parallel
+        const [mainData, classificationData] = await Promise.all([
+            d3.csv("/assets/data/march_madness.csv", d => ({
                 ...d,
                 Season: +d.Season,
                 "Net Rating": +d["Net Rating"],
@@ -49,11 +47,17 @@ async function initVisualization() {
                 "Adjusted Tempo": +d["Adjusted Tempo"],
                 Experience: +d.Experience,
                 Seed: d.Seed === "Not In a Post-Season Tournament" ? null : +d.Seed
-            };
-        });
+            })),
+            d3.csv("/assets/data/classification.csv", d => ({
+                ...d,
+                Year: +d.Year
+            }))
+        ]);
         
-        console.log("Data loaded:", data.length, "rows");
-        state.data = data;
+        console.log("Data loaded:", mainData.length, "main rows,", classificationData.length, "classification rows");
+        
+        state.data = mainData;
+        state.classificationData = classificationData;
 
         // Initialize components
         setupControls();
@@ -78,6 +82,12 @@ function setupControls() {
         console.error("Could not find year slider or display elements");
         return;
     }
+
+    // Update slider range
+    yearSlider.min = config.yearRange.min;
+    yearSlider.max = config.yearRange.max;
+    yearSlider.value = state.selectedYear;
+    yearDisplay.textContent = state.selectedYear;
 
     yearSlider.addEventListener("input", (e) => {
         console.log("Year changed:", e.target.value);
@@ -135,12 +145,7 @@ function createVegaLiteSpec() {
 
     const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-        data: { 
-            values: filteredData.map(d => ({
-                ...d,
-                TournamentPerformance: getTournamentPerformance(d)
-            }))
-        },
+        data: { values: filteredData },
         width: "container",
         height: 400,
         encoding: {
@@ -165,20 +170,26 @@ function createVegaLiteSpec() {
                 }
             },
             color: {
-                field: "TournamentPerformance",
+                field: "Classification",
                 type: "nominal",
                 scale: {
-                    domain: ["Champion", "Final Four", "Sweet Sixteen", "Other Tournament Team"],
-                    range: ["#FFD700", "#FF6B6B", "#4ECDC4", "#95A5A6"]
+                    domain: ["Winner", "Final_Four", "Sweet_Sixteen", "Other"],
+                    range: [
+                        config.colors.tournament.Winner,
+                        config.colors.tournament.Final_Four,
+                        config.colors.tournament.Sweet_Sixteen,
+                        config.colors.tournament.Other
+                    ]
                 },
                 legend: {
                     title: "Tournament Performance",
-                    orient: "bottom"
+                    orient: "bottom",
+                    labelLimit: 150
                 }
             },
             tooltip: [
                 { field: "Full Team Name", type: "nominal", title: "Team" },
-                { field: "TournamentPerformance", type: "nominal", title: "Tournament Result" },
+                { field: "Classification", type: "nominal", title: "Tournament Result" },
                 { field: "Seed", type: "quantitative", title: "Seed" },
                 { field: getMetricField(), type: "quantitative", title: getMetricTitle(), format: ".1f" },
                 { field: "Net Rating", type: "quantitative", title: "Net Rating", format: ".1f" },
@@ -201,8 +212,7 @@ function createVegaLiteSpec() {
             },
             legend: {
                 labelColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
-                titleColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text,
-                labelLimit: 150
+                titleColor: state.isDarkMode ? config.colors.dark.text : config.colors.light.text
             },
             view: {
                 stroke: null
@@ -210,7 +220,6 @@ function createVegaLiteSpec() {
         }
     };
 
-    console.log("Creating visualization with spec:", spec);
     vegaEmbed("#success-factors-viz", spec, { 
         actions: false,
         renderer: "svg",
@@ -225,23 +234,34 @@ function createVegaLiteSpec() {
 
 // Helper functions
 function filterData() {
-    if (!state.data) {
-        console.error("No data loaded");
+    if (!state.data || !state.classificationData) {
+        console.error("Data not loaded");
         return [];
     }
     
-    const filtered = state.data.filter(d => {
+    // Filter main data for the selected year
+    const yearData = state.data.filter(d => {
         const validNumber = (val) => !isNaN(val) && val !== null && val !== undefined && val !== "";
         return d.Season === state.selectedYear && 
-               validNumber(d.Seed) &&
                validNumber(d["Net Rating"]) &&
                validNumber(d[getMetricField()]) &&
-               d["Mapped Conference Name"] &&
                d["Full Team Name"];
     });
+
+    // Get classification data for the selected year
+    const yearClassification = state.classificationData.filter(d => d.Year === state.selectedYear);
     
-    console.log(`Filtered data for year ${state.selectedYear}:`, filtered.length, "rows");
-    return filtered;
+    // Join the datasets
+    const joinedData = yearData.map(team => {
+        const classification = yearClassification.find(c => c.Team === team["Full Team Name"]);
+        return {
+            ...team,
+            Classification: classification ? classification.Classification : "Other"
+        };
+    });
+
+    console.log(`Filtered data for year ${state.selectedYear}:`, joinedData.length, "rows");
+    return joinedData;
 }
 
 function getMetricField() {
@@ -276,20 +296,6 @@ function showError(message) {
 // Update visualization when state changes
 function updateVisualization() {
     createVegaLiteSpec();
-}
-
-// Helper function to determine tournament performance
-function getTournamentPerformance(team) {
-    const tournament = team["Post-Season Tournament"];
-    const sortingIndex = parseInt(team["Post-Season Tournament Sorting Index"]);
-    
-    if (tournament === "NCAA Tournament") {
-        if (sortingIndex === 1) return "Champion";
-        if (sortingIndex <= 4) return "Final Four";
-        if (sortingIndex <= 16) return "Sweet Sixteen";
-        return "Other Tournament Team";
-    }
-    return "Other Tournament Team";
 }
 
 // Initialize on page load
