@@ -64,13 +64,67 @@ document.addEventListener('DOMContentLoaded', function() {
 
 4. **Tempo Isn't Everything**: 
 
-## 
+## Statistical Patterns in Tournament Success
 
+To better understand the relationships between different performance metrics and tournament success, let's examine these heatmap visualizations. The intensity of the colors represents the density of teams in each region, with championship teams highlighted in gold.
 
-## 
+<div class="visualization-container">
+    <div id="offensive-defensive-heatmap" class="heatmap-container"></div>
+    <p class="viz-description">This heatmap reveals the relationship between offensive and defensive efficiency. Championship teams tend to cluster in regions with both high offensive and defensive efficiency, showing the importance of balance.</p>
+    
+    <div id="rating-experience-heatmap" class="heatmap-container"></div>
+    <p class="viz-description">The relationship between net rating and team experience shows interesting patterns. While high net ratings correlate with success, experience can sometimes compensate for lower ratings.</p>
+    
+    <div id="seed-performance-heatmap" class="heatmap-container"></div>
+    <p class="viz-description">This visualization shows how seeding relates to tournament performance. While higher seeds generally perform better, there are notable exceptions where lower-seeded teams made deep runs.</p>
+</div>
 
-## 
+<div id="heatmap-tooltip" class="viz-tooltip"></div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait for dependencies to load
+    setTimeout(function() {
+        // Load the heatmap visualization script
+        var script = document.createElement('script');
+        script.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
+        document.body.appendChild(script);
+    }, 1000); // Give time for D3 to load
+});
+</script>
+
+<style>
+.heatmap-container {
+    margin: 2rem 0;
+    min-height: 300px;
+}
+
+.viz-description {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin: 1rem 0 2rem 0;
+    text-align: center;
+    font-style: italic;
+}
+
+.viz-tooltip {
+    position: absolute;
+    display: none;
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 0.9rem;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.heatmap-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+</style>
 
 ## Conclusion
 
