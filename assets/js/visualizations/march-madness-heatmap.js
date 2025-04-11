@@ -1,12 +1,12 @@
 // Configuration
 const heatmapConfig = {
     width: 800,
-    height: 300,
-    margin: { top: 40, right: 100, bottom: 60, left: 80 },
+    height: 600,  // Increased height for the larger correlation matrix
+    margin: { top: 60, right: 100, bottom: 60, left: 150 },  // Increased margins for labels
     transitionDuration: 750,
     colors: {
-        heatmap: d3.interpolateRdPu,  // Changed to Red-Purple scale
-        champion: "#FFD700"  // Gold for champions
+        heatmap: d3.interpolateRdPu,
+        champion: "#FFD700"
     }
 };
 
@@ -58,8 +58,8 @@ function processHeatmapData() {
 }
 
 // Create heatmap visualization
-function createHeatmap(containerId, data, xMetric, yMetric, title) {
-    console.log(`Creating heatmap for ${containerId} with ${data.length} data points`);
+function createHeatmap(containerId, data) {
+    console.log(`Creating correlation matrix with ${data.length} data points`);
     
     const container = d3.select(containerId);
     if (!container.node()) {
@@ -75,26 +75,34 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
     // Clear existing content
     container.selectAll("*").remove();
     
+    // Define metrics and their display names
+    const metrics = [
+        { key: "Adjusted Offensive Efficiency", label: "Off. Efficiency" },
+        { key: "Adjusted Defensive Efficiency", label: "Def. Efficiency" },
+        { key: "Adjusted Temo", label: "Tempo" },
+        { key: "Experience", label: "Experience" },
+        { key: "Net Rating", label: "Net Rating" },
+        { key: "Seed", label: "Seed" }
+    ];
+
     // Create SVG
     const svg = container.append("svg")
         .attr("width", width)
         .attr("height", height)
-        .attr("aria-label", `Correlation heatmap of ${title}`);
+        .attr("aria-label", "Correlation matrix of basketball metrics");
         
     const g = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Calculate correlation matrix
-    const metrics = [xMetric, yMetric];
     const correlationMatrix = [];
-    
     metrics.forEach((metric1, i) => {
         correlationMatrix[i] = [];
         metrics.forEach((metric2, j) => {
             if (i === j) {
                 correlationMatrix[i][j] = 1;
             } else {
-                const correlation = calculateCorrelation(data, metric1, metric2);
+                const correlation = calculateCorrelation(data, metric1.key, metric2.key);
                 correlationMatrix[i][j] = correlation;
             }
         });
@@ -112,12 +120,14 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
         .domain([-1, 1]);
 
     // Create grid cells
-    const cells = g.selectAll("g")
+    const cells = g.selectAll("g.row")
         .data(correlationMatrix)
         .enter()
         .append("g")
-        .attr("transform", (d, i) => `translate(0,${i * cellSize})`)
-        .selectAll("rect")
+        .attr("class", "row")
+        .attr("transform", (d, i) => `translate(0,${i * cellSize})`);
+
+    cells.selectAll("rect")
         .data(d => d)
         .enter()
         .append("rect")
@@ -129,37 +139,37 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
         .attr("stroke-width", 1);
 
     // Add correlation values
-    g.selectAll(".correlation-text")
-        .data(correlationMatrix.flat())
+    cells.selectAll(".correlation-text")
+        .data(d => d)
         .enter()
         .append("text")
         .attr("class", "correlation-text")
-        .attr("x", (d, i) => (i % metrics.length) * cellSize + cellSize / 2)
-        .attr("y", (d, i) => Math.floor(i / metrics.length) * cellSize + cellSize / 2)
+        .attr("x", (d, i) => i * cellSize + cellSize / 2)
+        .attr("y", cellSize / 2)
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "middle")
         .attr("fill", d => Math.abs(d) > 0.5 ? "white" : "black")
         .attr("font-size", "12px")
         .text(d => d.toFixed(2));
 
-    // Add axis labels
-    // X axis
+    // Add column labels
     g.append("g")
-        .attr("class", "axis")
-        .attr("transform", `translate(0,${metrics.length * cellSize})`)
+        .attr("class", "column-labels")
         .selectAll("text")
         .data(metrics)
         .enter()
         .append("text")
         .attr("x", (d, i) => i * cellSize + cellSize / 2)
-        .attr("y", 30)
-        .attr("text-anchor", "middle")
+        .attr("y", -10)
+        .attr("transform", (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -10)`)
+        .attr("text-anchor", "end")
         .attr("fill", getHeatmapThemeColors().text)
-        .text(d => d);
+        .attr("font-size", "12px")
+        .text(d => d.label);
 
-    // Y axis
+    // Add row labels
     g.append("g")
-        .attr("class", "axis")
+        .attr("class", "row-labels")
         .selectAll("text")
         .data(metrics)
         .enter()
@@ -169,7 +179,8 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
         .attr("text-anchor", "end")
         .attr("dominant-baseline", "middle")
         .attr("fill", getHeatmapThemeColors().text)
-        .text(d => d);
+        .attr("font-size", "12px")
+        .text(d => d.label);
 
     // Add color legend
     const legendWidth = 20;
@@ -223,7 +234,8 @@ function createHeatmap(containerId, data, xMetric, yMetric, title) {
         .attr("text-anchor", "middle")
         .attr("class", "heatmap-title")
         .attr("fill", getHeatmapThemeColors().text)
-        .text(title);
+        .attr("font-size", "16px")
+        .text("Correlation Matrix of Basketball Metrics");
 }
 
 // Calculate correlation between two metrics
@@ -267,35 +279,25 @@ function hideTooltip() {
 // Initialize heatmap visualizations
 function initHeatmaps() {
     try {
-        console.log('Initializing heatmaps...');
+        console.log('Initializing correlation matrix...');
         
         // Show loading state
-        d3.selectAll(".heatmap-container").html('<div class="visualization-loading">Loading heatmaps...</div>');
+        d3.selectAll(".heatmap-container").html('<div class="visualization-loading">Loading correlation matrix...</div>');
         
         // Process data
         const processedData = processHeatmapData();
-        console.log(`Processed ${processedData.length} data points for heatmaps`);
+        console.log(`Processed ${processedData.length} data points for correlation matrix`);
         
         if (processedData.length === 0) {
-            throw new Error('No data available for heatmaps');
+            throw new Error('No data available for correlation matrix');
         }
 
-        // Create heatmaps
-        createHeatmap("#offensive-defensive-heatmap", processedData,
-            "Adjusted Offensive Efficiency", "Adjusted Defensive Efficiency",
-            "Offensive vs Defensive Efficiency");
-            
-        createHeatmap("#rating-experience-heatmap", processedData,
-            "Net Rating", "Experience",
-            "Net Rating vs Experience");
-            
-        createHeatmap("#seed-performance-heatmap", processedData,
-            "Seed", "Classification",
-            "Seed vs Tournament Performance");
+        // Create single correlation matrix
+        createHeatmap("#correlation-matrix", processedData);
             
     } catch (error) {
-        console.error("Error initializing heatmaps:", error);
-        showHeatmapError("Failed to load heatmaps. Please try again later.");
+        console.error("Error initializing correlation matrix:", error);
+        showHeatmapError("Failed to load correlation matrix. Please try again later.");
     }
 }
 
