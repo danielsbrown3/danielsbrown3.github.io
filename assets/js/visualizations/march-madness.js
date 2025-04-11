@@ -35,10 +35,22 @@ async function initVisualization() {
     try {
         // Show loading state
         const container = d3.select("#success-factors-viz");
-        container.html('<div class="visualization-loading"></div>');
+        container.html('<div class="visualization-loading">Loading...</div>');
 
         // Load data
-        const data = await d3.csv("/assets/data/march_madness.csv");
+        const data = await d3.csv("/assets/data/march_madness.csv", d => {
+            return {
+                ...d,
+                Season: +d.Season,
+                "Net Rating": +d["Net Rating"],
+                "Adjusted Offensive Efficiency": +d["Adjusted Offensive Efficiency"],
+                "Adjusted Defensive Efficiency": +d["Adjusted Defensive Efficiency"],
+                "Adjusted Tempo": +d["Adjusted Tempo"],
+                Experience: +d.Experience,
+                Seed: d.Seed === "Not In a Post-Season Tournament" ? null : +d.Seed
+            };
+        });
+        
         state.data = data;
 
         // Initialize components
@@ -160,14 +172,14 @@ function createVegaLiteSpec() {
 
 // Helper functions
 function filterData() {
-    return state.data.filter(d => parseInt(d.Season) === state.selectedYear);
+    return state.data.filter(d => d.Season === state.selectedYear && d.Seed != null);
 }
 
 function getMetricField() {
     const metricMap = {
-        offensive: "AdjOE",
-        defensive: "AdjDE",
-        tempo: "AdjTempo",
+        offensive: "Adjusted Offensive Efficiency",
+        defensive: "Adjusted Defensive Efficiency",
+        tempo: "Adjusted Tempo",
         experience: "Experience"
     };
     return metricMap[state.selectedMetric];
