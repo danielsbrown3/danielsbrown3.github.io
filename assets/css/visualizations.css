@@ -37,7 +37,8 @@
     gap: 1.5rem;
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background: var(--toggle-bg);
+    background: var(--bg-color);
+    border: 1px solid var(--nav-border);
     border-radius: 8px;
 }
 
@@ -52,6 +53,7 @@
     margin-bottom: 1rem;
     color: var(--text-color);
     font-weight: 500;
+    font-size: 1rem;
 }
 
 .slider-container {
@@ -59,39 +61,51 @@
     align-items: center;
     gap: 1rem;
     width: 100%;
+    padding: 0.5rem 0;
 }
 
 .slider-container input[type="range"] {
     flex: 1;
     height: 8px;
     -webkit-appearance: none;
+    appearance: none;
     background: var(--link-color);
     border-radius: 4px;
     outline: none;
+    cursor: pointer;
 }
 
 .slider-container input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
+    appearance: none;
     width: 20px;
     height: 20px;
     background: var(--link-color);
+    border: 2px solid white;
     border-radius: 50%;
     cursor: pointer;
-    transition: background-color 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.slider-container input[type="range"]::-webkit-slider-thumb:hover {
-    background: var(--link-hover);
+.slider-container input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--link-color);
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 #year-display {
     min-width: 4rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     background: var(--nav-bg);
     border: 1px solid var(--nav-border);
     border-radius: 4px;
     text-align: center;
     color: var(--text-color);
+    font-weight: 500;
 }
 
 /* Metric Toggles */
@@ -100,28 +114,46 @@
     flex-wrap: wrap;
     gap: 1rem;
     justify-content: center;
+    margin-top: 1rem;
 }
 
 .viz-button {
     padding: 0.75rem 1.5rem;
-    background: var(--link-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 2px solid var(--link-color);
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     font-weight: 500;
     min-width: 120px;
+    font-size: 1rem;
+    text-transform: capitalize;
 }
 
 .viz-button:hover {
-    background: var(--link-hover);
+    background: var(--link-color);
+    color: white;
     transform: translateY(-1px);
 }
 
 .viz-button.active {
-    background: var(--active-link);
+    background: var(--link-color);
+    color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode adjustments */
+.dark-theme .viz-button {
+    background: var(--nav-bg);
+    border-color: var(--link-color);
+    color: var(--text-color);
+}
+
+.dark-theme .viz-button:hover,
+.dark-theme .viz-button.active {
+    background: var(--link-color);
+    color: white;
 }
 
 /* Visualization Area */
@@ -149,6 +181,7 @@
 @media (max-width: 768px) {
     .visualization-container {
         padding: 1rem;
+        margin: 1rem auto;
     }
     
     .visualization-controls {
@@ -160,6 +193,16 @@
     }
     
     .viz-button {
+        width: 100%;
+    }
+
+    .slider-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #year-display {
+        text-align: center;
         width: 100%;
     }
 }
