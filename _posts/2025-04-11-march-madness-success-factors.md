@@ -42,7 +42,14 @@ window.marchMadness = {
     state: {
         data: null,
         classificationData: null,
-        selectedYear: 2024
+        selectedYear: 2024,
+        initialized: false
+    },
+    // Add callback for when data is ready
+    onDataReady: function() {
+        if (typeof initHeatmaps === 'function') {
+            initHeatmaps();
+        }
     }
 };
 
@@ -52,30 +59,21 @@ document.addEventListener('DOMContentLoaded', function() {
     d3Script.src = "https://d3js.org/d3.v7.min.js";
     
     d3Script.onload = function() {
-        // After D3 loads, load both visualization scripts
-        Promise.all([
-            new Promise((resolve, reject) => {
-                var mainScript = document.createElement('script');
-                mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
-                mainScript.onload = resolve;
-                mainScript.onerror = reject;
-                document.body.appendChild(mainScript);
-            }),
-            new Promise((resolve, reject) => {
-                var heatmapScript = document.createElement('script');
-                heatmapScript.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
-                heatmapScript.onload = resolve;
-                heatmapScript.onerror = reject;
-                document.body.appendChild(heatmapScript);
-            })
-        ]).then(() => {
-            // Initialize visualizations after both scripts are loaded
+        // After D3 loads, load the main visualization script first
+        var mainScript = document.createElement('script');
+        mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
+        mainScript.onload = function() {
+            // Initialize the main visualization
             if (typeof initVisualization === 'function') {
-                initVisualization();
+                initVisualization().then(() => {
+                    // Only load heatmap script after main visualization is initialized
+                    var heatmapScript = document.createElement('script');
+                    heatmapScript.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
+                    document.body.appendChild(heatmapScript);
+                });
             }
-        }).catch(error => {
-            console.error('Error loading visualization scripts:', error);
-        });
+        };
+        document.body.appendChild(mainScript);
     };
     
     document.body.appendChild(d3Script);

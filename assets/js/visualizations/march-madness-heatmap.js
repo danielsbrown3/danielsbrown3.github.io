@@ -257,23 +257,24 @@ function showHeatmapError(message) {
 }
 
 // Initialize when the window object is ready
-if (window.marchMadness) {
-    initHeatmaps();
-} else {
-    // Wait for the window object to be ready
-    const checkInterval = setInterval(() => {
-        if (window.marchMadness) {
-            clearInterval(checkInterval);
-            initHeatmaps();
-        }
-    }, 100);
-    
-    // Clear interval after 10 seconds to prevent infinite checking
-    setTimeout(() => clearInterval(checkInterval), 10000);
+function waitForData() {
+    console.log("Waiting for data...");
+    if (window.marchMadness?.state?.initialized) {
+        console.log("Data is ready, initializing heatmaps...");
+        initHeatmaps();
+    } else {
+        console.log("Data not ready yet, waiting...");
+        setTimeout(waitForData, 100);
+    }
 }
+
+// Start waiting for data
+waitForData();
 
 // Listen for year changes
 document.getElementById('year-slider')?.addEventListener('input', (e) => {
-    window.marchMadness.state.selectedYear = parseInt(e.target.value);
-    initHeatmaps();
+    if (window.marchMadness?.state) {
+        window.marchMadness.state.selectedYear = parseInt(e.target.value);
+        initHeatmaps();
+    }
 }); 

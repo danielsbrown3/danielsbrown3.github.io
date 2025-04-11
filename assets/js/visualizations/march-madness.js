@@ -190,6 +190,7 @@ async function initVisualization() {
         state.classificationData = classificationData;
         window.marchMadness.state.data = mainData;
         window.marchMadness.state.classificationData = classificationData;
+        window.marchMadness.state.initialized = true;
 
         // Check if dark mode is active
         state.isDarkMode = document.body.classList.contains('dark-theme');
@@ -214,6 +215,11 @@ async function initVisualization() {
         observer.observe(document.body, {
             attributes: true
         });
+
+        // Signal that data is ready
+        if (window.marchMadness.onDataReady) {
+            window.marchMadness.onDataReady();
+        }
 
     } catch (error) {
         console.error("Error initializing visualization:", error);
