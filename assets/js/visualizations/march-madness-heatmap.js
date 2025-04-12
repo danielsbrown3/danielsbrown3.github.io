@@ -171,8 +171,8 @@ function createHeatmap(containerId, data) {
         .enter()
         .append("text")
         .attr("x", (d, i) => i * cellSize + cellSize / 2)
-        .attr("y", -30)  // Moved up from -25 to -35
-        .attr("transform", (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -35)`)  // Updated rotation point
+        .attr("y", -45)  // Moved up further and matched with transform
+        .attr("transform", (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -45)`)  // Updated rotation point to match y
         .attr("text-anchor", "end")
         .attr("fill", getHeatmapThemeColors().text)
         .attr("font-size", "12px")
