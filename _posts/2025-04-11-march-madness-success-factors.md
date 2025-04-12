@@ -9,7 +9,7 @@ reading_time: 10
 
 Every March, college basketball fans and analysts try to predict which teams will make deep runs in the NCAA tournament. While there's always an element of unpredictability (hence, "March Madness"), certain factors consistently correlate with tournament success. In this post, we'll explore these factors using interactive visualizations of historical tournament data.
 
-## Kaggle Data
+![MIDS 207]({{ site.baseurl }}/assets/207team.png "MIDS 207 Team"){: width="400" height="300"}
 
 
 ## Ken Pom Data

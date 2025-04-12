@@ -1,8 +1,8 @@
 // Configuration
 const heatmapConfig = {
     width: 800,
-    height: 650,  // Increased height
-    margin: { top: 100, right: 100, bottom: 60, left: 150 },  // Increased top margin
+    height: 665,  // Increased height by 15px from 650
+    margin: { top: 100, right: 100, bottom: 60, left: 150 },
     transitionDuration: 750,
     colors: {
         heatmap: d3.interpolateRdBu,  // Changed to Red-Blue scale
@@ -116,7 +116,7 @@ function createHeatmap(containerId, data) {
 
     // Color scale for correlation values
     const colorScale = d3.scaleSequential()
-        .interpolator(d3.interpolateRdPu)
+        .interpolator(d3.interpolateRdBu)
         .domain([-1, 1]);
 
     // Create grid cells
@@ -155,7 +155,7 @@ function createHeatmap(containerId, data) {
     // Add title
     svg.append("text")
         .attr("x", width / 2)
-        .attr("y", 15)  // Moved title higher
+        .attr("y", 0)  // Moved up by 15px from 15 to 0
         .attr("text-anchor", "middle")
         .attr("class", "heatmap-title")
         .attr("fill", getHeatmapThemeColors().text)
