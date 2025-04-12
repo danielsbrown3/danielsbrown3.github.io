@@ -23,7 +23,47 @@ Lets dive into his features together:
 
 ## Ken Pom Data
 
-Below is an interactive visualization that allows you to explore relationships between these factors and tournament success. The bar chart race shows how different teams performed across various metrics throughout the years. Use the controls to select different metrics and watch how team performances changed over time.
+
+Below is an interactive visualization that allows you to explore relationships between these factors and tournament success. Use the controls to filter by year, adjust metrics, and highlight specific conferences or teams.
+
+<div class="visualization-container">
+    <div class="visualization-controls">
+        <div class="viz-slider">
+            <label for="year-slider">Select Year Range</label>
+            <div class="slider-container">
+                <input type="range" id="year-slider" min="2002" max="2024" value="2024">
+                <span id="year-display">2024</span>
+            </div>
+        </div>
+        <div class="metric-toggles">
+            <button class="viz-button active" data-metric="offensive">Offense</button>
+            <button class="viz-button" data-metric="defensive">Defense</button>
+            <button class="viz-button" data-metric="tempo">Tempo</button>
+            <button class="viz-button" data-metric="experience">Experience</button>
+        </div>
+    </div>
+    <div id="success-factors-viz"></div>
+</div>
+
+<!-- Bar Chart Race Visualization -->
+<div class="visualization-container">
+    <div class="visualization-controls">
+        <div class="metric-selector">
+            <label for="metric-select">Select Metric:</label>
+            <select id="metric-select">
+                <option value="net_rating">Net Rating</option>
+                <option value="offensive">Adjusted Offensive Efficiency</option>
+                <option value="defensive">Adjusted Defensive Efficiency</option>
+                <option value="tempo">Adjusted Tempo</option>
+            </select>
+        </div>
+        <div class="playback-controls">
+            <button id="play-button" class="viz-button">Play</button>
+            <button id="pause-button" class="viz-button">Pause</button>
+        </div>
+    </div>
+    <div id="bar-chart-race-viz"></div>
+</div>
 
 <style>
 /* Essential styles for the bar chart race */
@@ -104,10 +144,6 @@ Below is an interactive visualization that allows you to explore relationships b
     margin-bottom: 0.5rem;
 }
 </style>
-
-<div class="visualization-container">
-    <div id="bar-chart-race-viz"></div>
-</div>
 
 <script>
 // Create a global namespace for shared data and functions
