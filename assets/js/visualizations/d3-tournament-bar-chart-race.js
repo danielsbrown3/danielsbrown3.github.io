@@ -8,7 +8,7 @@ window.marchMadness = window.marchMadness || {};
 window.marchMadness.tournamentBarChartRace = (function() {
   // Configuration variables
   const config = {
-    container: '#tournament-bar-chart-race',
+    container: '#bar-chart-race-viz',
     dataFile: 'march_madness.csv',
     width: 900,
     height: 600,
@@ -62,15 +62,23 @@ window.marchMadness.tournamentBarChartRace = (function() {
   // Initialize the visualization
   function init() {
     console.log("Initializing bar chart race visualization");
+    
+    // Wait for container to be available
+    const container = document.querySelector(config.container);
+    if (!container) {
+        console.error(`Container ${config.container} not found`);
+        return;
+    }
+    
     // Create DOM elements
     createControlElements();
     
     // Set up SVG
     svg = d3.select(config.container)
-      .append('svg')
-      .attr('width', config.width)
-      .attr('height', config.height)
-      .attr('class', 'tournament-chart');
+        .append('svg')
+        .attr('width', config.width)
+        .attr('height', config.height)
+        .attr('class', 'tournament-chart');
     
     console.log("Created SVG container");
     
@@ -520,8 +528,5 @@ window.marchMadness.tournamentBarChartRace = (function() {
   };
 })();
 
-// Initialize the visualization when the DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize the tournament bar chart race
-  window.marchMadness.tournamentBarChartRace.init();
-});
+// Remove the automatic initialization
+// The visualization will be initialized through window.marchMadness.onDataReady callback

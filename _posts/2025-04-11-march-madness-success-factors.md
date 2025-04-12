@@ -65,6 +65,86 @@ Below is an interactive visualization that allows you to explore relationships b
     <div id="bar-chart-race-viz"></div>
 </div>
 
+<style>
+/* Essential styles for the bar chart race */
+.tournament-chart {
+    background: var(--background-color, white);
+}
+
+.chart-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.chart-subtitle {
+    font-size: 14px;
+}
+
+.bar {
+    transition: width 0.5s ease;
+}
+
+.bar-label {
+    font-size: 12px;
+    fill: var(--text-color, black);
+}
+
+.seed-label {
+    fill: var(--text-color, black);
+}
+
+.axis-label {
+    font-size: 12px;
+    fill: var(--text-color, black);
+}
+
+.x-axis text {
+    fill: var(--text-color, black);
+}
+
+.x-axis line,
+.x-axis path {
+    stroke: var(--text-color, black);
+}
+
+/* Control styles */
+.visualization-controls {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--background-color, white);
+    border-radius: 4px;
+}
+
+.control-group {
+    margin-bottom: 0.5rem;
+}
+
+.viz-button {
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--accent-color, #4299e1);
+    color: white;
+    cursor: pointer;
+}
+
+.viz-button:hover {
+    opacity: 0.9;
+}
+
+.viz-select {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.year-display {
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+}
+</style>
+
 <script>
 // Create a global namespace for shared data and functions
 window.marchMadness = {
@@ -80,8 +160,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load D3.js first
     var d3Script = document.createElement('script');
     d3Script.src = "https://d3js.org/d3.v7.min.js";
+    d3Script.crossOrigin = "anonymous"; // Add CORS header
     
     d3Script.onload = function() {
+        console.log("D3.js loaded successfully");
         // After D3 loads, load both visualization scripts
         var mainScript = document.createElement('script');
         mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
@@ -89,7 +171,9 @@ document.addEventListener('DOMContentLoaded', function() {
         var barChartScript = document.createElement('script');
         barChartScript.src = "{{ '/assets/js/visualizations/d3-tournament-bar-chart-race.js' | relative_url }}";
         
+        // Set up onload handlers before appending scripts
         mainScript.onload = function() {
+            console.log("Main visualization script loaded");
             // Initialize the main visualization
             if (typeof initVisualization === 'function') {
                 initVisualization();
@@ -104,8 +188,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
         
+        barChartScript.onload = function() {
+            console.log("Bar chart race script loaded");
+        };
+        
+        // Add error handlers
+        mainScript.onerror = function() {
+            console.error("Failed to load main visualization script");
+        };
+        
+        barChartScript.onerror = function() {
+            console.error("Failed to load bar chart race script");
+        };
+        
         document.body.appendChild(mainScript);
         document.body.appendChild(barChartScript);
+    };
+    
+    d3Script.onerror = function() {
+        console.error("Failed to load D3.js");
     };
     
     document.body.appendChild(d3Script);
