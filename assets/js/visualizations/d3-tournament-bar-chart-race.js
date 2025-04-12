@@ -522,11 +522,16 @@ window.marchMadness.tournamentBarChartRace = (function() {
     };
   }
   
-  // Public API
+  // Return public API
   return {
-    init: init
+    init: init,
+    updateVisualization: updateVisualization,
+    processData: processData
   };
 })();
 
-// Remove the automatic initialization
-// The visualization will be initialized through window.marchMadness.onDataReady callback
+// Initialize when the module loads if data is ready
+if (window.marchMadness && window.marchMadness.state && window.marchMadness.state.data) {
+    console.log("Data already available, initializing bar chart race");
+    window.marchMadness.tournamentBarChartRace.init();
+}

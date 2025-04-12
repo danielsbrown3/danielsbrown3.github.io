@@ -167,14 +167,6 @@ if (!window.marchMadness.initialized) {
         // Initialize the main visualization
         if (typeof initVisualization === 'function') {
             initVisualization();
-            
-            // Set up callback for when data is ready
-            window.marchMadness.onDataReady = function() {
-                console.log("Data loaded, initializing bar chart race");
-                if (window.marchMadness.tournamentBarChartRace) {
-                    window.marchMadness.tournamentBarChartRace.init();
-                }
-            };
         }
     }
 
@@ -189,19 +181,38 @@ if (!window.marchMadness.initialized) {
             var barChartScript = document.createElement('script');
             barChartScript.src = "{{ '/assets/js/visualizations/d3-tournament-bar-chart-race.js' | relative_url }}";
             
+            // Track loaded state
+            let mainScriptLoaded = false;
+            let barChartScriptLoaded = false;
+            let dataLoaded = false;
+            
+            function checkInitialization() {
+                if (mainScriptLoaded && barChartScriptLoaded && dataLoaded) {
+                    console.log("All dependencies loaded, initializing visualizations");
+                    if (window.marchMadness.tournamentBarChartRace) {
+                        console.log("Initializing bar chart race");
+                        window.marchMadness.tournamentBarChartRace.init();
+                    }
+                }
+            }
+            
             mainScript.onload = function() {
                 console.log("Main visualization script loaded");
-                if (barChartScript.loaded) {
-                    initializeVisualizations();
-                }
+                mainScriptLoaded = true;
+                initializeVisualizations();
+                
+                // Set up callback for when data is ready
+                window.marchMadness.onDataReady = function() {
+                    console.log("Data loaded");
+                    dataLoaded = true;
+                    checkInitialization();
+                };
             };
             
             barChartScript.onload = function() {
                 console.log("Bar chart race script loaded");
-                barChartScript.loaded = true;
-                if (mainScript.loaded) {
-                    initializeVisualizations();
-                }
+                barChartScriptLoaded = true;
+                checkInitialization();
             };
             
             document.body.appendChild(mainScript);
