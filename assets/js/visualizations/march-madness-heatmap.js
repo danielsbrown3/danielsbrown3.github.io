@@ -2,7 +2,7 @@
 const heatmapConfig = {
     width: 800,
     height: 600,  // Increased height for the larger correlation matrix
-    margin: { top: 80, right: 100, bottom: 60, left: 150 },  // Increased top margin for title
+    margin: { top: 60, right: 100, bottom: 60, left: 150 },  // Reduced top margin
     transitionDuration: 750,
     colors: {
         heatmap: d3.interpolateRdBu,  // Changed to Red-Blue scale
@@ -155,12 +155,12 @@ function createHeatmap(containerId, data) {
     // Add title
     svg.append("text")
         .attr("x", width / 2)
-        .attr("y", 30)  // Adjusted y position
+        .attr("y", 20)  // Moved up from 30 to 20
         .attr("text-anchor", "middle")
         .attr("class", "heatmap-title")
         .attr("fill", getHeatmapThemeColors().text)
-        .attr("font-size", "18px")  // Slightly larger font
-        .attr("font-weight", "bold")  // Make it bold
+        .attr("font-size", "18px")
+        .attr("font-weight", "bold")
         .text("Correlation Matrix of Basketball Metrics");
 
     // Add column labels
@@ -171,8 +171,8 @@ function createHeatmap(containerId, data) {
         .enter()
         .append("text")
         .attr("x", (d, i) => i * cellSize + cellSize / 2)
-        .attr("y", -15)  // Adjusted distance from matrix
-        .attr("transform", (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -15)`)
+        .attr("y", -25)  // Moved up from -15 to -25
+        .attr("transform", (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -25)`)  // Updated rotation point
         .attr("text-anchor", "end")
         .attr("fill", getHeatmapThemeColors().text)
         .attr("font-size", "12px")
