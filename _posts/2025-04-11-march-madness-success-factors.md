@@ -106,6 +106,22 @@ Below is an interactive visualization that allows you to explore relationships b
 </style>
 
 <div class="visualization-container">
+    <div class="visualization-controls">
+        <div class="metric-selector">
+            <label for="metric-select">Metric:</label>
+            <select id="metric-select" class="viz-select">
+                <option value="Net Rating">Net Rating</option>
+                <option value="Adjusted Offensive Efficiency">Adjusted Offensive Efficiency</option>
+                <option value="Adjusted Defensive Efficiency">Adjusted Defensive Efficiency</option>
+                <option value="Adjusted Tempo">Adjusted Tempo</option>
+            </select>
+        </div>
+        <div class="playback-controls">
+            <button id="play-button" class="viz-button">Play</button>
+            <button id="reset-button" class="viz-button">Reset</button>
+        </div>
+        <div class="year-display">Season: <span id="current-year">2001-2002</span></div>
+    </div>
     <div id="bar-chart-race-viz"></div>
 </div>
 
@@ -121,56 +137,38 @@ window.marchMadness = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM Content Loaded");
+    
     // Load D3.js first
     var d3Script = document.createElement('script');
     d3Script.src = "https://d3js.org/d3.v7.min.js";
-    d3Script.crossOrigin = "anonymous"; // Add CORS header
+    d3Script.crossOrigin = "anonymous";
     
     d3Script.onload = function() {
         console.log("D3.js loaded successfully");
-        // After D3 loads, load both visualization scripts
-        var mainScript = document.createElement('script');
-        mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
         
+        // Load bar chart race script
         var barChartScript = document.createElement('script');
         barChartScript.src = "{{ '/assets/js/visualizations/d3-tournament-bar-chart-race.js' | relative_url }}";
         
-        // Set up onload handlers before appending scripts
-        mainScript.onload = function() {
-            console.log("Main visualization script loaded");
-            // Initialize the main visualization
-            if (typeof initVisualization === 'function') {
-                initVisualization();
-                
-                // Set up callback for when data is ready
-                window.marchMadness.onDataReady = function() {
-                    console.log("Data loaded, initializing bar chart race");
-                    if (window.marchMadness.tournamentBarChartRace) {
-                        window.marchMadness.tournamentBarChartRace.init();
-                    }
-                };
-            }
-        };
-        
         barChartScript.onload = function() {
             console.log("Bar chart race script loaded");
+            
+            // Load data script
+            var dataScript = document.createElement('script');
+            dataScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
+            
+            dataScript.onload = function() {
+                console.log("Data script loaded");
+                if (typeof initVisualization === 'function') {
+                    initVisualization();
+                }
+            };
+            
+            document.body.appendChild(dataScript);
         };
         
-        // Add error handlers
-        mainScript.onerror = function() {
-            console.error("Failed to load main visualization script");
-        };
-        
-        barChartScript.onerror = function() {
-            console.error("Failed to load bar chart race script");
-        };
-        
-        document.body.appendChild(mainScript);
         document.body.appendChild(barChartScript);
-    };
-    
-    d3Script.onerror = function() {
-        console.error("Failed to load D3.js");
     };
     
     document.body.appendChild(d3Script);
