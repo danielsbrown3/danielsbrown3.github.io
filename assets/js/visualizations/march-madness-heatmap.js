@@ -2,10 +2,10 @@
 const heatmapConfig = {
     width: 800,
     height: 600,  // Increased height for the larger correlation matrix
-    margin: { top: 60, right: 100, bottom: 60, left: 150 },  // Increased margins for labels
+    margin: { top: 80, right: 100, bottom: 60, left: 150 },  // Increased top margin for title
     transitionDuration: 750,
     colors: {
-        heatmap: d3.interpolateRdPu,
+        heatmap: d3.interpolateRdBu,  // Changed to Red-Blue scale
         champion: "#FFD700"
     }
 };
@@ -152,6 +152,17 @@ function createHeatmap(containerId, data) {
         .attr("font-size", "12px")
         .text(d => d.toFixed(2));
 
+    // Add title
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", 30)  // Adjusted y position
+        .attr("text-anchor", "middle")
+        .attr("class", "heatmap-title")
+        .attr("fill", getHeatmapThemeColors().text)
+        .attr("font-size", "18px")  // Slightly larger font
+        .attr("font-weight", "bold")  // Make it bold
+        .text("Correlation Matrix of Basketball Metrics");
+
     // Add column labels
     g.append("g")
         .attr("class", "column-labels")
@@ -160,8 +171,8 @@ function createHeatmap(containerId, data) {
         .enter()
         .append("text")
         .attr("x", (d, i) => i * cellSize + cellSize / 2)
-        .attr("y", -10)
-        .attr("transform", (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -10)`)
+        .attr("y", -15)  // Adjusted distance from matrix
+        .attr("transform", (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -15)`)
         .attr("text-anchor", "end")
         .attr("fill", getHeatmapThemeColors().text)
         .attr("font-size", "12px")
@@ -226,16 +237,6 @@ function createHeatmap(containerId, data) {
         .call(legendAxis)
         .selectAll("text")
         .attr("fill", getHeatmapThemeColors().text);
-
-    // Add title
-    svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", margin.top / 2)
-        .attr("text-anchor", "middle")
-        .attr("class", "heatmap-title")
-        .attr("fill", getHeatmapThemeColors().text)
-        .attr("font-size", "16px")
-        .text("Correlation Matrix of Basketball Metrics");
 }
 
 // Calculate correlation between two metrics
