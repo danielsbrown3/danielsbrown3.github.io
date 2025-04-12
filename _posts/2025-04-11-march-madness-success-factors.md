@@ -96,18 +96,8 @@ To better understand the relationships between different performance metrics and
 
 <div class="visualization-container heatmaps-wrapper">
     <div class="heatmap-section">
-        <div id="offensive-defensive-heatmap" class="heatmap-container" style="width: 100%; height: 300px;"></div>
-        <p class="viz-description">This heatmap reveals the relationship between offensive and defensive efficiency. Championship teams tend to cluster in regions with both high offensive and defensive efficiency, showing the importance of balance.</p>
-    </div>
-    
-    <div class="heatmap-section">
-        <div id="rating-experience-heatmap" class="heatmap-container" style="width: 100%; height: 300px;"></div>
-        <p class="viz-description">The relationship between net rating and team experience shows interesting patterns. While high net ratings correlate with success, experience can sometimes compensate for lower ratings.</p>
-    </div>
-    
-    <div class="heatmap-section">
-        <div id="seed-performance-heatmap" class="heatmap-container" style="width: 100%; height: 300px;"></div>
-        <p class="viz-description">This visualization shows how seeding relates to tournament performance. While higher seeds generally perform better, there are notable exceptions where lower-seeded teams made deep runs.</p>
+        <div id="correlation-matrix" class="heatmap-container" style="width: 100%; height: 600px;"></div>
+        <p class="viz-description">This correlation matrix shows the relationships between various performance metrics. The color intensity represents the strength of correlation, with red indicating positive correlations and darker shades indicating stronger relationships.</p>
     </div>
 </div>
 
