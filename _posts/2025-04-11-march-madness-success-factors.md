@@ -44,13 +44,33 @@ Below is an interactive visualization that allows you to explore relationships b
     <div id="success-factors-viz"></div>
 </div>
 
-<!-- Bar Chart Race Visualization Container -->
-<div id="bar-chart-race-viz"></div>
+<!-- Bar Chart Race Visualization -->
+<div class="visualization-section">
+    <h2>Tournament Performance Over Time</h2>
+    <p>Watch how different teams' performance metrics have evolved over the years. Use the controls below to play through the years or select specific metrics to analyze.</p>
+    
+    <div class="visualization-container bar-chart-container">
+        <div id="bar-chart-race-viz" style="min-height: 600px;"></div>
+    </div>
+</div>
 
 <style>
 /* Essential styles for the bar chart race */
+.visualization-section {
+    margin: 2rem 0;
+}
+
+.bar-chart-container {
+    background: var(--background-color, white);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .tournament-chart {
     background: var(--background-color, white);
+    width: 100%;
+    height: 100%;
 }
 
 .chart-title {
