@@ -1,8 +1,8 @@
 // Configuration
 const heatmapConfig = {
     width: 800,
-    height: 600,  // Increased height for the larger correlation matrix
-    margin: { top: 60, right: 100, bottom: 60, left: 150 },  // Reduced top margin
+    height: 650,  // Increased height
+    margin: { top: 100, right: 100, bottom: 60, left: 150 },  // Increased top margin
     transitionDuration: 750,
     colors: {
         heatmap: d3.interpolateRdBu,  // Changed to Red-Blue scale
@@ -155,7 +155,7 @@ function createHeatmap(containerId, data) {
     // Add title
     svg.append("text")
         .attr("x", width / 2)
-        .attr("y", 20)  // Moved up from 30 to 20
+        .attr("y", 15)  // Moved title higher
         .attr("text-anchor", "middle")
         .attr("class", "heatmap-title")
         .attr("fill", getHeatmapThemeColors().text)
@@ -171,9 +171,9 @@ function createHeatmap(containerId, data) {
         .enter()
         .append("text")
         .attr("x", (d, i) => i * cellSize + cellSize / 2)
-        .attr("y", -45)  // Moved up further and matched with transform
-        .attr("transform", (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -45)`)  // Updated rotation point to match y
-        .attr("text-anchor", "end")
+        .attr("y", -15)  // Adjusted distance
+        .attr("transform", (d, i) => `rotate(-90, ${i * cellSize + cellSize / 2}, -15)`)  // Made labels vertical
+        .attr("text-anchor", "start")  // Changed to start for vertical text
         .attr("fill", getHeatmapThemeColors().text)
         .attr("font-size", "12px")
         .text(d => d.label);
