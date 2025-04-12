@@ -129,7 +129,7 @@ Below is an interactive visualization that allows you to explore relationships b
 
 <script>
 // Create a global namespace for shared data and functions
-window.marchMadness = {
+window.marchMadness = window.marchMadness || {
     state: {
         data: null,
         classificationData: null,
@@ -138,61 +138,62 @@ window.marchMadness = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Load D3.js first
-    var d3Script = document.createElement('script');
-    d3Script.src = "https://d3js.org/d3.v7.min.js";
-    d3Script.crossOrigin = "anonymous"; // Add CORS header
+// Only set up initialization if not already done
+if (!window.marchMadness.initialized) {
+    window.marchMadness.initialized = true;
     
-    d3Script.onload = function() {
-        console.log("D3.js loaded successfully");
-        // After D3 loads, load both visualization scripts
-        var mainScript = document.createElement('script');
-        mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
-        
-        var barChartScript = document.createElement('script');
-        barChartScript.src = "{{ '/assets/js/visualizations/d3-tournament-bar-chart-race.js' | relative_url }}";
-        
-        // Set up onload handlers before appending scripts
-        mainScript.onload = function() {
-            console.log("Main visualization script loaded");
-            // Initialize the main visualization
-            if (typeof initVisualization === 'function') {
-                initVisualization();
-                
-                // Set up callback for when data is ready
-                window.marchMadness.onDataReady = function() {
-                    console.log("Data loaded, initializing bar chart race");
-                    if (window.marchMadness.tournamentBarChartRace) {
-                        window.marchMadness.tournamentBarChartRace.init();
-                    }
-                };
-            }
-        };
-        
-        barChartScript.onload = function() {
-            console.log("Bar chart race script loaded");
-        };
-        
-        // Add error handlers
-        mainScript.onerror = function() {
-            console.error("Failed to load main visualization script");
-        };
-        
-        barChartScript.onerror = function() {
-            console.error("Failed to load bar chart race script");
-        };
-        
-        document.body.appendChild(mainScript);
-        document.body.appendChild(barChartScript);
-    };
-    
-    d3Script.onerror = function() {
-        console.error("Failed to load D3.js");
-    };
-    
-    document.body.appendChild(d3Script);
-});
+    function initializeVisualizations() {
+        console.log("Initializing visualizations");
+        // Initialize the main visualization
+        if (typeof initVisualization === 'function') {
+            initVisualization();
+            
+            // Set up callback for when data is ready
+            window.marchMadness.onDataReady = function() {
+                console.log("Data loaded, initializing bar chart race");
+                if (window.marchMadness.tournamentBarChartRace) {
+                    window.marchMadness.tournamentBarChartRace.init();
+                }
+            };
+        }
+    }
+
+    // Wait for D3.js to be available
+    function checkD3AndInitialize() {
+        if (window.d3) {
+            console.log("D3.js found, loading visualization scripts");
+            // Load visualization scripts
+            var mainScript = document.createElement('script');
+            mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
+            
+            var barChartScript = document.createElement('script');
+            barChartScript.src = "{{ '/assets/js/visualizations/d3-tournament-bar-chart-race.js' | relative_url }}";
+            
+            mainScript.onload = function() {
+                console.log("Main visualization script loaded");
+                if (barChartScript.loaded) {
+                    initializeVisualizations();
+                }
+            };
+            
+            barChartScript.onload = function() {
+                console.log("Bar chart race script loaded");
+                barChartScript.loaded = true;
+                if (mainScript.loaded) {
+                    initializeVisualizations();
+                }
+            };
+            
+            document.body.appendChild(mainScript);
+            document.body.appendChild(barChartScript);
+        } else {
+            setTimeout(checkD3AndInitialize, 100);
+        }
+    }
+
+    // Start checking for D3.js
+    checkD3AndInitialize();
+}
 </script>
 
 ## Key Findings
