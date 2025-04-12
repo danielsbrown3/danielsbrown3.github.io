@@ -155,7 +155,7 @@ function createHeatmap(containerId, data) {
     // Add title
     svg.append("text")
         .attr("x", width / 2)
-        .attr("y", 30)  // Moved up from 30 to 20
+        .attr("y", 10)  // Moved up from 30 to 20
         .attr("text-anchor", "middle")
         .attr("class", "heatmap-title")
         .attr("fill", getHeatmapThemeColors().text)
@@ -171,7 +171,7 @@ function createHeatmap(containerId, data) {
         .enter()
         .append("text")
         .attr("x", (d, i) => i * cellSize + cellSize / 2)
-        .attr("y", -40)  // Moved up from -25 to -35
+        .attr("y", -10)  // Moved up from -25 to -35
         .attr("transform", (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -35)`)  // Updated rotation point
         .attr("text-anchor", "end")
         .attr("fill", getHeatmapThemeColors().text)
