@@ -21,83 +21,8 @@ If you watch college basketball, you definately have heard of Ken Pom. He is a s
 
 Lets dive into his features together:
 
-<div class="visualization-container heatmaps-wrapper">
-    <div class="heatmap-section">
-        <div id="correlation-matrix" class="heatmap-container" style="width: 100%; height: 600px;"></div>
-        <p class="viz-description">This correlation matrix shows the relationships between the most popular Ken Pom performance metrics. The color intensity represents the strength of correlation, with red indicating positive correlations and darker shades indicating stronger relationships.</p>
-    </div>
-</div>
-
-<div id="heatmap-tooltip" class="viz-tooltip"></div>
-
-<style>
-.heatmaps-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1rem;
-}
-
-.heatmap-section {
-    margin-bottom: 3rem;
-    background: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.heatmap-container {
-    width: 100%;
-    height: 300px;
-    position: relative;
-    background: var(--background-color);
-}
-
-.viz-description {
-    font-size: 0.9rem;
-    color: var(--secondary-color);
-    margin: 1rem 0 0 0;
-    text-align: center;
-    font-style: italic;
-}
-
-.viz-tooltip {
-    position: absolute;
-    display: none;
-    background: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 0.9rem;
-    pointer-events: none;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.heatmap-title {
-    font-size: 1.1rem;
-    font-weight: 500;
-    fill: var(--text-color);
-}
-
-.visualization-loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    color: var(--text-color);
-}
-
-.visualization-error {
-    color: #dc3545;
-    text-align: center;
-    padding: 1rem;
-}
-</style>
-
-
 ## Ken Pom Data
+
 
 Below is an interactive visualization that allows you to explore relationships between these factors and tournament success. Use the controls to filter by year, adjust metrics, and highlight specific conferences or teams.
 
@@ -118,7 +43,6 @@ Below is an interactive visualization that allows you to explore relationships b
         </div>
     </div>
     <div id="success-factors-viz"></div>
-    <div class="viz-legend"></div>
 </div>
 
 <script>
@@ -129,12 +53,6 @@ window.marchMadness = {
         classificationData: null,
         selectedYear: 2024,
         initialized: false
-    },
-    // Add callback for when data is ready
-    onDataReady: function() {
-        if (typeof initHeatmaps === 'function') {
-            initHeatmaps();
-        }
     }
 };
 
@@ -144,18 +62,13 @@ document.addEventListener('DOMContentLoaded', function() {
     d3Script.src = "https://d3js.org/d3.v7.min.js";
     
     d3Script.onload = function() {
-        // After D3 loads, load the main visualization script first
+        // After D3 loads, load the main visualization script
         var mainScript = document.createElement('script');
         mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
         mainScript.onload = function() {
             // Initialize the main visualization
             if (typeof initVisualization === 'function') {
-                initVisualization().then(() => {
-                    // Only load heatmap script after main visualization is initialized
-                    var heatmapScript = document.createElement('script');
-                    heatmapScript.src = "{{ '/assets/js/visualizations/march-madness-heatmap.js' | relative_url }}";
-                    document.body.appendChild(heatmapScript);
-                });
+                initVisualization();
             }
         };
         document.body.appendChild(mainScript);

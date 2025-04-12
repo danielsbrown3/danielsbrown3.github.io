@@ -223,34 +223,6 @@
     color: var(--text-color);
 }
 
-/* Tooltips */
-.viz-tooltip {
-    position: absolute;
-    padding: 0.5rem;
-    background: var(--nav-bg);
-    border: 1px solid var(--nav-border);
-    border-radius: 4px;
-    pointer-events: none;
-    font-size: 0.875rem;
-    color: var(--text-color);
-    z-index: 1000;
-}
-
-/* Chart Specific Styles */
-.chart-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-}
-
-.chart-subtitle {
-    font-size: 1rem;
-    color: var(--text-color);
-    opacity: 0.8;
-    margin-bottom: 1rem;
-}
-
 /* Axis Labels */
 .axis-label {
     font-size: 0.875rem;
