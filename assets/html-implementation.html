@@ -1,0 +1,58 @@
+<!-- NCAA Tournament Bar Chart Race Implementation -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NCAA Tournament Bar Chart Race</title>
+  
+  <!-- Load D3.js -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  
+  <!-- Load custom CSS -->
+  <link rel="stylesheet" href="tournament-bar-chart.css">
+</head>
+<body>
+  <div class="page-container">
+    <header>
+      <h1>NCAA Basketball Tournament Analysis</h1>
+    </header>
+    
+    <main>
+      <section class="visualization-section">
+        <!-- Container for the visualization -->
+        <div id="tournament-bar-chart-race" class="visualization-container">
+          <!-- Visualization will be created here by the JS -->
+        </div>
+      </section>
+      
+      <section class="explanation-section">
+        <h2>About this Visualization</h2>
+        <p>
+          This bar chart race shows NCAA basketball tournament team performance by seed from 2002-2024. 
+          For each seed (1-16), the visualization displays the team with the highest selected metric.
+        </p>
+        <p>
+          You can choose from several performance metrics:
+        </p>
+        <ul>
+          <li><strong>Net Rating:</strong> Overall performance rating (higher is better)</li>
+          <li><strong>Adjusted Offensive Efficiency:</strong> Points scored per 100 possessions (higher is better)</li>
+          <li><strong>Adjusted Defensive Efficiency:</strong> Points allowed per 100 possessions (lower is better)</li>
+          <li><strong>Adjusted Tempo:</strong> Pace of play in possessions per 40 minutes</li>
+        </ul>
+        <p>
+          The data excludes the 2020 season (when the tournament was cancelled due to COVID-19) and 2025.
+        </p>
+      </section>
+    </main>
+    
+    <footer>
+      <p>Data source: NCAA Basketball Statistics</p>
+    </footer>
+  </div>
+  
+  <!-- Load custom JS -->
+  <script src="tournament-bar-chart.js"></script>
+</body>
+</html>

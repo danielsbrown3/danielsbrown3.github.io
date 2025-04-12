@@ -1,0 +1,208 @@
+/* Styles for the NCAA Tournament Bar Chart Race Visualization */
+
+/* Container */
+.visualization-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-color, #333);
+}
+
+/* Titles */
+.visualization-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  color: var(--title-color, #111);
+}
+
+/* Controls */
+.visualization-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Buttons */
+.viz-button {
+  padding: 8px 16px;
+  background-color: var(--button-bg, #4338ca);
+  color: var(--button-text, white);
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.viz-button:hover {
+  background-color: var(--button-hover, #3730a3);
+}
+
+/* Selectors */
+.viz-select {
+  padding: 8px;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 4px;
+  background-color: var(--input-bg, white);
+  color: var(--text-color, #333);
+  font-size: 14px;
+}
+
+/* Slider group */
+.slider-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Year display */
+.year-display {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Slider */
+.viz-slider {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* SVG elements */
+.tournament-chart {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  background-color: var(--chart-bg, white);
+}
+
+.chart-title {
+  font-size: 18px;
+  font-weight: bold;
+  fill: var(--title-color, #111);
+}
+
+.chart-subtitle {
+  font-size: 14px;
+  fill: var(--subtitle-color, #555);
+}
+
+.seed-label {
+  font-size: 12px;
+  fill: var(--text-color, #333);
+}
+
+.bar {
+  transition: width 0.5s ease-in-out;
+}
+
+.bar-label {
+  font-size: 12px;
+  fill: var(--bar-label-color, #333);
+}
+
+.x-axis path,
+.x-axis line {
+  stroke: var(--axis-color, #888);
+}
+
+.x-axis text {
+  fill: var(--axis-text-color, #555);
+  font-size: 10px;
+}
+
+.axis-label {
+  font-size: 12px;
+  fill: var(--axis-label-color, #555);
+}
+
+/* Footnote */
+.visualization-footnote {
+  font-size: 12px;
+  color: var(--footnote-color, #666);
+  text-align: center;
+  margin-top: 10px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Error message */
+.error-message {
+  color: var(--error-color, #e53e3e);
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+/* Dark mode variables (can be applied via a parent class or media query) */
+.dark-theme {
+  --text-color: #e5e7eb;
+  --title-color: #f3f4f6;
+  --subtitle-color: #d1d5db;
+  --button-bg: #4f46e5;
+  --button-text: #f9fafb;
+  --button-hover: #6366f1;
+  --border-color: #4b5563;
+  --input-bg: #1f2937;
+  --chart-bg: #111827;
+  --axis-color: #6b7280;
+  --axis-text-color: #9ca3af;
+  --axis-label-color: #d1d5db;
+  --bar-label-color: #f9fafb;
+  --footnote-color: #9ca3af;
+  --error-color: #f87171;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .visualization-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .control-group {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .tournament-chart {
+    max-height: 800px;
+  }
+}
+
+@media (max-width: 480px) {
+  .visualization-title {
+    font-size: 20px;
+  }
+  
+  .chart-title {
+    font-size: 16px;
+  }
+  
+  .chart-subtitle {
+    font-size: 12px;
+  }
+  
+  .viz-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}

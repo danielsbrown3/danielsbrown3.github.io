@@ -45,6 +45,26 @@ Below is an interactive visualization that allows you to explore relationships b
     <div id="success-factors-viz"></div>
 </div>
 
+<!-- Bar Chart Race Visualization -->
+<div class="visualization-container">
+    <div class="visualization-controls">
+        <div class="metric-selector">
+            <label for="metric-select">Select Metric:</label>
+            <select id="metric-select">
+                <option value="net_rating">Net Rating</option>
+                <option value="offensive">Adjusted Offensive Efficiency</option>
+                <option value="defensive">Adjusted Defensive Efficiency</option>
+                <option value="tempo">Adjusted Tempo</option>
+            </select>
+        </div>
+        <div class="playback-controls">
+            <button id="play-button" class="viz-button">Play</button>
+            <button id="pause-button" class="viz-button">Pause</button>
+        </div>
+    </div>
+    <div id="bar-chart-race-viz"></div>
+</div>
+
 <script>
 // Create a global namespace for shared data and functions
 window.marchMadness = {
@@ -62,16 +82,29 @@ document.addEventListener('DOMContentLoaded', function() {
     d3Script.src = "https://d3js.org/d3.v7.min.js";
     
     d3Script.onload = function() {
-        // After D3 loads, load the main visualization script
+        // After D3 loads, load both visualization scripts
         var mainScript = document.createElement('script');
         mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
+        
+        var barChartScript = document.createElement('script');
+        barChartScript.src = "{{ '/assets/js/visualizations/d3-tournament-bar-chart-race.js' | relative_url }}";
+        
         mainScript.onload = function() {
             // Initialize the main visualization
             if (typeof initVisualization === 'function') {
                 initVisualization();
             }
         };
+        
+        barChartScript.onload = function() {
+            // Initialize the bar chart race
+            if (typeof initBarChartRace === 'function') {
+                initBarChartRace();
+            }
+        };
+        
         document.body.appendChild(mainScript);
+        document.body.appendChild(barChartScript);
     };
     
     document.body.appendChild(d3Script);
