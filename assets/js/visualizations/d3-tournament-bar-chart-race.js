@@ -61,6 +61,7 @@ window.marchMadness.tournamentBarChartRace = (function() {
   
   // Initialize the visualization
   function init() {
+    console.log("Initializing bar chart race visualization");
     // Create DOM elements
     createControlElements();
     
@@ -71,11 +72,14 @@ window.marchMadness.tournamentBarChartRace = (function() {
       .attr('height', config.height)
       .attr('class', 'tournament-chart');
     
+    console.log("Created SVG container");
+    
     // Load data
     loadData();
     
     // Add event listeners
     setupEventListeners();
+    console.log("Bar chart race initialization complete");
   }
   
   // Create control elements for the visualization
@@ -156,22 +160,26 @@ window.marchMadness.tournamentBarChartRace = (function() {
   
   // Load data from CSV file
   function loadData() {
-    d3.csv(config.dataFile).then(csvData => {
+    console.log("Loading data for bar chart race");
+    // Use the data already loaded in window.marchMadness.state
+    if (window.marchMadness && window.marchMadness.state && window.marchMadness.state.data) {
+      console.log("Found data in window.marchMadness.state");
       // Process data
-      data = processData(csvData);
+      data = processData(window.marchMadness.state.data);
+      console.log("Processed data:", data);
       
       // Update years available in slider
       yearSlider.attr('max', years.length - 1);
       
       // Initial render
       updateVisualization();
-    }).catch(error => {
-      console.error('Error loading data:', error);
+    } else {
+      console.error('No data available in window.marchMadness.state');
       d3.select(config.container)
         .append('div')
         .attr('class', 'error-message')
         .text('Error loading data. Please try again later.');
-    });
+    }
   }
   
   // Process raw CSV data

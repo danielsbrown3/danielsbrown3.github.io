@@ -93,13 +93,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Initialize the main visualization
             if (typeof initVisualization === 'function') {
                 initVisualization();
-            }
-        };
-        
-        barChartScript.onload = function() {
-            // Initialize the bar chart race
-            if (typeof initBarChartRace === 'function') {
-                initBarChartRace();
+                
+                // Set up callback for when data is ready
+                window.marchMadness.onDataReady = function() {
+                    console.log("Data loaded, initializing bar chart race");
+                    if (window.marchMadness.tournamentBarChartRace) {
+                        window.marchMadness.tournamentBarChartRace.init();
+                    }
+                };
             }
         };
         
