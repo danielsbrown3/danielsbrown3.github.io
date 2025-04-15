@@ -15,7 +15,7 @@ Our team from the machine learning class, MIDS 207 at UC Berkeley, attempted to 
 
 We initially started by exploring Kaggle datasets, provided from the annual Kaggle competition, which brought us about 60-67% accuracy. 
 
-So we looked to popular models to see what type of data they were using to increase their performance.
+Uninspired by the models performance, we looked to popular models to see what type of data they were using to increase their performance.
 
 If you watch college basketball, you definately have heard of Ken Pom. He is a statitician that is known for his popular college basketball rankings being very accurate every year based on synthetic features he derives himself.
 
