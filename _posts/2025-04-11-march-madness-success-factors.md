@@ -246,18 +246,3 @@ d3Script.onload = function() {
 document.head.appendChild(d3Script);
 </script>
 
-## Key Findings
-
-1. **Offensive Efficiency**: 
-
-2. **Defensive Balance**: 
-
-3. **Experience Matters**: 
-
-4. **Tempo Isn't Everything**: 
-
-5. **
-
-6. **
-
-7. **
