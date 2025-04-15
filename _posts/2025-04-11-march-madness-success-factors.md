@@ -159,33 +159,28 @@ const d3Script = document.createElement('script');
 d3Script.src = "https://d3js.org/d3.v7.min.js";
 d3Script.onload = function() {
     console.log("D3.js loaded successfully");
+    
     // Create a global namespace for shared data and functions
-    window.marchMadness = window.marchMadness || {
-        state: {
-            data: null,
-            classificationData: null,
-            selectedYear: 2024,
-            initialized: false
-        }
-    };
+    if (!window.marchMadness) {
+        window.marchMadness = {
+            state: {
+                data: null,
+                classificationData: null,
+                selectedYear: 2024,
+                initialized: false
+            }
+        };
+    }
 
     // Only set up initialization if not already done
     if (!window.marchMadness.initialized) {
         window.marchMadness.initialized = true;
         
-        function initializeVisualizations() {
-            console.log("Initializing visualizations");
-            // Initialize the main visualization
-            if (typeof initVisualization === 'function') {
-                initVisualization();
-            }
-        }
-
         // Load visualization scripts
-        var mainScript = document.createElement('script');
+        const mainScript = document.createElement('script');
         mainScript.src = "{{ '/assets/js/visualizations/march-madness.js' | relative_url }}";
         
-        var barChartScript = document.createElement('script');
+        const barChartScript = document.createElement('script');
         barChartScript.src = "{{ '/assets/js/visualizations/d3-tournament-bar-chart-race.js' | relative_url }}";
         
         // Track loaded state
@@ -196,7 +191,8 @@ d3Script.onload = function() {
         function checkInitialization() {
             if (mainScriptLoaded && barChartScriptLoaded && dataLoaded) {
                 console.log("All dependencies loaded, initializing visualizations");
-                if (window.marchMadness.tournamentBarChartRace) {
+                if (window.marchMadness.tournamentBarChartRace && 
+                    typeof window.marchMadness.tournamentBarChartRace.init === 'function') {
                     console.log("Initializing bar chart race");
                     window.marchMadness.tournamentBarChartRace.init();
                 }
@@ -206,14 +202,15 @@ d3Script.onload = function() {
         mainScript.onload = function() {
             console.log("Main visualization script loaded");
             mainScriptLoaded = true;
-            initializeVisualizations();
             
             // Set up callback for when data is ready
-            window.marchMadness.onDataReady = function() {
-                console.log("Data loaded");
-                dataLoaded = true;
-                checkInitialization();
-            };
+            if (!window.marchMadness.onDataReady) {
+                window.marchMadness.onDataReady = function() {
+                    console.log("Data loaded");
+                    dataLoaded = true;
+                    checkInitialization();
+                };
+            }
         };
         
         barChartScript.onload = function() {
@@ -222,8 +219,13 @@ d3Script.onload = function() {
             checkInitialization();
         };
         
-        document.body.appendChild(mainScript);
-        document.body.appendChild(barChartScript);
+        // Only append scripts if they haven't been added yet
+        if (!document.querySelector('script[src*="march-madness.js"]')) {
+            document.body.appendChild(mainScript);
+        }
+        if (!document.querySelector('script[src*="d3-tournament-bar-chart-race.js"]')) {
+            document.body.appendChild(barChartScript);
+        }
     }
 };
 document.head.appendChild(d3Script);
