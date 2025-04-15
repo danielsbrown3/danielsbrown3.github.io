@@ -201,10 +201,14 @@ window.marchMadness.tournamentBarChartRace = (function() {
   
   // Process raw CSV data
   function processData(rawData) {
+    console.log("Processing raw data:", rawData);
+    
     // Extract all unique years and filter out skipped years
     years = [...new Set(rawData.map(d => +d.Season))]
       .filter(year => !config.skipYears.includes(year))
       .sort((a, b) => a - b);
+    
+    console.log("Years found:", years);
     
     // Process data for tournament teams by seed
     const processedData = {};
@@ -219,6 +223,8 @@ window.marchMadness.tournamentBarChartRace = (function() {
         d.Seed !== "Not In a Post-Season Tournament" &&
         d.Region // Ensure region data exists
       );
+      
+      console.log(`Year ${year} - Tournament teams:`, tournamentTeams);
       
       // Process each seed (1-16) and region
       const teamsBySeedAndRegion = {};
@@ -259,6 +265,8 @@ window.marchMadness.tournamentBarChartRace = (function() {
       // Flatten the data structure for the current year
       processedData[year] = Object.values(teamsBySeedAndRegion)
         .flatMap(regions => Object.values(regions));
+      
+      console.log(`Year ${year} - Processed data:`, processedData[year]);
     });
     
     return processedData;
@@ -342,15 +350,40 @@ window.marchMadness.tournamentBarChartRace = (function() {
   
   // Update visualization based on current state
   function updateVisualization() {
-    if (!data || years.length === 0) return;
+    if (!data || years.length === 0) {
+      console.error("No data available for visualization");
+      return;
+    }
     
     const currentYear = years[currentYearIndex];
     const currentData = data[currentYear] || [];
     
+    console.log(`Updating visualization for year ${currentYear}`);
+    console.log("Current data before filtering:", currentData);
+    
     // Filter data by selected region
     let filteredData = currentData;
     if (selectedRegion !== 'all') {
-      filteredData = currentData.filter(d => d.region === selectedRegion);
+      filteredData = currentData.filter(d => {
+        const matches = d.region === selectedRegion;
+        console.log(`Team ${d.team} (Region: ${d.region}) matches ${selectedRegion}: ${matches}`);
+        return matches;
+      });
+    }
+    
+    console.log("Filtered data:", filteredData);
+    
+    if (filteredData.length === 0) {
+      console.warn(`No data available for ${selectedRegion} region in ${currentYear}`);
+      // Show a message to the user
+      svg.selectAll('*').remove();
+      svg.append('text')
+        .attr('class', 'no-data-message')
+        .attr('x', config.width / 2)
+        .attr('y', config.height / 2)
+        .attr('text-anchor', 'middle')
+        .text(`No data available for ${selectedRegion} region in ${currentYear}`);
+      return;
     }
     
     // Sort data by selected metric
