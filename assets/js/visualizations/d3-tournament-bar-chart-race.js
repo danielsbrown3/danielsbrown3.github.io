@@ -31,7 +31,7 @@ window.marchMadness.tournamentBarChartRace = (function() {
   // DOM elements
   let svg;
   let xScale;
-  let seedLabels;
+  let successLabels;
   let bars;
   let barLabels;
   let yearDisplay;
@@ -39,24 +39,14 @@ window.marchMadness.tournamentBarChartRace = (function() {
   let metricSelector;
   let playButton;
   
-  // Colors for seeds
-  const seedColors = {
-    1: '#1e40af', // dark blue
-    2: '#3b82f6', // blue
-    3: '#60a5fa', // light blue
-    4: '#93c5fd', // lighter blue
-    5: '#15803d', // dark green
-    6: '#22c55e', // green
-    7: '#4ade80', // light green
-    8: '#86efac', // lighter green
-    9: '#a16207', // dark yellow
-    10: '#ca8a04', // yellow
-    11: '#eab308', // light yellow
-    12: '#fde047', // lighter yellow
-    13: '#9f1239', // dark red
-    14: '#dc2626', // red
-    15: '#ef4444', // light red
-    16: '#fca5a5'  // lighter red
+  // Colors for tournament success levels
+  const successColors = {
+    'Champion': '#FFD700', // Gold for champion
+    'Final Four': '#C0C0C0', // Silver for final four
+    'Elite Eight': '#CD7F32', // Bronze for elite eight
+    'Sweet Sixteen': '#4CAF50', // Green for sweet sixteen
+    'Round of 32': '#2196F3', // Blue for round of 32
+    'First Round': '#9E9E9E'  // Gray for first round
   };
   
   // Initialize the visualization
@@ -97,7 +87,7 @@ window.marchMadness.tournamentBarChartRace = (function() {
     // Add title
     container.append('h2')
       .attr('class', 'visualization-title')
-      .text('NCAA Basketball Tournament Performance by Seed');
+      .text('NCAA Basketball Tournament Performance by Success Level');
     
     // Controls container
     const controls = container.append('div')
@@ -192,81 +182,43 @@ window.marchMadness.tournamentBarChartRace = (function() {
   
   // Process raw CSV data
   function processData(rawData) {
-    // Extract all unique years and filter out skipped years
-    years = [...new Set(rawData.map(d => +d.Season))]
-      .filter(year => !config.skipYears.includes(year))
-      .sort((a, b) => a - b);
+    console.log("Processing data for visualization");
     
-    // Process data for tournament teams by seed
-    const processedData = {};
+    // Group data by year and tournament success level
+    const groupedData = d3.group(rawData, d => d.Year, d => {
+      if (d.TournamentResult === 'Champion') return 'Champion';
+      if (d.TournamentResult === 'Final Four') return 'Final Four';
+      if (d.TournamentResult === 'Elite Eight') return 'Elite Eight';
+      if (d.TournamentResult === 'Sweet Sixteen') return 'Sweet Sixteen';
+      if (d.TournamentResult === 'Round of 32') return 'Round of 32';
+      return 'First Round';
+    });
     
-    years.forEach(year => {
-      // Get teams that were in the tournament this year
-      const tournamentTeams = rawData.filter(d => 
-        +d.Season === year && 
-        (d['Post-Season Tournament'] === 'March Madness' || 
-         d['Post-Season Tournament'] === 'NCAA Tournament') &&
-        d.Seed !== null && 
-        d.Seed !== "Not In a Post-Season Tournament"
-      );
-      
-      // Process each seed (1-16)
-      const teamsBySeed = {};
-      
-      for (let seed = 1; seed <= 16; seed++) {
-        const teamsWithThisSeed = tournamentTeams.filter(d => {
-          const teamSeed = parseInt(d.Seed, 10);
-          return teamSeed === seed;
-        });
+    // Calculate average metrics for each success level per year
+    const processedData = Array.from(groupedData, ([year, successGroups]) => {
+      return Array.from(successGroups, ([success, teams]) => {
+        const avgMetrics = {
+          'Net Rating': d3.mean(teams, d => d.NetRating),
+          'Offensive Rating': d3.mean(teams, d => d.OffensiveRating),
+          'Defensive Rating': d3.mean(teams, d => d.DefensiveRating),
+          'Tempo': d3.mean(teams, d => d.Tempo),
+          'Experience': d3.mean(teams, d => d.Experience)
+        };
         
-        if (teamsWithThisSeed.length > 0) {
-          // For each metric, find the best team
-          const metrics = ['Net Rating', 'AdjOE', 'AdjDE', 'AdjTempo'];
-          
-          metrics.forEach(metric => {
-            // Find best team for this metric
-            let bestTeam = null;
-            
-            if (metric === 'AdjDE') {
-              // For defensive efficiency, lower is better
-              bestTeam = teamsWithThisSeed.reduce((best, current) => {
-                const currentValue = parseFloat(current[metric]);
-                if (isNaN(currentValue)) return best;
-                
-                if (!best || currentValue < parseFloat(best[metric])) {
-                  return current;
-                }
-                return best;
-              }, null);
-            } else {
-              // For other metrics, higher is better
-              bestTeam = teamsWithThisSeed.reduce((best, current) => {
-                const currentValue = parseFloat(current[metric]);
-                if (isNaN(currentValue)) return best;
-                
-                if (!best || currentValue > parseFloat(best[metric])) {
-                  return current;
-                }
-                return best;
-              }, null);
-            }
-            
-            if (bestTeam) {
-              if (!teamsBySeed[seed]) {
-                teamsBySeed[seed] = { seed };
-              }
-              
-              teamsBySeed[seed][metric] = {
-                value: parseFloat(bestTeam[metric]),
-                team: bestTeam['Full Team Name'],
-                conference: bestTeam['Short Conference Name']
-              };
-            }
-          });
-        }
-      }
-      
-      processedData[year] = Object.values(teamsBySeed);
+        return {
+          year: +year,
+          success: success,
+          count: teams.length,
+          ...avgMetrics
+        };
+      });
+    }).flat();
+    
+    // Sort data by year and success level
+    processedData.sort((a, b) => {
+      if (a.year !== b.year) return a.year - b.year;
+      const successOrder = ['Champion', 'Final Four', 'Elite Eight', 'Sweet Sixteen', 'Round of 32', 'First Round'];
+      return successOrder.indexOf(a.success) - successOrder.indexOf(b.success);
     });
     
     return processedData;
@@ -355,8 +307,8 @@ window.marchMadness.tournamentBarChartRace = (function() {
     const currentYear = years[currentYearIndex];
     const currentData = data[currentYear] || [];
     
-    // Sort data based on seed value
-    currentData.sort((a, b) => a.seed - b.seed);
+    // Sort data based on success level
+    currentData.sort((a, b) => a.success.localeCompare(b.success));
     
     // Update year display
     yearDisplay.text(`Season: ${currentYear - 1}-${currentYear}`);
@@ -374,8 +326,8 @@ window.marchMadness.tournamentBarChartRace = (function() {
     let maxValue = 0;
     
     currentData.forEach(d => {
-      if (d[selectedMetric] && !isNaN(d[selectedMetric].value)) {
-        maxValue = Math.max(maxValue, d[selectedMetric].value);
+      if (d[selectedMetric] && !isNaN(d[selectedMetric])) {
+        maxValue = Math.max(maxValue, d[selectedMetric]);
       }
     });
     
@@ -399,7 +351,7 @@ window.marchMadness.tournamentBarChartRace = (function() {
       .attr('x', config.width / 2)
       .attr('y', 30)
       .attr('text-anchor', 'middle')
-      .text(`NCAA Tournament Teams by Seed (${years[currentYearIndex]})`);
+      .text(`NCAA Tournament Teams by Success Level (${years[currentYearIndex]})`);
     
     // Add subtitle with selected metric
     svg.append('text')
@@ -407,24 +359,24 @@ window.marchMadness.tournamentBarChartRace = (function() {
       .attr('x', config.width / 2)
       .attr('y', 50)
       .attr('text-anchor', 'middle')
-      .text(`Showing ${getMetricLabel(selectedMetric)} by Seed`);
+      .text(`Showing ${getMetricLabel(selectedMetric)} by Success Level`);
     
     // Create group for bars and labels
     const chartGroup = svg.append('g')
       .attr('transform', `translate(${config.margin.left}, ${config.margin.top})`);
     
-    // Add seed labels
-    seedLabels = chartGroup.selectAll('.seed-label')
+    // Add success level labels
+    successLabels = chartGroup.selectAll('.success-label')
       .data(currentData)
       .enter()
       .append('text')
-      .attr('class', 'seed-label')
+      .attr('class', 'success-label')
       .attr('x', 0)
       .attr('y', (d, i) => i * (config.barHeight + config.barPadding) + config.barHeight / 2)
       .attr('dy', '0.35em')
       .attr('text-anchor', 'end')
       .attr('font-size', '12px')
-      .text(d => `Seed ${d.seed}`);
+      .text(d => d.success);
     
     // Add bars
     bars = chartGroup.selectAll('.bar')
@@ -436,19 +388,19 @@ window.marchMadness.tournamentBarChartRace = (function() {
       .attr('y', (d, i) => i * (config.barHeight + config.barPadding))
       .attr('width', d => {
         if (!d[selectedMetric]) return 0;
-        return xScale(d[selectedMetric].value);
+        return xScale(d[selectedMetric]);
       })
       .attr('height', config.barHeight)
-      .attr('fill', d => seedColors[d.seed] || '#ccc')
+      .attr('fill', d => successColors[d.success] || '#ccc')
       .attr('opacity', 0.8)
       .transition()
       .duration(config.transitionDuration)
       .attr('width', d => {
         if (!d[selectedMetric]) return 0;
-        return xScale(d[selectedMetric].value);
+        return xScale(d[selectedMetric]);
       });
     
-    // Add bar labels (team names and values)
+    // Add bar labels (metric values)
     barLabels = chartGroup.selectAll('.bar-label')
       .data(currentData)
       .enter()
@@ -456,13 +408,13 @@ window.marchMadness.tournamentBarChartRace = (function() {
       .attr('class', 'bar-label')
       .attr('x', d => {
         if (!d[selectedMetric]) return 15;
-        return xScale(d[selectedMetric].value) + 15;
+        return xScale(d[selectedMetric]) + 15;
       })
       .attr('y', (d, i) => i * (config.barHeight + config.barPadding) + config.barHeight / 2)
       .attr('dy', '0.35em')
       .text(d => {
         if (!d[selectedMetric]) return 'No data';
-        return `${d[selectedMetric].value.toFixed(1)} - ${d[selectedMetric].team}`;
+        return `${d[selectedMetric].toFixed(1)}`;
       });
     
     // Add x-axis (optional)
