@@ -216,66 +216,49 @@ window.marchMadness.tournamentBarChartRace = (function() {
         (d['Post-Season Tournament'] === 'March Madness' || 
          d['Post-Season Tournament'] === 'NCAA Tournament') &&
         d.Seed !== null && 
-        d.Seed !== "Not In a Post-Season Tournament"
+        d.Seed !== "Not In a Post-Season Tournament" &&
+        d.Region // Ensure region data exists
       );
       
-      // Process each seed (1-16)
-      const teamsBySeed = {};
+      // Process each seed (1-16) and region
+      const teamsBySeedAndRegion = {};
       
-      for (let seed = 1; seed <= 16; seed++) {
-        const teamsWithThisSeed = tournamentTeams.filter(d => {
-          const teamSeed = parseInt(d.Seed, 10);
-          return teamSeed === seed;
-        });
+      tournamentTeams.forEach(team => {
+        const seed = parseInt(team.Seed, 10);
+        const region = team.Region;
         
-        if (teamsWithThisSeed.length > 0) {
-          // For each metric, find the best team
-          const metrics = ['Net Rating', 'AdjOE', 'AdjDE', 'AdjTempo'];
-          
-          metrics.forEach(metric => {
-            // Find best team for this metric
-            let bestTeam = null;
-            
-            if (metric === 'AdjDE') {
-              // For defensive efficiency, lower is better
-              bestTeam = teamsWithThisSeed.reduce((best, current) => {
-                const currentValue = parseFloat(current[metric]);
-                if (isNaN(currentValue)) return best;
-                
-                if (!best || currentValue < parseFloat(best[metric])) {
-                  return current;
-                }
-                return best;
-              }, null);
-            } else {
-              // For other metrics, higher is better
-              bestTeam = teamsWithThisSeed.reduce((best, current) => {
-                const currentValue = parseFloat(current[metric]);
-                if (isNaN(currentValue)) return best;
-                
-                if (!best || currentValue > parseFloat(best[metric])) {
-                  return current;
-                }
-                return best;
-              }, null);
-            }
-            
-            if (bestTeam) {
-              if (!teamsBySeed[seed]) {
-                teamsBySeed[seed] = { seed };
-              }
-              
-              teamsBySeed[seed][metric] = {
-                value: parseFloat(bestTeam[metric]),
-                team: bestTeam['Full Team Name'],
-                conference: bestTeam['Short Conference Name']
+        if (!teamsBySeedAndRegion[seed]) {
+          teamsBySeedAndRegion[seed] = {};
+        }
+        
+        if (!teamsBySeedAndRegion[seed][region]) {
+          teamsBySeedAndRegion[seed][region] = {
+            seed: seed,
+            region: region,
+            team: team['Full Team Name']
+          };
+        }
+        
+        // For each metric, find the best team
+        const metrics = ['Net Rating', 'AdjOE', 'AdjDE', 'AdjTempo'];
+        metrics.forEach(metric => {
+          const currentValue = parseFloat(team[metric]);
+          if (!isNaN(currentValue)) {
+            if (!teamsBySeedAndRegion[seed][region][metric] || 
+                (metric === 'AdjDE' ? currentValue < teamsBySeedAndRegion[seed][region][metric].value : 
+                                     currentValue > teamsBySeedAndRegion[seed][region][metric].value)) {
+              teamsBySeedAndRegion[seed][region][metric] = {
+                value: currentValue,
+                team: team['Full Team Name']
               };
             }
-          });
-        }
-      }
+          }
+        });
+      });
       
-      processedData[year] = Object.values(teamsBySeed);
+      // Flatten the data structure for the current year
+      processedData[year] = Object.values(teamsBySeedAndRegion)
+        .flatMap(regions => Object.values(regions));
     });
     
     return processedData;
@@ -371,10 +354,22 @@ window.marchMadness.tournamentBarChartRace = (function() {
     }
     
     // Sort data by selected metric
-    filteredData.sort((a, b) => b[selectedMetric] - a[selectedMetric]);
+    filteredData.sort((a, b) => {
+      const aValue = a[selectedMetric]?.value || 0;
+      const bValue = b[selectedMetric]?.value || 0;
+      return bValue - aValue;
+    });
     
     // Update year display
     yearDisplay.text(`Season: ${currentYear - 1}-${currentYear}`);
+    
+    // Update title based on selected region
+    const title = d3.select('.visualization-title');
+    if (selectedRegion === 'all') {
+      title.text('NCAA Basketball Tournament Performance by Seed');
+    } else {
+      title.text(`NCAA Basketball Tournament Performance - ${selectedRegion} Region`);
+    }
     
     // Set up scales for the visualization
     setupScales(filteredData);
@@ -416,13 +411,18 @@ window.marchMadness.tournamentBarChartRace = (function() {
       .attr('text-anchor', 'middle')
       .text(`NCAA Tournament Teams by Seed (${years[currentYearIndex]})`);
     
-    // Add subtitle with selected metric
-    svg.append('text')
+    // Add subtitle with selected metric and region
+    const subtitle = svg.append('text')
       .attr('class', 'chart-subtitle')
       .attr('x', config.width / 2)
       .attr('y', 50)
-      .attr('text-anchor', 'middle')
-      .text(`Showing ${getMetricLabel(selectedMetric)} by Seed`);
+      .attr('text-anchor', 'middle');
+    
+    if (selectedRegion === 'all') {
+      subtitle.text(`Showing ${getMetricLabel(selectedMetric)} by Seed`);
+    } else {
+      subtitle.text(`Showing ${getMetricLabel(selectedMetric)} by Seed - ${selectedRegion} Region`);
+    }
     
     // Create group for bars and labels
     const chartGroup = svg.append('g')
