@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Analyzing March Madness Success Factors: An Interactive Data Exploration"
-date: 2025-04-11
-tags: [data-visualization, sports-analytics, machine-learning]
+date: 2025-04-15
+tags: [data-visualization, machine-learning]
 description: "An interactive exploration of factors that contribute to success in the NCAA March Madness tournament, using historical data and advanced analytics."
 reading_time: 10
 ---
