@@ -52,19 +52,13 @@ Below is an interactive visualization that allows you to explore relationships b
     <div class="visualization-container bar-chart-container">
         <div class="visualization-controls">
             <div class="control-group">
-                <label for="conference-selector">Select Conference:</label>
-                <select id="conference-selector" class="viz-select">
-                    <option value="all">All Conferences</option>
-                    <option value="ACC">ACC</option>
-                    <option value="Big Ten">Big Ten</option>
-                    <option value="Big 12">Big 12</option>
-                    <option value="SEC">SEC</option>
-                    <option value="Pac-12">Pac-12</option>
-                    <option value="Big East">Big East</option>
-                    <option value="AAC">AAC</option>
-                    <option value="Mountain West">Mountain West</option>
-                    <option value="WCC">WCC</option>
-                    <option value="A-10">A-10</option>
+                <label for="region-selector">Select Region:</label>
+                <select id="region-selector" class="viz-select">
+                    <option value="all">All Regions</option>
+                    <option value="East">East Region</option>
+                    <option value="West">West Region</option>
+                    <option value="Midwest">Midwest Region</option>
+                    <option value="South">South Region</option>
                 </select>
             </div>
         </div>

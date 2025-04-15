@@ -25,7 +25,7 @@ window.marchMadness.tournamentBarChartRace = (function() {
   let years = [];
   let currentYearIndex = 0;
   let selectedMetric = config.defaultMetric;
-  let selectedConference = 'all';
+  let selectedRegion = 'all';
   let isPlaying = false;
   let playInterval = null;
   
@@ -38,7 +38,7 @@ window.marchMadness.tournamentBarChartRace = (function() {
   let yearDisplay;
   let yearSlider;
   let metricSelector;
-  let conferenceSelector;
+  let regionSelector;
   let playButton;
   
   // Colors for seeds
@@ -101,10 +101,10 @@ window.marchMadness.tournamentBarChartRace = (function() {
       .attr('class', 'visualization-title')
       .text('NCAA Basketball Tournament Performance by Seed');
     
-    // Add conference selector
-    conferenceSelector = d3.select('#conference-selector')
+    // Add region selector
+    regionSelector = d3.select('#region-selector')
       .on('change', function() {
-        selectedConference = this.value;
+        selectedRegion = this.value;
         updateVisualization();
       });
     
@@ -364,10 +364,10 @@ window.marchMadness.tournamentBarChartRace = (function() {
     const currentYear = years[currentYearIndex];
     const currentData = data[currentYear] || [];
     
-    // Filter data by selected conference
+    // Filter data by selected region
     let filteredData = currentData;
-    if (selectedConference !== 'all') {
-      filteredData = currentData.filter(d => d.conference === selectedConference);
+    if (selectedRegion !== 'all') {
+      filteredData = currentData.filter(d => d.region === selectedRegion);
     }
     
     // Sort data by selected metric
