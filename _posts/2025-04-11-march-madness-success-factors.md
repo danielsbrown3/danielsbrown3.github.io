@@ -50,7 +50,7 @@ Below is an interactive visualization that allows you to explore relationships b
     <p>Watch how different teams' performance metrics have evolved over the years. Use the controls below to play through the years or select specific metrics to analyze.</p>
     
     <div class="visualization-container bar-chart-container">
-        <div id="bar-chart-race-viz" style="width: 100%; height: 600px; position: relative;"></div>
+        <div id="bar-chart-race-viz" style="width: 100%; height: 800px; position: relative;"></div>
     </div>
 </div>
 
@@ -67,10 +67,11 @@ Below is an interactive visualization that allows you to explore relationships b
 .bar-chart-container {
     background: var(--background-color, white);
     border-radius: 8px;
-    padding: 1rem;
+    padding: 1.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
     overflow: hidden;
+    min-height: 800px;
 }
 
 .tournament-chart {
