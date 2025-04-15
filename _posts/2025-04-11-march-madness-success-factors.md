@@ -50,6 +50,24 @@ Below is an interactive visualization that allows you to explore relationships b
     <p>Watch how different teams' performance metrics have evolved over the years. Use the controls below to play through the years or select specific metrics to analyze.</p>
     
     <div class="visualization-container bar-chart-container">
+        <div class="visualization-controls">
+            <div class="control-group">
+                <label for="conference-selector">Select Conference:</label>
+                <select id="conference-selector" class="viz-select">
+                    <option value="all">All Conferences</option>
+                    <option value="ACC">ACC</option>
+                    <option value="Big Ten">Big Ten</option>
+                    <option value="Big 12">Big 12</option>
+                    <option value="SEC">SEC</option>
+                    <option value="Pac-12">Pac-12</option>
+                    <option value="Big East">Big East</option>
+                    <option value="AAC">AAC</option>
+                    <option value="Mountain West">Mountain West</option>
+                    <option value="WCC">WCC</option>
+                    <option value="A-10">A-10</option>
+                </select>
+            </div>
+        </div>
         <div id="bar-chart-race-viz" style="width: 100%; height: 1000px; position: relative;"></div>
     </div>
 </div>
@@ -146,6 +164,8 @@ Below is an interactive visualization that allows you to explore relationships b
     padding: 0.5rem;
     border-radius: 4px;
     border: 1px solid var(--border-color, #e2e8f0);
+    background-color: white;
+    min-width: 200px;
 }
 
 .year-display {
