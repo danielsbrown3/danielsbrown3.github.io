@@ -7,7 +7,7 @@ title: Home
 <section class="featured-posts">
     <h2>Latest Writing</h2>
     <div class="posts-grid">
-        {% for post in site.posts limit:1 %}
+        {% for post in site.posts limit:3 %}
         <article class="post-card">
             <div class="post-meta">
                 <span class="date">{{ post.date | date: "%B %-d, %Y" }}</span>
