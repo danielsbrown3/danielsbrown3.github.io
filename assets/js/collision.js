@@ -16,13 +16,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .force('x', d3.forceX(width / 2).strength(0.01))
         .force('y', d3.forceY(height / 2).strength(0.01))
         .force('collide', d3.forceCollide().radius(d => d.r + 1).iterations(3))
-        .force('charge', d3.forceManyBody().strength(-width * 2 / 3));
+        .force('charge', d3.forceManyBody().strength((d, i) => i ? 0 : -width * 2 / 3));
 
     // Generate random circles
     const k = width / 200;
     const r = d3.randomUniform(k, k * 4);
+    const n = 4;
     const nodes = Array.from({length: 50}, (_, i) => ({
-        r: r()
+        r: r(),
+        group: i && (i % n + 1)
     }));
 
     // Add circles to SVG
@@ -46,19 +48,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add mouse interaction
     svg.on('mousemove', function(event) {
         const [x, y] = d3.pointer(event);
+        // Apply force to all nodes based on distance from mouse
         nodes.forEach(node => {
-            node.fx = x;
-            node.fy = y;
+            const dx = x - node.x;
+            const dy = y - node.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const force = -1000 / (distance * distance); // Repulsive force
+            node.vx += force * dx / distance;
+            node.vy += force * dy / distance;
         });
         simulation.alpha(0.3).restart();
     });
 
     // Reset on mouse leave
     svg.on('mouseleave', function() {
-        nodes.forEach(node => {
-            node.fx = null;
-            node.fy = null;
-        });
         simulation.alpha(0.3).restart();
     });
 }); 
