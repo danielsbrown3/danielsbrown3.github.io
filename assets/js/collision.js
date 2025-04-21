@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const k = width / 200;
     const r = d3.randomUniform(k, k * 4);
     const n = 4;
-    const nodes = Array.from({length: 50}, (_, i) => ({
+    const nodes = Array.from({length: 100}, (_, i) => ({
         r: r(),
         group: i && (i % n + 1)
     }));
