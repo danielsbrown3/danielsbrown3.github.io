@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Is Matlab Awesome, or Should I just do it in Python?"
+title: "Is Matlab Awesome, or Should I Just Do It in Python?"
 date: 2024-10-15 12:00:00 +0000
 tags: [MATLAB, system-engineering, mechanical-engineering]
 description: "A brief exploration into some of MATLAB's features."
@@ -108,5 +108,4 @@ Python users (myself included) usually criticize MATLAB for being expensive, not
 While all these critiques are true, and it is usually better to  individually code small projects with python, MATLAB has the advantage of converting your MATLAB code to be run in C++ to get better performance than python.
 
 [MATLAB C++](https://www.mathworks.com/help/matlab/cpp-language.html?s_tid=CRUX_lftnav)
-
 

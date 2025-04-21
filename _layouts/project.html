@@ -1,0 +1,40 @@
+---
+layout: default
+---
+
+<article class="project-content">
+    <header class="project-header">
+        <h1>{{ page.title }}</h1>
+        <div class="project-meta">
+            <span class="project-date">{{ page.date | date: "%B %Y" }}</span>
+            {% if page.status %}
+            <span class="project-status {{ page.status }}">{{ page.status | capitalize }}</span>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="project-description">
+        {{ content }}
+    </div>
+
+    <div class="project-links">
+        {% if page.github_url %}
+        <a href="{{ page.github_url }}" class="github-link">
+            <i class="fab fa-github"></i> View on GitHub
+        </a>
+        {% endif %}
+        {% if page.demo_url %}
+        <a href="{{ page.demo_url }}" class="demo-link">
+            <i class="fas fa-external-link-alt"></i> View Demo
+        </a>
+        {% endif %}
+    </div>
+
+    {% if page.tags %}
+    <div class="project-tags">
+        {% for tag in page.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+</article> 
