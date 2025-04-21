@@ -3,6 +3,11 @@ layout: default
 title: Home
 ---
 
+<section class="collision-demo">
+    <h2>Interactive Collision Detection</h2>
+    <p class="subtitle">Move your mouse to interact with the circles</p>
+    <div id="collision-container" class="collision-container"></div>
+</section>
 
 <section class="featured-posts">
     <h2>Latest Writing</h2>
@@ -33,11 +38,26 @@ title: Home
             <h3><a href="{{ project.url }}">{{ project.title }}</a></h3>
             <p>{{ project.description }}</p>
             <div class="project-links">
+                {% if project.github_url %}
                 <a href="{{ project.github_url }}" class="github-link">
                     <i class="fab fa-github"></i> View on GitHub
                 </a>
+                {% endif %}
+                {% if project.demo_url %}
+                <a href="{{ project.demo_url }}" class="demo-link">
+                    <i class="fas fa-external-link-alt"></i> View Demo
+                </a>
+                {% endif %}
+            </div>
+            <div class="project-tags">
+                {% for tag in project.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
             </div>
         </article>
         {% endfor %}
     </div>
 </section>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="/assets/js/collision.js"></script>

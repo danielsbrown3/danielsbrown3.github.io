@@ -690,4 +690,23 @@ footer {
     .contact-methods {
         align-items: stretch;
     }
+}
+
+.collision-demo {
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.collision-demo .subtitle {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.collision-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 } 
