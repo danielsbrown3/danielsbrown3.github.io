@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .force('x', d3.forceX(width / 2).strength(0.01))
         .force('y', d3.forceY(height / 2).strength(0.01))
         .force('collide', d3.forceCollide().radius(d => d.r + 1).iterations(3))
-        .force('charge', d3.forceManyBody().strength(-30));  // Equal repulsion for all circles
+        .force('charge', d3.forceManyBody().strength(-1));  // Equal repulsion for all circles
 
     // Generate random circles
     const k = width / 200;
